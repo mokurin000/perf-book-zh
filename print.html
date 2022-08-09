@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 构建配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> Compile Times</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 构建配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,9 +144,9 @@
 <p><a href="https://github.com/nnethercote/perf-book">Source code</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="简介"><a class="header" href="#简介">简介</a></h1>
 <p>性能对大多rust程序来说都很重要。</p>
-<p>本书包含许多可改进Rust程序的性能——包括速度和内存占用的方法。
+<p>本书含有一些可改进Rust程序的性能（速度和内存占用）的方法。
 <a href="compile-times.html">编译时间</a>中则有一些改进rust程序的编译时间的技巧。
-其中一些技巧只需要修改编译配置，但很多都需要编辑代码。</p>
+其中一些只需要修改编译配置，但很多都需要修改代码。</p>
 <p>注意，有很多技巧完全仅限于Rust，也有一些思路可以应用到其它语言的程序。
 <a href="general-tips.html">通用提示</a>中有一些通用的概念，理论上可用于任何编程语言。但是，这本书主要是关于Rust程序的性能，
 并不是通用的性能分析与优化教程。</p>
@@ -187,14 +187,14 @@ you learn about the performance characteristics of your program.</p>
 <blockquote>
 <p>by @<a href="https://github.com/sinsong">sinsong</a></p>
 </blockquote>
-<p>良好的构建配置可以提升 Rust 程序的性能，不需要修改程序代码。</p>
+<p>好的构建配置可以提升 Rust 程序的性能，不需要修改程序代码。</p>
 <h2 id="release-构建"><a class="header" href="#release-构建">Release 构建</a></h2>
 <p>Rust 性能建议中最重要的一点很简单，但也 <a href="extern/47764.html">容易被忽视</a>： 当你需要更好的性能的时候，确保你使用 release 构建，而不是 debug 构建。
 通常给 Cargo 指定 <code>--release</code> 标志就可以做到。</p>
 <p>release 构建运行的通常比 debug 构建快 <em>很多</em>。
-比 debug 构建快 10-100 倍很正常！</p>
-<p>debug 构建是默认的。
-如果你运行 <code>cargo build</code>，<code>cargo run</code>，<code>rustc</code>，并且不带其他选项，就会产生 debug 构建。
+比 debug 构建快 10-100 倍很正常。</p>
+<p>默认的是debug构建——
+如果你运行 <code>cargo build</code>，<code>cargo run</code>，<code>rustc</code>，并且不带其他选项，就会生成 debug 构建。
 debug 构建对调试很有用，但是并不优化。</p>
 <p>看看 <code>cargo build</code> 运行后输出的最后一行：</p>
 <pre><code class="language-text">Finished dev [unoptimized + debuginfo] target(s) in 29.80s
@@ -222,7 +222,7 @@ debug 构建对调试很有用，但是并不优化。</p>
 <pre><code class="language-toml">[profile.release]
 lto = true
 </code></pre>
-<p>这会导致 “重量级”(fat) LTO，会优化依赖图中的所有 creat。</p>
+<p>这样会启用 “重量级”(fat) LTO，会优化依赖图中的所有 crate。</p>
 <p>另外，在 <code>Cargo.toml</code> 中使用 <code>lto = &quot;thin&quot;</code> 则会启用 “轻量级”(thin) LTO——一种不那么激进的 LTO 形式，通常与 重量级 LTO 一样有效，但不会过多增加构建时间。</p>
 <p>你可以通过 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO文档</a> 深入了解 <code>lto</code> 设置，以及如何对不同 profile 启用特定设置。</p>
 <h2 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h2>
@@ -237,7 +237,7 @@ codegen-units = 1
 <h2 id="使用-cpu-特定的指令"><a class="header" href="#使用-cpu-特定的指令">使用 CPU 特定的指令</a></h2>
 <p>如果你并不在意你的二进制程序代码在更老（或其他类型的）处理器上的兼容性，你可以告诉编译器生成指定的 <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">特定 CPU 架构</a> 上的，最新（并且可能最快）的指令。</p>
 <p>例如，如果你向 rustc 传递 <code>-C target-cpu=native</code>，他会为你当前 CPU 使用最合适的指令：</p>
-<pre><code class="language-bash">$ RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
+<pre><code class="language-bash">RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
 </code></pre>
 <p>这可能产生很大的影响，特别是当编译器发现了你代码中进行矢量化的机会。</p>
 <p>截止 2022 年 7 月，在 M1 Macs 上使用 <code>-C target-cpu=native</code> 会有，没有检测到所有 CPU 特性的 <a href="https://github.com/rust-lang/rust/issues/93889">问题</a>。
@@ -251,12 +251,11 @@ codegen-units = 1
 panic = &quot;abort&quot;
 </code></pre>
 <h2 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h2>
-<p>Profile-guided optimization (PGO) is a compilation model where you compile
-your program, run it on sample data while collecting profiling data, and then
-use that profiling data to guide a second compilation of the program.
+<p>Profile-guided optimization (PGO)是一种编译模型——
+编译你的程序，用采样数据运行并收集性能分析数据，然后基于这些数据引导改程序的下次编译。
 <a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
-<p>It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See the <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO documentation</a> for details.</p>
+<p>这是一种较高级的技术，需要花一些精力设置，但有时值得这样做。
+详见<a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO 文档</a>。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
 <p><a href="https://github.com/rust-lang/rust-clippy">clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
 an excellent tool to run on Rust code in general. It can also help with
@@ -283,8 +282,11 @@ code with the following lines.</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
 <p>Then add the following declaration to your Rust code.</p>
-<pre><code>#![warn(clippy::disallowed_type)]
-</code></pre>
+<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span>#![warn(clippy::disallowed_type)]
+<span class="boring">fn main() {
+</span><span class="boring">}
+</span></code></pre></pre>
 <p>This is necessary because <code>disallowed_type</code> is (at the time of writing) a
 “nursery” (under development) lint. This may change in the future.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
@@ -1156,48 +1158,36 @@ small cache in front of a data structure.</p>
 comments are valuable, particularly those that reference profiling
 measurements. A comment like “99% of the time this vector has 0 or 1 elements,
 so handle those cases first” can be illuminating.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="compile-times"><a class="header" href="#compile-times">Compile Times</a></h1>
-<p>Although this book is primarily about improving the performance of Rust
-programs, this section is about reducing the compile times of Rust programs,
-because that is a related topic of interest to many people.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="编译时间"><a class="header" href="#编译时间">编译时间</a></h1>
+<p>虽然这本书主要关于提升Rust程序的性能，这一节是关于减少Rust程序的编译时间，
+因为这也是大多人关注的重要话题。</p>
 <h2 id="linking"><a class="header" href="#linking">Linking</a></h2>
-<p>A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. It is possible to select a faster
-linker than the default one.</p>
-<p>One option is <a href="https://lld.llvm.org/">lld</a>, which is available on Linux and Windows.</p>
-<p>To specify lld from the command line, precede your build command with
-<code>RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot;</code>.</p>
-<p>To specify lld from a <a href="https://doc.rust-lang.org/cargo/reference/config.html">config.toml</a> file (for one or more projects), add these
-lines:</p>
-<pre><code class="language-text">[build]
+<p>编译时间，其实有很大一部分是链接时间。尤其是小更改以后重新构建程序时。
+我们可以选择比默认的更快的链接器。</p>
+<p>这里推荐<a href="https://lld.llvm.org/">lld</a>，它支持ELF，PE/COFF，Mach-O，wasm等等。</p>
+<p>通过命令行指定使用 lld，你可以在你的构建命令前加上</p>
+<pre><code class="language-bash">RUSTFLAGS=&quot;-C link-arg=-fuse-ld=lld&quot;
+</code></pre>
+<p>通过<a href="https://doc.rust-lang.org/cargo/reference/config.html">config.toml</a>指定使用 lld（应用于一个或者多个项目)，加入这些行：</p>
+<pre><code class="language-toml">[build]
 rustflags = [&quot;-C&quot;, &quot;link-arg=-fuse-ld=lld&quot;]
 </code></pre>
-<p>lld is not fully supported for use with Rust, but it should work for most use
-cases on Linux and Windows. There is a <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> tracking full support for
-lld.</p>
-<p>Another option is <a href="https://github.com/rui314/mold">mold</a>, which is currently only available on Linux. It is
-specified in much the same way as lld. Simply substitute <code>mold</code> for <code>lld</code> in
-the instructions above.</p>
-<p>mold is often faster than lld. It is also much newer and may not work in all
-cases.</p>
-<h2 id="incremental-compilation"><a class="header" href="#incremental-compilation">Incremental Compilation</a></h2>
-<p>The Rust compiler supports <a href="https://blog.rust-lang.org/2016/09/08/incremental.html">incremental compilation</a>, which avoids redoing
-work when you recompile a crate. It can greatly speed up compilation, at the
-cost of sometimes making the produced executable run a little more slowly. For
-this reason, it is only enabled by default for debug builds. If you want to
-enable it for release builds as well, add the following lines to the
-<code>Cargo.toml</code> file.</p>
+<p>lld并未完全支持让Rust使用，但大多情况下可以。有个<a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">Github Issue</a>追踪lld的完整支持。</p>
+<p>另外你也可以选择<a href="https://github.com/rui314/mold">mold</a>，目前只支持ELF。指定使用它和lld一样，把<code>lld</code>换成<code>mold</code>就可以了。</p>
+<p>mold通常比lld更快。它也更新，有时无法工作。</p>
+<h2 id="增量编译"><a class="header" href="#增量编译">增量编译</a></h2>
+<p>Rust编译器支持<a href="https://blog.rust-lang.org/2016/09/08/incremental.html">增量编译</a>，避免在重编译的时候做重复的工作。它可以大大提升编译速度，
+但有时会让生成的可执行程序运行的慢一些。因此，它只默认为调试构建启用。
+如果你也想为发布构建启用，把这些加到<code>Cargo.toml</code>：</p>
 <pre><code class="language-toml">[profile.release]
 incremental = true
 </code></pre>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#incremental">Cargo documentation</a> for more details about the <code>incremental</code> setting, and
-about enabling specific settings for different profiles.</p>
-<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
-<p>Cargo has a feature that lets you visualize compilation of your
-program. Build with this command (1.60 or later):</p>
+<p><code>incremental</code>设置，以及为不同配置启用特定设置详见<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#incremental">Cargo文档</a>。</p>
+<h2 id="可视化"><a class="header" href="#可视化">可视化</a></h2>
+<p>Cargo有个功能，可以可视化你的程序的编译过程。在Rust 1.60以上使用该命令构建：</p>
 <pre><code class="language-text">cargo build --timings
 </code></pre>
-<p>or this (1.59 or earlier):</p>
+<p>或者（1.59以下）：</p>
 <pre><code class="language-text">cargo +nightly build -Ztimings
 </code></pre>
 <p>On completion it will print the name of an HTML file. Open that file in a web
