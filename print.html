@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> Profiling</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -257,42 +257,32 @@ panic = &quot;abort&quot;
 <p>这是一种较高级的技术，需要花一些精力设置，但有时值得这样做。
 详见<a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO 文档</a>。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="linting"><a class="header" href="#linting">Linting</a></h1>
-<p><a href="https://github.com/rust-lang/rust-clippy">clippy</a> is a collection of lints to catch common mistakes in Rust code. It is
-an excellent tool to run on Rust code in general. It can also help with
-performance, because a number of the lints relate to code patterns that can
-cause sub-optimal performance.</p>
-<h2 id="basics"><a class="header" href="#basics">Basics</a></h2>
-<p>Once installed, it is easy to run:</p>
+<p><a href="https://github.com/rust-lang/rust-clippy">clippy</a> 是一个lint集合，可以帮你发现Rust代码中的常见错误。
+clippy很不错，甚至可能可以帮你提升性能——有些涉及到代码模式的lint，可能会导致次优性能。</p>
+<h2 id="基本使用"><a class="header" href="#基本使用">基本使用</a></h2>
+<p>安装后，运行很简单：</p>
 <pre><code class="language-text">cargo clippy
 </code></pre>
-<p>The full list of performance lints can be seen by visiting the <a href="https://rust-lang.github.io/rust-clippy/master/">lint list</a> and
-deselecting all the lint groups except for “Perf”.</p>
-<p>As well as making the code faster, the performance lint suggestions usually
-result in code that is simpler and more idiomatic, so they are worth following
-even for code that is not executed frequently.</p>
+<p>性能lint的完整列表可以在<a href="https://rust-lang.github.io/rust-clippy/master/">这里</a>查阅，把Perf以外的组全部取消勾选即可。</p>
+<p>让代码运行更快的同时，性能lint建议通常也会让你的代码更简洁，更地道。
+因此它们值得遵循，哪怕并不是频繁执行的代码。</p>
 <h2 id="disallowing-types"><a class="header" href="#disallowing-types">Disallowing Types</a></h2>
-<p>In the following chapters we will see that it is sometimes worth avoiding
-certain standard library types in favour of alternatives that are faster. If
-you decide to use these alternatives, it is easy to accidentally use the
-standard library types in some places by mistake.</p>
-<p>You can use <code>clippy</code>’s <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint, added in Rust 1.55, to avoid
-this problem. For example, to disallow the use of the standard hash tables (for
-reasons explained in the <a href="hashing.html">Hashing</a> section) add a <code>clippy.toml</code> file to your
-code with the following lines.</p>
+<p>在接下来的章节我们会了解到，有时我们应该使用比标准库类型更快的替代。
+使用它们时，你很可能在哪里不小心使用了标准库类型。</p>
+<p>你可以使用 <code>clippy</code> 的 <a href="https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types"><code>disallowed_types</code></a> lint（自Rust 1.55加入），避免这个问题。
+比如，你不想使用标准库的散列表（原因在<a href="hashing.html">Hashing</a>小节），可以将以下内容保存到你的项目中的 <code>clippy.toml</code> 文件：</p>
 <pre><code class="language-toml">disallowed-types = [&quot;std::collections::HashMap&quot;, &quot;std::collections::HashSet&quot;]
 </code></pre>
-<p>Then add the following declaration to your Rust code.</p>
+<p>然后将以下声明加入到你的Rust代码中：</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span>#![warn(clippy::disallowed_type)]
 <span class="boring">fn main() {
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>This is necessary because <code>disallowed_type</code> is (at the time of writing) a
-“nursery” (under development) lint. This may change in the future.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="profiling"><a class="header" href="#profiling">Profiling</a></h1>
-<p>When optimizing a program, you also need a way to determine which parts of the
-program are “hot” (executed frequently enough to affect runtime) and worth
-modifying. This is best done via profiling.</p>
+<p>你需要手动加上这一行，因为 <code>disallow_type</code> 目前是一个 “nursery”（正在开发）的lint。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="性能分析"><a class="header" href="#性能分析">性能分析</a></h1>
+<p>在优化程序时，你需要判断你的程序哪些部分是“热点”（执行的足够频繁，足以影响运行时间），值得修改。
+通过性能分析，你可以很方便地判断。</p>
 <h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
 <p>There are many different profilers available, each with their strengths and
 weaknesses. The following is an incomplete list of profilers that have been
@@ -489,7 +479,7 @@ structures and operations cause allocations, because avoiding them can greatly
 improve performance.</p>
 <p>The <a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a> has visualizations of common Rust types, and
 is an excellent companion to the following sections.</p>
-<h2 id="profiling-1"><a class="header" href="#profiling-1">Profiling</a></h2>
+<h2 id="profiling"><a class="header" href="#profiling">Profiling</a></h2>
 <p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
 hot, then it is likely worth trying to reduce the allocation rate and/or using
 an alternative allocator.</p>
