@@ -141,22 +141,18 @@
 <p>在优化程序时，你需要判断你的程序哪些部分是“热点”（执行的足够频繁，足以影响运行时间），值得修改。
 通过性能分析，你可以很方便地判断。</p>
 <h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
-<p>There are many different profilers available, each with their strengths and
-weaknesses. The following is an incomplete list of profilers that have been
-used successfully on Rust programs.</p>
+<p>有很多不同的性能分析工具，它们都有自己的长处与短处。</p>
+<p>下面是可以对Rust程序使用的性能分析工具的不完整列表。</p>
 <ul>
-<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> is a general-purpose profiler that uses hardware performance counters.
-<a href="https://github.com/KDAB/hotspot">Hotspot</a> and <a href="https://profiler.firefox.com/">Firefox Profiler</a> are good for viewing data recorded by perf.
-It works on Linux.</li>
-<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> is a general-purpose profiler that comes with Xcode on macOS.</li>
-<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> is a general-purpose profiler. It works on Windows and Linux.</li>
-<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> is a Cargo command that uses perf/DTrace to profile your
-code and then displays the results in a flame graph. It works on Linux and
-all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
-Windows).</li>
-<li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> give global, per-function, and per-source-line
-instruction counts and simulated cache and branch prediction data. They work
-on Linux and some other Unixes.</li>
+<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> 是一个通用性能分析工具，使用<a href="https://en.wikipedia.org/wiki/Hardware_performance_counter">HPC</a>。
+<a href="https://github.com/KDAB/hotspot">Hotspot</a> 和 <a href="https://profiler.firefox.com/">Firefox Profiler</a> 都可以用来查看perf记录的数据。可用于Linux。</li>
+<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> 是Mac的Xcode自带的通用性能分析工具。</li>
+<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> 是一个通用性能分析工具。可用于Linux/Windows。</li>
+<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> 是一个cargo命令，使用perf/DTrace对你的代码进行性能分析，
+并将结果显示为火焰图。可用于Linux和任何支持DTrace的平台（macOS, FreeBSD, NetBSD, Windows也可能支持）</li>
+<li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> 分别提供了全局，函数甚至源码行粒度的指令count，
+并模拟了缓存和分支预测数据。
+它们可用于Linux和其他一些Unix系统。</li>
 <li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is good for finding which parts of the code are causing a lot of
 allocations, and for giving insight into peak memory usage. It can also be
 used to identify hot calls to <code>memcpy</code>. It works on Linux and some other
