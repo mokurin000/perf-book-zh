@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html" class="active"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> Inlining</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> Hashing</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html" class="active"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> 内联优化</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> 散列</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> Heap Allocations</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> Type Sizes</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> Standard Library Types</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> Iterators</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> Logging and Debugging</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> Wrapper Types</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> Machine Code</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> Parallelism</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> General Tips</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,51 +144,44 @@
 <p>有很多不同的性能分析工具，它们都有自己的长处与短处。</p>
 <p>下面是可以对Rust程序使用的性能分析工具的不完整列表。</p>
 <ul>
-<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> 是一个通用性能分析工具，使用<a href="https://en.wikipedia.org/wiki/Hardware_performance_counter">HPC</a>。
-<a href="https://github.com/KDAB/hotspot">Hotspot</a> 和 <a href="https://profiler.firefox.com/">Firefox Profiler</a> 都可以用来查看perf记录的数据。可用于Linux。</li>
-<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> 是Mac的Xcode自带的通用性能分析工具。</li>
-<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> 是一个通用性能分析工具。可用于Linux/Windows。</li>
-<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> 是一个cargo命令，使用perf/DTrace对你的代码进行性能分析，
+<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> 通用性能分析工具，使用<a href="https://en.wikipedia.org/wiki/Hardware_performance_counter">HPC</a>。
+<a href="https://github.com/KDAB/hotspot">Hotspot</a> 和 <a href="https://profiler.firefox.com/">Firefox Profiler</a> 都可以用来查看perf记录的数据。支持Linux。</li>
+<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> Mac的Xcode自带的通用性能分析工具。</li>
+<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> 通用性能分析工具。支持Linux和Windows。</li>
+<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> cargo子命令，使用perf/DTrace对你的代码进行性能分析，
 并将结果显示为火焰图。可用于Linux和任何支持DTrace的平台（macOS, FreeBSD, NetBSD, Windows也可能支持）</li>
 <li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> 分别提供了全局，函数甚至源码行粒度的指令count，
 并模拟了缓存和分支预测数据。
-它们可用于Linux和其他一些Unix系统。</li>
-<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is good for finding which parts of the code are causing a lot of
-allocations, and for giving insight into peak memory usage. It can also be
-used to identify hot calls to <code>memcpy</code>. It works on Linux and some other
-Unixes. <a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> is an experimental alternative that is a little less
-powerful and requires minor changes to your Rust program, but works on all
+它们支持Linux和其他一些Unix系统。</li>
+<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 可以帮你分析代码的哪一部分导致了大量内存分配，并且可以查看内存使用峰值。
+你也可以用它验证 <code>memcpy</code> 是否被频繁调用。它支持Linux和一些其他Unix系统。
+<a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a>是一个实验性替代，功能稍微没那么强大，而且需要对你的Rust程序进行一些小修改。
+不过，它支持任何平台。
 platforms.</li>
-<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> and <a href="https://github.com/koute/bytehound">bytehound</a> are heap profiling tools. They work on Linux.</li>
+<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> 和 <a href="https://github.com/koute/bytehound">bytehound</a> 是堆性能分析工具，支持Linux。</li>
 <li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
 statement with frequency-based post-processing, which is good for getting
 domain-specific insights into parts of your code. It works on all platforms.</li>
 <li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
 Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
 </ul>
-<h2 id="debug-info"><a class="header" href="#debug-info">Debug Info</a></h2>
-<p>To profile a release build effectively you might need to enable source line
-debug info. To do this, add the following lines to your <code>Cargo.toml</code> file:</p>
+<h2 id="调试信息"><a class="header" href="#调试信息">调试信息</a></h2>
+<p>为了对发布构建进行性能分析，你可能需要启用源码行调试信息。
+在 <code>Cargo.toml</code> 加入：</p>
 <pre><code class="language-toml">[profile.release]
 debug = 1
 </code></pre>
-<p>See the <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo documentation</a> for more details about the <code>debug</code> setting.</p>
-<p>Unfortunately, even after doing the above step you won’t get detailed profiling
-information for standard library code. This is because shipped versions of the
-Rust standard library are not built with debug info. To remedy this, you can
-build your own version of the compiler and standard library, following <a href="https://github.com/rust-lang/rust">these
-instructions</a>, and adding the following lines to the <code>config.toml</code> file:</p>
+<p><code>debug</code> 设置详见<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo 文档</a>。</p>
+<p>然而，只做以上步骤，你无法得到标准库的详细性能分析信息。
+这是因为 Rust 标准库发布不携带调试信息。你可以用<a href="https://github.com/rust-lang/rust">这里的方法</a>自己编译一份标准库与编译器，并将如下行添加到 <code>config.toml</code>：</p>
 <pre><code class="language-toml">[rust]
 debuginfo-level = 1
 </code></pre>
-<p>This is a hassle, but may be worth the effort in some cases.</p>
-<h2 id="symbol-demangling"><a class="header" href="#symbol-demangling">Symbol Demangling</a></h2>
-<p>Rust uses a mangling scheme to encode function names in compiled code. If a
-profiler is unaware of this scheme, its output may contain symbol names
-beginning with <code>_ZN</code> or <code>_R</code>, such as <code>_ZN3foo3barE</code> or
-<code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> or
-<code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code></p>
-<p>Names like these can be manually demangled using <a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>.</p>
+<p>这有些麻烦，但有时值得这么做。</p>
+<h2 id="符号demangling"><a class="header" href="#符号demangling">符号Demangling</a></h2>
+<p>Rust在编码函数名到编译的代码时使用一种mangling机制。如果性能分析工具不支持这种机制，它的输出可能含有这种以 <code>_ZN</code> 或者 <code>_R</code>开始的符号名：
+<code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code>，或者 <code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code>。</p>
+<p>这种符号名可以用<a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>手动demangle。</p>
 
                     </main>
 
