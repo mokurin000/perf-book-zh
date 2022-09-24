@@ -138,49 +138,47 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="性能分析"><a class="header" href="#性能分析">性能分析</a></h1>
-<p>在优化程序时，你需要判断你的程序哪些部分是“热点”（执行的足够频繁，足以影响运行时间），值得修改。
+<blockquote>
+<p>by @<a href="https://github.com/jetjinser">jinser</a> and @<a href="https://github.com/poly000">poly000</a></p>
+</blockquote>
+<p>在优化程序时，你需要判断你的程序哪些部分是“热点”（执行得足够频繁，足以影响运行时间），值得修改。
 通过性能分析，你可以很方便地判断。</p>
-<h2 id="profilers"><a class="header" href="#profilers">Profilers</a></h2>
-<p>有很多不同的性能分析工具，它们都有自己的长处与短处。</p>
-<p>下面是可以对Rust程序使用的性能分析工具的不完整列表。</p>
+<h2 id="性能分析器profilers"><a class="header" href="#性能分析器profilers">性能分析器（Profilers）</a></h2>
+<p>有许多不同的性能分析器，每一个都有其优势和劣势。
+下面是一个不完整的清单，其中包括已经成功用于 Rust 程序的性能分析器。</p>
 <ul>
-<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> 通用性能分析工具，使用<a href="https://en.wikipedia.org/wiki/Hardware_performance_counter">HPC</a>。
-<a href="https://github.com/KDAB/hotspot">Hotspot</a> 和 <a href="https://profiler.firefox.com/">Firefox Profiler</a> 都可以用来查看perf记录的数据。支持Linux。</li>
-<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> Mac的Xcode自带的通用性能分析工具。</li>
-<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> 通用性能分析工具。支持Linux和Windows。</li>
-<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> cargo子命令，使用perf/DTrace对你的代码进行性能分析，
-并将结果显示为火焰图。可用于Linux和任何支持DTrace的平台（macOS, FreeBSD, NetBSD, Windows也可能支持）</li>
-<li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> &amp; <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> 分别提供了全局，函数甚至源码行粒度的指令count，
-并模拟了缓存和分支预测数据。
-它们支持Linux和其他一些Unix系统。</li>
-<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 可以帮你分析代码的哪一部分导致了大量内存分配，并且可以查看内存使用峰值。
-你也可以用它验证 <code>memcpy</code> 是否被频繁调用。它支持Linux和一些其他Unix系统。
-<a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a>是一个实验性替代，功能稍微没那么强大，而且需要对你的Rust程序进行一些小修改。
-不过，它支持任何平台。
-platforms.</li>
-<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> 和 <a href="https://github.com/koute/bytehound">bytehound</a> 是堆性能分析工具，支持Linux。</li>
-<li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> supports ad hoc profiling, which combines the use of <code>eprintln!</code>
-statement with frequency-based post-processing, which is good for getting
-domain-specific insights into parts of your code. It works on all platforms.</li>
-<li><a href="https://github.com/plasma-umass/coz">Coz</a> performs <em>causal profiling</em> to measure optimization potential, and has
-Rust support via <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a>. It works on Linux. </li>
+<li><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> 是一个通用的性能分析器，它使用 hardware performance counters (<a href="https://en.wikipedia.org/wiki/Hardware_performance_counter">HPC</a>)。
+<a href="https://github.com/KDAB/hotspot">Hotspot</a> 和 <a href="https://profiler.firefox.com/">Firefox Profiler</a> 是查看 perf 记录的数据的好工具。它在 Linux 上工作。</li>
+<li><a href="https://developer.apple.com/forums/tags/instruments">Instruments</a> 是一个通用的性能分析器，在 macOS 的 Xcode 中自带。</li>
+<li><a href="https://developer.amd.com/amd-uprof/">AMD μProf</a> 是一个通用的性能分析器，在 Windows 和 Linux 上工作。</li>
+<li><a href="https://github.com/flamegraph-rs/flamegraph">flamegraph</a> 是一个 Cargo 命令，它使用 perf/DTrace 对你的代码进行分析，然后以火焰图的形式显示结果。
+它适用于 Linux 和所有支持 DTrace 的平台（macOS、FreeBSD、NetBSD，可能还有 Windows）。</li>
+<li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> 和 <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> 提供了全局的、每个函数的和每行源码的指令计数（instruction counts）
+以及模拟的缓存（simulated cache）和分支预测数据（branch prediction data）。
+它们可以在 Linux 和其他一些 Unix 系统上运行。</li>
+<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 有利于找到代码中哪些部分导致了大量的分配，并能深入了解内存使用的峰值。它还可以用来识别对 memcpy 的热调用（hot calls）。
+<a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> 是一个实验性的替代品，功能稍差，需要对你的 Rust 程序做一些小的改动，但在所有平台上都能使用。</li>
+<li><a href="https://github.com/KDE/heaptrack">heaptrack</a> 和 <a href="https://github.com/koute/bytehound">bytehound</a> 是堆分析工具。它们在 Linux 上工作</li>
+<li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> 支持 ad-hoc 分析，它结合使用 <code>eprintln!</code> 语句和基于频率的后处理，这对获得你的代码部分的领域特定（domain-specific）的亮点很有好处。它适用于所有平台。</li>
+<li><a href="https://github.com/plasma-umass/coz">Coz</a> 执行 <em>causal profiling</em> 以衡量优化潜力，并通过 <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a> 支持 Rust。它在 Linux 上工作。</li>
 </ul>
-<h2 id="调试信息"><a class="header" href="#调试信息">调试信息</a></h2>
-<p>为了对发布构建进行性能分析，你可能需要启用源码行调试信息。
-在 <code>Cargo.toml</code> 加入：</p>
+<h2 id="调试信息debug-info"><a class="header" href="#调试信息debug-info">调试信息（Debug Info）</a></h2>
+<p>为了有效地分析 release 的构建产物，你可能需要启用源码行的调试信息。
+要做到这一点，请在你的 Cargo.toml 文件中添加以下几行。</p>
 <pre><code class="language-toml">[profile.release]
 debug = 1
 </code></pre>
 <p><code>debug</code> 设置详见<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#debug">Cargo 文档</a>。</p>
-<p>然而，只做以上步骤，你无法得到标准库的详细性能分析信息。
-这是因为 Rust 标准库发布不携带调试信息。你可以用<a href="https://github.com/rust-lang/rust">这里的方法</a>自己编译一份标准库与编译器，并将如下行添加到 <code>config.toml</code>：</p>
+<p>然而，即使做了上述步骤，你也无法得到标准库的详细性能分析信息。
+这是因为 Rust 标准库发布版本不携带调试信息。你可以用<a href="https://github.com/rust-lang/rust">这里的方法</a>自己编译一份标准库与编译器，并将如下行添加到 <code>config.toml</code>：</p>
 <pre><code class="language-toml">[rust]
 debuginfo-level = 1
 </code></pre>
 <p>这有些麻烦，但有时值得这么做。</p>
 <h2 id="符号demangling"><a class="header" href="#符号demangling">符号Demangling</a></h2>
-<p>Rust在编码函数名到编译的代码时使用一种mangling机制。如果性能分析工具不支持这种机制，它的输出可能含有这种以 <code>_ZN</code> 或者 <code>_R</code>开始的符号名：
-<code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code>，或者 <code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code>。</p>
+<p>Rust 使用一种<a href="https://rust-lang.github.io/rfcs/2603-rust-symbol-name-mangling-v0.html">mangle机制</a>，对生成的代码中的符号名进行编码。
+如果性能分析器不支持这种机制，它的输出可能包含以 <code>_ZN</code> 或 <code>_R</code> 开头的符号名称，
+例如 <code>_ZN3foo3barE</code> 或 <code>_ZN28_$u7b$$u7b$closure$u7d$$u7d$E</code> 或 <code>_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E</code></p>
 <p>这种符号名可以用<a href="https://crates.io/crates/rustfilt"><code>rustfilt</code></a>手动demangle。</p>
 
                     </main>
