@@ -264,11 +264,11 @@ clippy很不错，甚至可能可以帮你提升性能——有些涉及到代�
 </code></pre>
 <p>然后将以下声明加入到你的Rust代码中：</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span>#![warn(clippy::disallowed_type)]
+</span>#![warn(clippy::disallowed_types)]
 <span class="boring">fn main() {
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>你需要手动加上这一行，因为 <code>disallow_type</code> 目前是一个 “nursery”（正在开发）的lint。</p>
+<p>你需要手动加上这一行，因为 <code>disallow_types</code> 目前是一个 “nursery”（正在开发）的lint。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="性能分析"><a class="header" href="#性能分析">性能分析</a></h1>
 <blockquote>
 <p>by @<a href="https://github.com/jetjinser">jinser</a> and @<a href="https://github.com/poly000">poly000</a></p>
@@ -834,6 +834,14 @@ assert_eq!(size_of_val(&amp;bs), 2 * size_of::&lt;usize&gt;());
 </span></code></pre></pre>
 <p>The boxed slice can be converted back to a vector with <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec"><code>slice::into_vec</code></a>
 without any cloning or a reallocation.</p>
+<h2 id="thinvec"><a class="header" href="#thinvec"><code>ThinVec</code></a></h2>
+<p>An alternative to boxed slices is <code>ThinVec</code>, from the <a href="https://crates.io/crates/thin-vec"><code>thin_vec</code></a> crate. It is
+functionally equivalent to <code>Vec</code>, but stores the length and capacity in the
+same allocation as the elements (if there are any). This means that
+<code>size_of::&lt;ThinVec&lt;T&gt;&gt;</code> is only one word.</p>
+<p><code>ThinVec</code> is a good choice within oft-instantiated types for vectors that are
+often empty. It can also be used to shrink the largest variant of an enum, if
+that variant contains a <code>Vec</code>.</p>
 <h2 id="avoiding-regressions-1"><a class="header" href="#avoiding-regressions-1">Avoiding Regressions</a></h2>
 <p>If a type is hot enough that its size can affect performance, it is a good idea
 to use a static assertion to ensure that it does not accidentally regress. The
@@ -900,11 +908,14 @@ useful on occasion.
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/3832a634d3aa6a7c60448906e6656a22f7e35628"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/65198/commits/75e0078a1703448a19e25eac85daaa5a4e6e68ac"><strong>Example 2</strong></a>.</p>
 <h2 id="mutex-rwlock-condvar-and-once"><a class="header" href="#mutex-rwlock-condvar-and-once"><code>Mutex</code>, <code>RwLock</code>, <code>Condvar</code>, and <code>Once</code></a></h2>
-<p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these
-synchronization types that are smaller, faster, and more flexible than those in
-the standard library. The APIs and semantics of the <code>parking_lot</code> types are
+<p>The <a href="https://crates.io/crates/parking_lot"><code>parking_lot</code></a> crate provides alternative implementations of these</p>
+<p>synchronization types. The APIs and semantics of the <code>parking_lot</code> types are
 similar but not identical to those of the equivalent types in the standard
 library.</p>
+<p>The <code>parking_lot</code> versions used to be reliably smaller, faster, and more
+flexible than those in the standard library, but the standard library versions
+have greatly improved on some platforms. So you should measure before switching
+to <code>parking_lot</code>. </p>
 <p>If you decide to universally use the <code>parking_lot</code> types it is easy to
 accidentally use the standard library equivalents in some places. You can <a href="linting.html#disallowing-types">use
 <code>clippy</code></a> to avoid this problem.</p>
@@ -996,6 +1007,7 @@ buf.flush()?;
 </span><span class="boring">}
 </span><span class="boring">}
 </span></code></pre></pre>
+<p><a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>Example</strong></a>.</p>
 <p>The explicit call to <a href="https://doc.rust-lang.org/std/io/trait.Write.html#tymethod.flush"><code>flush</code></a> is not strictly necessary, as flushing will
 happen automatically when <code>buf</code> is dropped. However, in that case any error
 that occurs on flushing will be ignored, whereas an explicit flush will make
