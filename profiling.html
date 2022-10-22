@@ -142,7 +142,7 @@
 <p>by @<a href="https://github.com/jetjinser">jinser</a> and @<a href="https://github.com/poly000">poly000</a></p>
 </blockquote>
 <p>在优化程序时，你需要判断你的程序哪些部分是“热点”（执行得足够频繁，足以影响运行时间），值得修改。
-你可以使用性能分析工具帮你判断。</p>
+可以使用性能分析器判断。</p>
 <h2 id="性能分析器profilers"><a class="header" href="#性能分析器profilers">性能分析器（Profilers）</a></h2>
 <p>有许多不同的性能分析器，每一个都有其优势和劣势。
 下面是一个不完整的清单，其中包括已经成功用于 Rust 程序的性能分析器。</p>
@@ -156,8 +156,8 @@
 <li><a href="https://www.valgrind.org/docs/manual/cg-manual.html">Cachegrind</a> 和 <a href="https://www.valgrind.org/docs/manual/cl-manual.html">Callgrind</a> 提供了全局的、每个函数的和每行源码的指令计数（instruction counts）
 以及模拟的缓存（simulated cache）和分支预测数据（branch prediction data）。
 它们可以在 Linux 和其他一些 Unix 系统上运行。</li>
-<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 有利于找到代码中哪些部分导致了大量的分配，并能深入了解内存使用的峰值。它还可以用来识别对 memcpy 的热调用（hot calls）。
-<a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> 是一个实验性的替代品，功能稍差，需要对你的 Rust 程序做一些小的改动，但在所有平台上都能使用。</li>
+<li><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 可帮你找到代码中哪些部分导致了大量的分配，并了解内存使用峰值。它还可以识别对 memcpy 的热调用（hot calls）。
+<a href="https://github.com/nnethercote/dhat-rs/">dhat-rs</a> 是一个实验性的替代品，功能稍差，需要对你的 Rust 程序做一些小的改动，但它支持任何平台。</li>
 <li><a href="https://github.com/KDE/heaptrack">heaptrack</a> 和 <a href="https://github.com/koute/bytehound">bytehound</a> 是堆分析工具。它们在 Linux 上工作</li>
 <li><a href="https://github.com/nnethercote/counts/"><code>counts</code></a> 支持 ad-hoc 分析，它结合使用 <code>eprintln!</code> 语句和基于频率的后处理，这对获得你的代码部分的领域特定（domain-specific）的亮点很有好处。它适用于所有平台。</li>
 <li><a href="https://github.com/plasma-umass/coz">Coz</a> 执行 <em>causal profiling</em> 以衡量优化潜力，并通过 <a href="https://github.com/plasma-umass/coz/tree/master/rust">coz-rs</a> 支持 Rust。它在 Linux 上工作。</li>
