@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> 内联优化</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> 散列</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> 堆分配</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> 类型大小</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> 标准库类型</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> 迭代器</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> 日志与调试</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> 包装类型</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> 机器码</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> 并发</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html" class="active"><strong aria-hidden="true">18.</strong> 通用技巧</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> 内联优化</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> 散列</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> 堆分配</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> 类型大小</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> 标准库类型</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> 迭代器</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> 日志与调试</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> 包装类型</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> 机器代码</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> 并发</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html" class="active"><strong aria-hidden="true">18.</strong> 通用技巧</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -138,26 +138,20 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="通用技巧"><a class="header" href="#通用技巧">通用技巧</a></h1>
-<p>The previous sections of this book have discussed Rust-specific techniques.
-This section gives a brief overview of some general performance principles.</p>
-<p>As long as the obvious pitfalls are avoided (e.g. <a href="build-configuration.html">using non-release builds</a>),
-Rust generally has good performance. Especially if you are used to
-dynamically-typed languages such as Python and Ruby.</p>
-<p>Optimized code is often more complex and takes more effort to write than
-unoptimized code. For this reason, it is only worth optimizing hot code.</p>
-<p>The biggest performance improvements often come from changes to algorithms or
-data structures, rather than low-level optimizations.
+<p>这本书在本章节前讨论了限定于Rust的技术。
+而这一节我们会简单讨论一些通用的概念。</p>
+<p>避免低级错误（例如，[使用非release构建]）以后，Rust程序通常性能不错。</p>
+<p>优化后的代码往往会更复杂，而且更难写出。为此，一般我们只优化热点代码。</p>
+<p>能带来最大性能提升的通常是对算法或数据结构的修改，而不是底层优化。
 <a href="https://github.com/rust-lang/rust/pull/53383/commits/5745597e6195fe0591737f242d02350001b6c590"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/54318/commits/154be2c98cf348de080ce951df3f73649e8bb1a6"><strong>Example 2</strong></a>.</p>
-<p>Writing code that works well with modern hardware is not always easy, but worth
-striving for. For example, try to minimize cache misses and branch
-mispredictions, where possible.</p>
-<p>Most optimizations result in small speedups. Although no single small speedup
-is noticeable, they really add up if you can do enough of them.</p>
-<p>Different profilers have different strengths. It is good to use more than one.</p>
-<p>When profiling indicates that a function is hot, there are two common ways to
-speed things up: (a) make the function faster, and/or (b) avoid calling it as
-much.</p>
+<p>编写现代机器友好的代码有时并不容易，但值得一试。例如，你可以尝试最小化缓存不命中和分支预测失败。</p>
+<p>大多数优化只会带来小的性能提升，即使单说其中一个不会带来可观测的变化，你多加利用的话也能带来不错的提升。</p>
+<p>不同的性能分析器有不同的优点，没必要拘泥于其中一个。</p>
+<blockquote>
+<p>译注：比如 memcpy 开销太大，你需要选择后者。</p>
+</blockquote>
+<p>通过性能分析判断出热点函数后，有两种常用的做法，一是让它更快，二是避免对它多次调用。</p>
 <p>It is often easier to eliminate silly slowdowns than it is to introduce clever
 speedups.</p>
 <p>Avoid computing things unless necessary. Lazy/on-demand computations are
