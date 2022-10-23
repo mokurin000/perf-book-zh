@@ -143,8 +143,8 @@
 <p>避免低级错误（例如，[使用非release构建]）以后，Rust程序通常性能不错。</p>
 <p>优化后的代码往往会更复杂，而且更难写出。为此，一般我们只优化热点代码。</p>
 <p>能带来最大性能提升的通常是对算法或数据结构的修改，而不是底层优化。
-<a href="https://github.com/rust-lang/rust/pull/53383/commits/5745597e6195fe0591737f242d02350001b6c590"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/54318/commits/154be2c98cf348de080ce951df3f73649e8bb1a6"><strong>Example 2</strong></a>.</p>
+<a href="https://github.com/rust-lang/rust/pull/53383/commits/5745597e6195fe0591737f242d02350001b6c590"><strong>例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/54318/commits/154be2c98cf348de080ce951df3f73649e8bb1a6"><strong>例 2</strong></a>.</p>
 <p>编写现代机器友好的代码有时并不容易，但值得一试。例如，你可以尝试最小化缓存不命中和分支预测失败。</p>
 <p>大多数优化只会带来小的性能提升，即使单说其中一个不会带来可观测的变化，你多加利用的话也能带来不错的提升。</p>
 <p>不同的性能分析器有不同的优点，没必要拘泥于其中一个。</p>
@@ -154,16 +154,15 @@
 <p>通过性能分析判断出热点函数后，有两种常用的做法，一是让它更快，二是避免对它多次调用。</p>
 <p>It is often easier to eliminate silly slowdowns than it is to introduce clever
 speedups.</p>
-<p>Avoid computing things unless necessary. Lazy/on-demand computations are
-often a win.
-<a href="https://github.com/rust-lang/rust/pull/36592/commits/80a44779f7a211e075da9ed0ff2763afa00f43dc"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/50339/commits/989815d5670826078d9984a3515eeb68235a4687"><strong>Example 2</strong></a>.</p>
+<p>避免不必要的计算。惰性计算通常会带来提升。
+<a href="https://github.com/rust-lang/rust/pull/36592/commits/80a44779f7a211e075da9ed0ff2763afa00f43dc"><strong>例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/50339/commits/989815d5670826078d9984a3515eeb68235a4687"><strong>例 2</strong></a>.</p>
 <p>Complex general cases can often be avoided by optimistically checking for
 common special cases that are simpler.
 <a href="https://github.com/rust-lang/rust/pull/68790/commits/d62b6f204733d255a3e943388ba99f14b053bf4a"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/53733/commits/130e55665f8c9f078dec67a3e92467853f400250"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/65260/commits/59e41edcc15ed07de604c61876ea091900f73649"><strong>Example 3</strong></a>.
-In particular, specially handling collections with 0, 1, or 2 elements is often
+<a href="https://github.com/rust-lang/rust/pull/65260/commits/59e41edcc15ed07de604c61876ea091900f73649"><strong>Example 3</strong></a>.</p>
+<p>In particular, specially handling collections with 0, 1, or 2 elements is often
 a win when small sizes dominate.
 <a href="https://github.com/rust-lang/rust/pull/50932/commits/2ff632484cd8c2e3b123fbf52d9dd39b54a94505"><strong>Example 1</strong></a>,
 <a href="https://github.com/rust-lang/rust/pull/64627/commits/acf7d4dcdba4046917c61aab141c1dec25669ce9"><strong>Example 2</strong></a>,

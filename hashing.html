@@ -138,14 +138,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="散列"><a class="header" href="#散列">散列</a></h1>
-<p><code>HashSet</code> and <code>HashMap</code> are two widely-used types. The default hashing
-algorithm is not specified, but at the time of writing the default is an
-algorithm called <a href="https://en.wikipedia.org/wiki/SipHash">SipHash 1-3</a>. This algorithm is high quality—it provides high
-protection against collisions—but is relatively slow, particular for short keys
-such as integers.</p>
-<p>If profiling shows that hashing is hot, and <a href="https://en.wikipedia.org/wiki/Collision_attack">HashDoS attacks</a> are not a concern
-for your application, the use of hash tables with faster hash algorithms can
-provide large speed wins.</p>
+<p><code>HashSet</code> 和 <code>HashMap</code> 是很常用的类型。默认的散列算法并未指定，不过目前rust使用 <a href="https://en.wikipedia.org/wiki/SipHash">SipHash 1-3</a>，
+这是种高质量的算法，提供很好的碰撞保护——也正因如此，它很慢，特别是使用短键（如整数）时。</p>
+<p>如果性能分析显示散列是热点，而且你的应用不需要担心<a href="https://en.wikipedia.org/wiki/Collision_attack">HashDoS攻击</a>，
+你可以使用散列算法更快的散列表，得到很大的性能提升。</p>
 <ul>
 <li><a href="https://crates.io/crates/rustc-hash"><code>rustc-hash</code></a> provides <code>FxHashSet</code> and <code>FxHashMap</code> types that are drop-in
 replacements for <code>HashSet</code> and <code>HashMap</code>. Its hashing algorithm is
@@ -170,13 +166,10 @@ rustc.</p>
 <p>If you decide to universally use one of the alternatives, such as
 <code>FxHashSet</code>/<code>FxHashMap</code>, it is easy to accidentally use <code>HashSet</code>/<code>HashMap</code> in
 some places. You can <a href="linting.html#disallowing-types">use <code>clippy</code></a> to avoid this problem.</p>
-<p>Some types don’t need hashing. For example, you might have a newtype that wraps
-an integer and the integer values are random, or close to random. For such a
-type, the distribution of the hashed values won’t be that different to the
-distribution of the values themselves. In this case the <a href="https://crates.io/crates/nohash-hasher"><code>nohash_hasher</code></a> crate
-can be useful.</p>
-<p>Hash function design is a complex topic and is beyond the scope of this book.
-The <a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code> documentation</a> has a good discussion. </p>
+<p>一些类型不需要散列。例如，你可能用newtype包装了一个随机（或者接近随机）的整数。
+对于这种类型，分发他们自己的值和分发散列后得到的值没有区别。
+这种情况下你可以试试 <a href="https://crates.io/crates/nohash-hasher"><code>nohash_hasher</code></a>。</p>
+<p>散列函数设计是一个复杂的话题，超出本书的范围。<a href="https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md"><code>ahash</code>的文档</a>有相关的讨论。</p>
 
                     </main>
 
