@@ -431,10 +431,8 @@ some places. You can <a href="linting.html#disallowing-types">use <code>clippy</
 做一些复杂的数据结构操作，甚至可能需要执行一次系统调用。小的分配也不一定比大的分配廉价。
 我们应该知道哪些Rust数据结构（的哪些操作）可能导致堆分配，因为消除堆分配可以很大提升性能。</p>
 <p><a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a>有可视化的Rust常用类型，是对接下来的章节很好的补充。</p>
-<h2 id="profiling"><a class="header" href="#profiling">Profiling</a></h2>
-<p>If a general-purpose profiler shows <code>malloc</code>, <code>free</code>, and related functions as
-hot, then it is likely worth trying to reduce the allocation rate and/or using
-an alternative allocator.</p>
+<h2 id="性能分析-1"><a class="header" href="#性能分析-1">性能分析</a></h2>
+<p>如果性能分析显示 <code>malloc</code>，<code>free</code>以及相关的函数为热点，你可能需要尝试减少分配率，或者换用其他分配器。</p>
 <p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It works
 on Linux and some other Unixes. It precisely identifies hot allocation
 sites and their allocation rates. Exact results will vary, but experience with
