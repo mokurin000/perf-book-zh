@@ -6,6 +6,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+
 jobs:
   test_and_maybe_deploy:
     runs-on: ubuntu-latest
@@ -41,4 +44,4 @@ jobs:
           #publish_dir: ./book/html  # use if EPUB is enabled
           publish_dir: ./book # use if EPUB is disabled
         # Only deploy on a push to master, not on a pull request.
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'nnethercote/perf-book'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'mokurin000/perf-book-zh'
