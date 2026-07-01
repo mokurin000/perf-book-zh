@@ -1,49 +1,63 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js rust">
+<html lang="zh" class="rust sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>编译配置 - The Rust Performance Book</title>
+        <title>构建配置 - The Rust Performance Book</title>
 
 
         <!-- Custom HTML head -->
-        
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-4c45df65.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-75c1b2e0.js"></script>
     </head>
     <body>
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
-        </script>
-
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -57,58 +71,69 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
-            html.classList.remove('no-js')
+            const html = document.documentElement;
             html.classList.remove('rust')
             html.classList.add(theme);
-            html.classList.add('js');
+            html.classList.add("js");
         </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
-            var sidebar = null;
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html" class="active"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> 内联优化</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> 散列</a></li><li class="chapter-item expanded "><a href="heap-allocations.html"><strong aria-hidden="true">8.</strong> 堆分配</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> 类型大小</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> 标准库类型</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> 迭代器</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> 日志与调试</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> 包装类型</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> 机器代码</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> 并发</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> 通用技巧</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
-                        </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -116,121 +141,289 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/poly000/perf-book-zh" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                        <a href="https://github.com/mokurin000/perf-book-zh" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/mokurin000/perf-book-zh/edit/master/src/build-configuration.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="编译配置"><a class="header" href="#编译配置">编译配置</a></h1>
-<blockquote>
-<p>by @<a href="https://github.com/sinsong">sinsong</a></p>
-</blockquote>
-<p>好的构建配置可以提升 Rust 程序的性能，不需要修改程序代码。</p>
+                        <h1 id="构建配置"><a class="header" href="#构建配置">构建配置</a></h1>
+<p>你可以大幅改变 Rust 程序的性能，而无需修改代码，只需更改其构建配置。每个 Rust 程序
+都有许多可能的构建配置。所选配置将影响编译后代码的多个特征，例如编译时间、运行时速度、
+内存使用、二进制体积、可调试性、可分析性以及编译后的程序将运行的架构。</p>
+<p>大多数配置选择会在改善一个或多个特征的同时，使一个或多个其他特征变差。例如，一种常见
+的权衡是接受更长的编译时间以换取更高的运行时速度。适合你程序的正确选择取决于你的需求
+和程序的具体情况，而与性能相关的选择（大部分都是）应通过基准测试来验证。</p>
+<p>值得仔细阅读本章以了解所有构建配置选项。不过，对于没有耐心或容易忘记的人来说，
+<a href="https://github.com/Kobzol/cargo-wizard"><code>cargo-wizard</code></a> 封装了这些信息，可以帮助你选择合适的构建配置。</p>
+<p>请注意，Cargo 仅查看工作区根目录下 <code>Cargo.toml</code> 文件中的 profile 设置。依赖项中定义的
+profile 设置将被忽略。因此，这些选项主要与二进制 crate 相关，而非库 crate。</p>
 <h2 id="release-构建"><a class="header" href="#release-构建">Release 构建</a></h2>
-<p>Rust 性能建议中最重要的一点很简单，但也 <a href="extern/47764.html">容易被忽视</a>： 当你需要更好的性能的时候，确保你使用 release 构建，而不是 debug 构建。
-通常给 Cargo 指定 <code>--release</code> 标志就可以做到。</p>
-<p>release 构建运行的通常比 debug 构建快 <em>很多</em>。
-比 debug 构建快 10-100 倍很正常。</p>
-<p>默认的是debug构建——
-如果你运行 <code>cargo build</code>，<code>cargo run</code>，<code>rustc</code>，并且不带其他选项，就会生成 debug 构建。
-debug 构建对调试很有用，但是并不优化。</p>
-<p>看看 <code>cargo build</code> 运行后输出的最后一行：</p>
+<p>单个最重要的构建配置选择很简单但<a href="https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5">容易忽视</a>：当你需要高性能时，请确保使用的是
+<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#release">release 构建</a>而非 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#dev">dev 构建</a>。这通常通过向 Cargo 指定 <code>--release</code> 标志来完成。</p>
+<p>Dev 构建是默认的。它们适合调试，但未进行优化。如果你运行 <code>cargo build</code> 或 <code>cargo run</code>，
+就会生成 dev 构建。（或者，不带额外选项运行 <code>rustc</code> 也会生成未优化的构建。）</p>
+<p>考虑以下 <code>cargo build</code> 运行的最终输出行。</p>
 <pre><code class="language-text">Finished dev [unoptimized + debuginfo] target(s) in 29.80s
 </code></pre>
-<p><code>[unoptimized + debuginfo]</code> 表示生成的是 debug 构建。
-编译后的代码会放在 <code>target/debug/</code> 目录中。
-<code>cargo run</code> 会运行 debug 构建的程序。</p>
-<p>release 构建相较于 debug 构建，会有更多优化。
-也会忽略一些检查，例如调试断言(debug assertions)，以及整数溢出检查。
-可以用 <code>cargo build --release</code>，<code>cargo run --release</code>，<code>rustc -O</code> 生成。
-（另外，<code>rustc</code> 有许多其他优化选项，例如 <code>-C opt-level</code>。）
-因为额外的优化，这通常会比 debug 构建花费更长的时间。</p>
-<p>看看 <code>cargo build --release</code> 运行后输出的最后一行：</p>
+<p>此输出表明已生成 dev 构建。编译后的代码将放置在 <code>target/debug/</code> 目录中。<code>cargo run</code>
+将运行 dev 构建。</p>
+<p>相比之下，release 构建经过了更多优化，省略了调试断言和整数溢出检查，并省略了调试信息。
+比 dev 构建快 10-100 倍是常见的！如果你运行 <code>cargo build --release</code> 或
+<code>cargo run --release</code>，就会生成 release 构建。（或者，<code>rustc</code> 有多个优化构建选项，
+如 <code>-O</code> 和 <code>-C opt-level</code>。）由于额外的优化，这通常比 dev 构建需要更长的时间。</p>
+<p>考虑以下 <code>cargo build --release</code> 运行的最终输出行。</p>
 <pre><code class="language-text">Finished release [optimized] target(s) in 1m 01s
 </code></pre>
-<p><code>[optimized]</code> 表示生成的是 release 构建。
-编译好的代码会放在 <code>target/release/</code> 目录中。
-<code>cargo run --release</code> 会运行 release 构建。</p>
-<p>如果想要进一步了解 debug 构建（使用 <code>dev</code> profile）和 release 构建（使用 <code>release</code> profile）之间的区别，可以参考 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile文档</a>。</p>
-<h2 id="链接时优化"><a class="header" href="#链接时优化">链接时优化</a></h2>
-<p>链接时优化 (Link-time optimization, LTO) 是一种适用于整个程序的优化技术，
-以增加构建时间为代价，可以提高 10%-20% 或更多的运行时性能，
-对于单个 Rust 程序，通常用编译时间换取运行性能是值得的。</p>
-<p>启用 LTO 最简单的方法是，向 <code>Cargo.toml</code> 中添加下列行，然后进行 release 构建。</p>
-<pre><code class="language-toml">[profile.release]
-lto = true
-</code></pre>
-<p>这样会启用 “重量级”(fat) LTO，会优化依赖图中的所有 crate。</p>
-<p>另外，在 <code>Cargo.toml</code> 中使用 <code>lto = &quot;thin&quot;</code> 则会启用 “轻量级”(thin) LTO——一种不那么激进的 LTO 形式，通常与 重量级 LTO 一样有效，但不会过多增加构建时间。</p>
-<p>你可以通过 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">Cargo LTO文档</a> 深入了解 <code>lto</code> 设置，以及如何对不同 profile 启用特定设置。</p>
-<h2 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h2>
-<p>Rust 编译器将 crate 拆分为多个 <a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#codegen-units">代码生成单元</a> 来并行化（同时加速）编译。
-然而，这会导致它错过一些可能的优化。
-如果你想要以更长的编译时间为代价，提升运行时性能，你可以将单元数设置为 1：</p>
+<p>此输出表明已生成 release 构建。编译后的代码将放置在 <code>target/release/</code> 目录中。
+<code>cargo run --release</code> 将运行 release 构建。</p>
+<p>有关 dev 构建（使用 <code>dev</code> profile）和 release 构建（使用 <code>release</code> profile）之间差异的
+更多详细信息，请参阅 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Cargo profile 文档</a>。</p>
+<p>Release 构建中使用的默认构建配置选项在编译时间、运行时速度和二进制体积等上述特征之间
+提供了良好的平衡。但有许多可能的调整，如下节所述。</p>
+<h2 id="最大化运行时速度"><a class="header" href="#最大化运行时速度">最大化运行时速度</a></h2>
+<p>以下构建配置选项主要旨在最大化运行时速度。其中一些还可能减小二进制体积。</p>
+<h3 id="codegen-units"><a class="header" href="#codegen-units">Codegen Units</a></h3>
+<p>Rust 编译器将 crate 拆分为多个 <a href="https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units">codegen units</a> 以并行化（从而加快）编译。然而，这
+可能导致编译器错过一些潜在的优化。通过将单元数设置为 1，你可能能够提高运行时速度并
+减小二进制体积，但代价是增加编译时间。将以下行添加到 <code>Cargo.toml</code> 文件中：</p>
 <pre><code class="language-toml">[profile.release]
 codegen-units = 1
 </code></pre>
-<p><a href="https://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>示例</strong></a>.</p>
-<p>请注意，代码生成单元的数量是启发式的，以至于更小的数量可能导致实际产生的程序变慢。</p>
-<h2 id="使用-cpu-特定的指令"><a class="header" href="#使用-cpu-特定的指令">使用 CPU 特定的指令</a></h2>
-<p>如果你并不在意你的二进制程序代码在更老（或其他类型的）处理器上的兼容性，你可以告诉编译器生成指定的 <a href="https://doc.rust-lang.org/1.41.1/rustc/codegen-options/index.html#target-cpu">特定 CPU 架构</a> 上的，最新（并且可能最快）的指令。</p>
-<p>例如，如果你向 rustc 传递 <code>-C target-cpu=native</code>，他会为你当前 CPU 使用最合适的指令：</p>
-<pre><code class="language-bash">RUSTFLAGS=&quot;-C target-cpu=native&quot; cargo build --release
-</code></pre>
-<p>这可能产生很大的影响，特别是当编译器发现了你代码中进行矢量化的机会。</p>
-<p>截止 2022 年 7 月，在 M1 Macs 上使用 <code>-C target-cpu=native</code> 会有，没有检测到所有 CPU 特性的 <a href="https://github.com/rust-lang/rust/issues/93889">问题</a>。
-你可以使用 <code>-C target-cpu=apple-m1</code> 作为替代。</p>
-<p>如果你不确定 <code>-C target-cpu=native</code> 是否工作最佳，可以比较 <code>rustc --print cfg</code> 和 <code>rustc --print cfg -C target-cpu=native</code> 的输出，来检查后者是否正确检测 CPU 特性。
-如果没有，你可以使用 <code>-C target-feature</code> 来指定特定特性。</p>
-<h2 id="panic-时-abort"><a class="header" href="#panic-时-abort"><code>panic!</code> 时 abort</a></h2>
-<p>如果你不需要捕获或展开 panic，你可以告诉编译器在 panic 时简单的 abort。
-这可以减少二进制文件体积，略微增加性能：</p>
+<!-- Using `https` for this link triggers "potential security risk" warnings due
+to a certificate problem. -->
+<p><a href="http://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440"><strong>示例 2</strong></a>.</p>
+<h3 id="链接时优化"><a class="header" href="#链接时优化">链接时优化</a></h3>
+<p><a href="https://doc.rust-lang.org/cargo/reference/profiles.html#lto">链接时优化</a>（LTO）是一种全程序优化技术，可以将运行时速度提高 10-20% 或更多，同时
+还能减小二进制体积，但代价是编译时间变长。它有几种形式。</p>
+<p>第一种形式的 LTO 是 <em>thin local LTO</em>，一种轻量级的 LTO 形式。默认情况下，编译器对任何
+涉及非零优化级别的构建都使用此方式。这包括 release 构建。要显式请求此级别的 LTO，
+请在 <code>Cargo.toml</code> 文件中添加以下行：</p>
 <pre><code class="language-toml">[profile.release]
-panic = &quot;abort&quot;
+lto = false
 </code></pre>
-<h2 id="profile-guided-optimization"><a class="header" href="#profile-guided-optimization">Profile-guided Optimization</a></h2>
-<p>Profile-guided optimization (PGO)是一种编译模型——
-编译你的程序，用采样数据运行并收集性能分析数据，然后基于这些数据引导改程序的下次编译。
-<a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>Example</strong></a>.</p>
-<p>这是一种较高级的技术，需要花一些精力设置，但有时值得这样做。
-详见<a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO 文档</a>。</p>
+<p>第二种形式的 LTO 是 <em>thin LTO</em>，它更激进一些，很可能提高运行时速度并减小二进制体积，
+同时增加编译时间。在 <code>Cargo.toml</code> 中使用 <code>lto = "thin"</code> 来启用它。</p>
+<p>第三种形式的 LTO 是 <em>fat LTO</em>，它更加激进，可能进一步提高性能并进一步减小二进制体积
+（但<a href="https://github.com/rust-lang/rust/pull/103453">并非总是如此</a>），同时再次增加构建时间。在 <code>Cargo.toml</code> 中使用 <code>lto = "fat"</code> 来
+启用它。</p>
+<p>最后，可以完全禁用 LTO，这可能会降低运行时速度并增加二进制体积，但会减少编译时间。
+在 <code>Cargo.toml</code> 中使用 <code>lto = "off"</code>。请注意，这与 <code>lto = false</code> 选项不同，如上所述，
+后者保持 thin local LTO 启用。</p>
+<h3 id="替代分配器"><a class="header" href="#替代分配器">替代分配器</a></h3>
+<p>可以用替代分配器替换 Rust 程序使用的默认（系统）堆分配器。确切效果取决于具体程序和
+所选的替代分配器，但在实践中已经看到了运行时速度的大幅提升和内存使用量的大幅减少。
+效果也会因平台而异，因为每个平台的系统分配器都有自己的优点和缺点。使用替代分配器也
+可能增加二进制体积和编译时间。</p>
+<h4 id="jemalloc"><a class="header" href="#jemalloc">jemalloc</a></h4>
+<p>Linux 和 Mac 上一个流行的替代分配器是 <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>，可通过 <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate
+使用。要使用它，请在 <code>Cargo.toml</code> 文件中添加依赖：</p>
+<pre><code class="language-toml">[dependencies]
+tikv-jemallocator = "0.5"
+</code></pre>
+<p>然后在 Rust 代码中添加以下内容，例如在 <code>src/main.rs</code> 的顶部：</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
+<p>此外，在 Linux 上，jemalloc 可以配置为使用<a href="https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html">透明大页</a>（THP）。这可以进一步加速
+程序，但可能会以更高的内存使用为代价。</p>
+<p>通过在构建程序之前适当设置 <code>MALLOC_CONF</code> 环境变量（或可能 <a href="https://github.com/tikv/jemallocator/issues/65"><code>_RJEM_MALLOC_CONF</code></a>）
+来实现，例如：</p>
+<pre><code class="language-bash">MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
+</code></pre>
+<p>运行编译后程序的系统也必须配置为支持 THP。有关更多详细信息，请参阅<a href="https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html">这篇博客文章</a>。</p>
+<h4 id="mimalloc"><a class="header" href="#mimalloc">mimalloc</a></h4>
+<p>另一个适用于许多平台的替代分配器是 <a href="https://github.com/microsoft/mimalloc">mimalloc</a>，可通过 <a href="https://crates.io/crates/mimalloc"><code>mimalloc</code></a> crate 使用。
+要使用它，请在 <code>Cargo.toml</code> 文件中添加依赖：</p>
+<pre><code class="language-toml">[dependencies]
+mimalloc = "0.1"
+</code></pre>
+<p>然后在 Rust 代码中添加以下内容，例如在 <code>src/main.rs</code> 的顶部：</p>
+<pre><code class="language-rust ignore">#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;</code></pre>
+<h3 id="cpu-特定指令"><a class="header" href="#cpu-特定指令">CPU 特定指令</a></h3>
+<p>如果你不关心二进制文件在较旧（或其他类型）处理器上的兼容性，可以告诉编译器生成特定于
+<a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu">某个 CPU 架构</a>的最新（且可能最快的）指令，例如针对 x86-64 CPU 的 AVX SIMD 指令。</p>
+<p>要从命令行请求这些指令，请使用 <code>-C target-cpu=native</code> 标志。例如：</p>
+<pre><code class="language-bash">RUSTFLAGS="-C target-cpu=native" cargo build --release
+</code></pre>
+<p>或者，从 <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> 文件（适用于一个或多个项目）请求这些指令，添加以下行：</p>
+<pre><code class="language-toml">[build]
+rustflags = ["-C", "target-cpu=native"]
+</code></pre>
+<p>这可以提高运行时速度，特别是当编译器在你的代码中发现向量化机会时。</p>
+<p>如果你不确定 <code>-C target-cpu=native</code> 是否在最佳地工作，请比较 <code>rustc --print cfg</code>
+和 <code>rustc --print cfg -C target-cpu=native</code> 的输出，以查看后者是否正确检测到了
+CPU 特性。如果没有，你可以使用 <code>-C target-feature</code> 来针对特定特性。</p>
+<h3 id="配置文件引导优化"><a class="header" href="#配置文件引导优化">配置文件引导优化</a></h3>
+<p>配置文件引导优化（PGO）是一种编译模型，你先编译程序，在示例数据上运行它并收集分析
+数据，然后使用这些分析数据来指导程序的第二次编译。这可以将运行时速度提高 10% 或更多。
+<a href="https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/96978"><strong>示例 2</strong></a>.</p>
+<p>这是一项高级技术，需要付出一些努力来设置，但在某些情况下是值得的。有关详细信息，
+请参阅 <a href="https://doc.rust-lang.org/rustc/profile-guided-optimization.html">rustc PGO 文档</a>。此外，<a href="https://github.com/Kobzol/cargo-pgo"><code>cargo-pgo</code></a> 命令使使用 PGO（以及类似的 <a href="https://github.com/llvm/llvm-project/tree/main/bolt">BOLT</a>）
+来优化 Rust 二进制文件变得更加容易。</p>
+<p>遗憾的是，PGO 不支持托管在 crates.io 上并通过 <code>cargo install</code> 分发的二进制文件，
+这限制了它的可用性。</p>
+<h2 id="最小化二进制体积"><a class="header" href="#最小化二进制体积">最小化二进制体积</a></h2>
+<p>以下构建配置选项主要旨在最小化二进制体积。它们对运行时速度的影响各不相同。</p>
+<h3 id="优化级别"><a class="header" href="#优化级别">优化级别</a></h3>
+<p>你可以请求旨在最小化二进制体积的<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level">优化级别</a>，方法是在 <code>Cargo.toml</code> 文件中添加以下行：</p>
+<pre><code class="language-toml">[profile.release]
+opt-level = "z"
+</code></pre>
+<p>这也可能降低运行时速度。</p>
+<p>替代方案是 <code>opt-level = "s"</code>，它对最小化二进制体积的追求不那么激进。与 <code>opt-level = "z"</code>
+相比，它允许<a href="https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold">稍多一些的内联</a>以及循环的向量化。</p>
+<h3 id="panic-时中止"><a class="header" href="#panic-时中止">panic 时中止</a></h3>
+<p>如果你不需要在 panic 时展开堆栈，例如因为你的程序不使用 <a href="https://doc.rust-lang.org/std/panic/fn.catch_unwind.html"><code>catch_unwind</code></a>，你可以
+告诉编译器在 panic 时简单地<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#panic">中止</a>。panic 时，你的程序仍会产生回溯信息。</p>
+<p>这可能会略微减小二进制体积、略微提高运行时速度，甚至可能略微减少编译时间。在
+<code>Cargo.toml</code> 文件中添加以下行：</p>
+<pre><code class="language-toml">[profile.release]
+panic = "abort"
+</code></pre>
+<h3 id="剥离符号"><a class="header" href="#剥离符号">剥离符号</a></h3>
+<p>你可以通过向 <code>Cargo.toml</code> 添加以下行来告诉编译器<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#strip">剥离</a> release 构建中的符号：</p>
+<pre><code class="language-toml">[profile.release]
+strip = "symbols"
+</code></pre>
+<p><a href="https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142"><strong>示例</strong></a>.</p>
+<p>然而，剥离符号可能会使编译后的程序更难调试和分析。例如，如果剥离后的程序 panic，
+生成的回溯信息可能比正常情况下包含更少的有用信息。确切效果取决于平台。</p>
+<p>Release 构建不需要剥离调试信息。默认情况下，本地 release 构建不会生成调试信息，
+并且标准库的调试信息在 release 构建中已自动剥离<a href="https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default">自 Rust 1.77 起</a>。</p>
+<h3 id="其他想法"><a class="header" href="#其他想法">其他想法</a></h3>
+<p>有关更高级的二进制体积最小化技术，请查阅优秀的 <a href="https://github.com/johnthagen/min-sized-rust"><code>min-sized-rust</code></a> 仓库中的全面文档。</p>
+<h2 id="最小化编译时间"><a class="header" href="#最小化编译时间">最小化编译时间</a></h2>
+<p>以下构建配置选项主要旨在最小化编译时间。</p>
+<h3 id="链接"><a class="header" href="#链接">链接</a></h3>
+<p>编译时间的很大一部分实际上是链接时间，特别是在小改动后重新构建程序时。在某些平台上，
+可以选择比默认链接器更快的链接器。</p>
+<p>一个选项是 <a href="https://lld.llvm.org/">lld</a>，可在 Linux 和 Windows 上使用。lld 在 Linux 上已经是默认链接器
+<a href="https://blog.rust-lang.org/2025/09/01/rust-lld-on-1.90.0-stable/">自 Rust 1.90 起</a>。在 Windows 上还不是默认的，但它应该适用于大多数用例。</p>
+<p>要从命令行指定 lld，请使用 <code>-C link-arg=-fuse-ld=lld</code> 标志。例如：</p>
+<pre><code class="language-bash">RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
+</code></pre>
+<p>或者，从 <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> 文件（适用于一个或多个项目）指定 lld，添加以下行：</p>
+<pre><code class="language-toml">[build]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+</code></pre>
+<p>有一个 <a href="https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211">GitHub Issue</a> 在跟踪对 lld 的全面支持。</p>
+<p>另一个选项是 <a href="https://github.com/rui314/mold">mold</a>，目前在 Linux 上可用。只需将上述指令中的 <code>lld</code> 替换为 <code>mold</code>。
+mold 通常比 lld 更快。
+<a href="https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html"><strong>示例</strong></a>.
+它也更新，可能并非在所有情况下都有效。</p>
+<p>最后一个选项是 <a href="https://github.com/davidlattimore/wild">wild</a>，目前仅适用于 Linux。它可能比 mold 还快，但不够成熟。</p>
+<p>在 Mac 上，不需要替代链接器，因为系统链接器已经很快。</p>
+<p>与本章中的其他选项不同，选择另一个链接器没有任何权衡。只要链接器能正确地用于你的程序
+（除非你在做不寻常的事情，否则很可能是这样），替代链接器可以显著加快速度，没有任何
+缺点。</p>
+<h3 id="禁用调试信息生成"><a class="header" href="#禁用调试信息生成">禁用调试信息生成</a></h3>
+<p>虽然 release 构建提供了最佳性能，但许多人在开发时使用 dev 构建，因为它们构建更快。
+如果你使用 dev 构建但不经常使用调试器，请考虑禁用调试信息。这可以显著改善 dev 构建
+时间，最多可提高 20-40%。
+<a href="https://kobzol.github.io/rust/rustc/2025/05/20/disable-debuginfo-to-improve-rust-compile-times.html"><strong>示例</strong></a></p>
+<p>要禁用调试信息生成，请将以下行添加到 <code>Cargo.toml</code> 文件中：</p>
+<pre><code class="language-toml">[profile.dev]
+debug = false
+</code></pre>
+<p>请注意，这意味着堆栈跟踪将不包含行信息。如果你希望保留行信息，但不需要完整的调试器
+信息，可以使用 <code>debug = "line-tables-only"</code> 代替，这仍然能带来大部分编译时间收益。</p>
+<h3 id="实验性并行前端"><a class="header" href="#实验性并行前端">实验性并行前端</a></h3>
+<p>如果你使用 nightly Rust，可以启用实验性的<a href="https://blog.rust-lang.org/2023/11/09/parallel-rustc.html">并行前端</a>。它可能会以减少编译时内存使用为
+代价来缩短编译时间。它不会影响生成代码的质量。</p>
+<p>你可以通过将 <code>-Zthreads=N</code> 添加到 RUSTFLAGS 来实现，例如：</p>
+<pre><code class="language-bash">RUSTFLAGS="-Zthreads=8" cargo build --release
+</code></pre>
+<p>或者，从 <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> 文件（适用于一个或多个项目）启用并行前端，添加以下行：</p>
+<pre><code class="language-toml">[build]
+rustflags = ["-Z", "threads=8"]
+</code></pre>
+<p>除了 <code>8</code> 之外的其他值也是可能的，但 <code>8</code> 往往是能给出最佳结果的值。</p>
+<p>在最好的情况下，实验性并行前端可以将编译时间减少多达 50%。但效果差异很大，取决于
+代码的特征及其构建配置，对于某些程序，编译时间没有改善。</p>
+<h3 id="cranelift-codegen-后端"><a class="header" href="#cranelift-codegen-后端">Cranelift Codegen 后端</a></h3>
+<p>如果你使用 nightly Rust，可以在<a href="https://github.com/rust-lang/rustc_codegen_cranelift#platform-support">某些平台</a>上启用 Cranelift codegen 后端。它可能会以
+降低生成代码质量为代价来减少编译时间，因此建议用于 dev 构建而非 release 构建。</p>
+<p>首先，使用以下 <code>rustup</code> 命令安装后端：</p>
+<pre><code class="language-bash">rustup component add rustc-codegen-cranelift-preview --toolchain nightly
+</code></pre>
+<p>要从命令行选择 Cranelift，请使用 <code>-Zcodegen-backend=cranelift</code> 标志。例如：</p>
+<pre><code class="language-bash">RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
+</code></pre>
+<p>或者，从 <a href="https://doc.rust-lang.org/cargo/reference/config.html"><code>config.toml</code></a> 文件（适用于一个或多个项目）指定 Cranelift，添加以下行：</p>
+<pre><code class="language-toml">[unstable]
+codegen-backend = true
+
+[profile.dev]
+codegen-backend = "cranelift"
+</code></pre>
+<p>有关更多信息，请参阅 <a href="https://github.com/rust-lang/rustc_codegen_cranelift">Cranelift 文档</a>。</p>
+<h2 id="自定义-profile"><a class="header" href="#自定义-profile">自定义 Profile</a></h2>
+<p>除了 <code>dev</code> 和 <code>release</code> profile 之外，Cargo 还支持<a href="https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles">自定义 profile</a>。例如，如果你发现
+dev 构建的运行时速度不够，而 release 构建的编译时间对于日常开发来说太慢，那么创建
+一个介于 <code>dev</code> 和 <code>release</code> 之间的自定义 profile 可能会很有用。</p>
+<h2 id="总结"><a class="header" href="#总结">总结</a></h2>
+<p>构建配置涉及许多选择。以下要点将上述信息总结为一些建议。</p>
+<ul>
+<li>如果你想最大化运行时速度，请考虑以下所有选项：
+<code>codegen-units = 1</code>、<code>lto = "fat"</code>、替代分配器和 <code>panic = "abort"</code>。</li>
+<li>如果你想最小化二进制体积，请考虑 <code>opt-level = "z"</code>、
+<code>codegen-units = 1</code>、<code>lto = "fat"</code>、<code>panic = "abort"</code> 和 <code>strip = "symbols"</code>。</li>
+<li>无论哪种情况，如果不需要广泛的架构支持，请考虑 <code>-C target-cpu=native</code>；如果
+与你的分发机制兼容，请考虑 <code>cargo-pgo</code>。</li>
+<li>如果你所在的平台支持更快的链接器，请始终使用它，因为这样做没有任何缺点。</li>
+<li>如果你需要有关这些选择的额外帮助，请使用 <code>cargo-wizard</code>。</li>
+<li>对所有更改逐一进行基准测试，以确保它们具有预期的效果。</li>
+</ul>
+<p>最后，<a href="https://github.com/rust-lang/rust/issues/103595">这个 issue</a> 跟踪了 Rust 编译器自身构建配置的演变。Rust 编译器的构建系统比
+大多数 Rust 程序更奇特、更复杂。尽管如此，这个 issue 可能有助于说明如何将构建配置
+选择应用于大型程序。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="benchmarking.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next" href="linting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="next prefetch" href="linting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -240,16 +433,21 @@ panic = &quot;abort&quot;
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="benchmarking.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next" href="linting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="next prefetch" href="linting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -258,15 +456,16 @@ panic = &quot;abort&quot;
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>

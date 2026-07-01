@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="zh" class="sidebar-visible no-js rust">
+<html lang="zh" class="rust sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -7,43 +7,57 @@
 
 
         <!-- Custom HTML head -->
-        
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-4c45df65.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-75c1b2e0.js"></script>
     </head>
     <body>
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
-        </script>
-
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -57,58 +71,69 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
-            html.classList.remove('no-js')
+            const html = document.documentElement;
             html.classList.remove('rust')
             html.classList.add(theme);
-            html.classList.add('js');
+            html.classList.add("js");
         </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
-            var sidebar = null;
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">标题</a></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><a href="benchmarking.html"><strong aria-hidden="true">2.</strong> 基准测试</a></li><li class="chapter-item expanded "><a href="build-configuration.html"><strong aria-hidden="true">3.</strong> 编译配置</a></li><li class="chapter-item expanded "><a href="linting.html"><strong aria-hidden="true">4.</strong> Linting</a></li><li class="chapter-item expanded "><a href="profiling.html"><strong aria-hidden="true">5.</strong> 性能分析</a></li><li class="chapter-item expanded "><a href="inlining.html"><strong aria-hidden="true">6.</strong> 内联优化</a></li><li class="chapter-item expanded "><a href="hashing.html"><strong aria-hidden="true">7.</strong> 散列</a></li><li class="chapter-item expanded "><a href="heap-allocations.html" class="active"><strong aria-hidden="true">8.</strong> 堆分配</a></li><li class="chapter-item expanded "><a href="type-sizes.html"><strong aria-hidden="true">9.</strong> 类型大小</a></li><li class="chapter-item expanded "><a href="standard-library-types.html"><strong aria-hidden="true">10.</strong> 标准库类型</a></li><li class="chapter-item expanded "><a href="iterators.html"><strong aria-hidden="true">11.</strong> 迭代器</a></li><li class="chapter-item expanded "><a href="io.html"><strong aria-hidden="true">12.</strong> I/O</a></li><li class="chapter-item expanded "><a href="logging-and-debugging.html"><strong aria-hidden="true">13.</strong> 日志与调试</a></li><li class="chapter-item expanded "><a href="wrapper-types.html"><strong aria-hidden="true">14.</strong> 包装类型</a></li><li class="chapter-item expanded "><a href="machine-code.html"><strong aria-hidden="true">15.</strong> 机器代码</a></li><li class="chapter-item expanded "><a href="parallelism.html"><strong aria-hidden="true">16.</strong> 并发</a></li><li class="chapter-item expanded "><a href="binary-size.html"><strong aria-hidden="true">17.</strong> 二进制大小</a></li><li class="chapter-item expanded "><a href="general-tips.html"><strong aria-hidden="true">18.</strong> 通用技巧</a></li><li class="chapter-item expanded "><a href="compile-times.html"><strong aria-hidden="true">19.</strong> 编译时间</a></li></ol>
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
-                        </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -116,50 +141,58 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/poly000/perf-book-zh" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                        <a href="https://github.com/mokurin000/perf-book-zh" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/mokurin000/perf-book-zh/edit/master/src/heap-allocations.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="堆分配"><a class="header" href="#堆分配">堆分配</a></h1>
-<p>堆分配不总是昂贵的，具体情况取决于使用了哪种分配器。但通常每次分配/释放都涉及获取全局锁，
-做一些复杂的数据结构操作，甚至可能需要执行一次系统调用。小的分配也不一定比大的分配廉价。
-我们应该知道哪些Rust数据结构（的哪些操作）可能导致堆分配，因为消除堆分配可以很大提升性能。</p>
-<p><a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust Container Cheat Sheet</a>有可视化的Rust常用类型，是对接下来的章节很好的补充。</p>
+<p>堆分配的成本中等偏高。具体细节取决于所使用的分配器，但每次分配（和释放）通常涉及
+获取全局锁、执行一些非平凡的数据结构操作，以及可能执行系统调用。小分配不一定比大
+分配更便宜。值得了解哪些 Rust 数据结构和操作会引起分配，因为避免它们可以极大地
+提升性能。</p>
+<p><a href="https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/">Rust 容器速查表</a>提供了常见 Rust 类型的可视化展示，是以下各节的优秀伴侣。</p>
 <h2 id="性能分析"><a class="header" href="#性能分析">性能分析</a></h2>
-<p>如果性能分析显示 <code>malloc</code>，<code>free</code>以及相关的函数为热点，你可能需要尝试减少分配率，或者换用其他分配器。</p>
-<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> is an excellent profiler to use when reducing allocation rates. It works
-on Linux and some other Unixes. It precisely identifies hot allocation
-sites and their allocation rates. Exact results will vary, but experience with
-rustc has shown that reducing allocation rates by 10 allocations per million
-instructions executed can have measurable performance improvements (e.g. ~1%).</p>
-<p>Here is some example output from DHAT.</p>
+<p>如果通用分析器显示 <code>malloc</code>、<code>free</code> 及相关函数是热点，那么尝试降低分配率和/或使用
+替代分配器可能是值得的。</p>
+<p><a href="https://www.valgrind.org/docs/manual/dh-manual.html">DHAT</a> 是在降低分配率时使用的优秀分析器。它适用于 Linux 和其他一些 Unix 系统。
+它精确定位热点分配位置及其分配率。确切结果会有所不同，但 rustc 的经验表明，每百万
+条指令减少 10 次分配可以带来可测量的性能改进（例如约 1%）。</p>
+<p>以下是 DHAT 的一些示例输出。</p>
 <pre><code class="language-text">AP 1.1/25 (2 children) {
   Total:     54,533,440 bytes (4.02%, 2,714.28/Minstr) in 458,839 blocks (7.72%, 22.84/Minstr), avg size 118.85 bytes, avg lifetime 1,127,259,403.64 instrs (5.61% of program duration)
   At t-gmax: 0 bytes (0%) in 0 blocks (0%), avg size 0 bytes
@@ -178,238 +211,223 @@ instructions executed can have measurable performance improvements (e.g. ~1%).</
   }
 }
 </code></pre>
-<p>It is beyond the scope of this book to describe everything in this example, but
-it should be clear that DHAT gives a wealth of information about allocations,
-such as where and how often they happen, how big they are, how long they live
-for, and how often they are accessed.</p>
+<p>描述此示例中的所有内容超出了本书的范围，但应该清楚的是，DHAT 提供了关于分配的丰富
+信息，例如分配发生的位置和频率、分配的大小、存活时间以及访问频率。</p>
 <h2 id="box"><a class="header" href="#box"><code>Box</code></a></h2>
-<p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> is the simplest heap-allocated type. A <code>Box&lt;T&gt;</code> value is a <code>T</code> value
-that is allocated on the heap.</p>
-<p>It is sometimes worth boxing one or more fields in a struct or enum fields to
-make a type smaller. (See the <a href="type-sizes.html">Type Sizes</a> chapter for more
-about this.)</p>
-<p>Other than that, <code>Box</code> is straightforward and does not offer much scope for
-optimizations.</p>
+<p><a href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box</code></a> 是最简单的堆分配类型。<code>Box&lt;T&gt;</code> 值是一个分配在堆上的 <code>T</code> 值。</p>
+<p>有时值得将一个 struct 或 enum 中的一个或多个字段装箱，以使类型更小。（有关更多信息，
+请参阅<a href="type-sizes.html">类型大小</a>章节。）</p>
+<p>除此之外，<code>Box</code> 很直接，没有太多优化空间。</p>
 <h2 id="rcarc"><a class="header" href="#rcarc"><code>Rc</code>/<code>Arc</code></a></h2>
-<p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> are similar to <code>Box</code>, but the value on the heap is accompanied by
-two reference counts. They allow value sharing, which can be an effective way
-to reduce memory usage.</p>
-<p>However, if used for values that are rarely shared, they can increase allocation
-rates by heap allocating values that might otherwise not be heap-allocated.
-<a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>Example</strong></a>.</p>
-<p>Unlike <code>Box</code>, calling <code>clone</code> on an <code>Rc</code>/<code>Arc</code> value does not involve an
-allocation. Instead, it merely increments a reference count.</p>
+<p><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc</code></a>/<a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> 类似于 <code>Box</code>，但堆上的值附带两个引用计数。它们允许值共享，
+这可以成为减少内存使用的有效方式。</p>
+<p>然而，如果用于很少共享的值，它们可能会通过堆分配那些原本不会堆分配的值来增加
+分配率。
+<a href="https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe"><strong>示例</strong></a>.</p>
+<p>与 <code>Box</code> 不同，对 <code>Rc</code>/<code>Arc</code> 值调用 <code>clone</code> 不涉及分配。相反，它只是增加
+引用计数。</p>
 <h2 id="vec"><a class="header" href="#vec"><code>Vec</code></a></h2>
-<p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> is a heap-allocated type with a great deal of scope for optimizing the
-number of allocations, and/or minimizing the amount of wasted space. To do this
-requires understanding how its elements are stored.</p>
-<p>A <code>Vec</code> contains three words: a length, a capacity, and a pointer. The pointer
-will point to heap-allocated memory if the capacity is nonzero and the element
-size is nonzero; otherwise, it will not point to allocated memory.</p>
-<p>Even if the <code>Vec</code> itself is not heap-allocated, the elements (if present and
-nonzero-sized) always will be. If nonzero-sized elements are present, the
-memory holding those elements may be larger than necessary, providing space for
-additional future elements. The number of elements present is the length, and
-the number of elements that could be held without reallocating is the capacity.</p>
-<p>When the vector needs to grow beyond its current capacity, the elements will be
-copied into a larger heap allocation, and the old heap allocation will be
-freed.</p>
-<h3 id="vec-growth"><a class="header" href="#vec-growth"><code>Vec</code> growth</a></h3>
-<p>A new, empty <code>Vec</code> created by the common means
-(<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
-or <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> or <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>) has a length and capacity of zero, and no
-heap allocation is required. If you repeatedly push individual elements onto
-the end of the <code>Vec</code>, it will periodically reallocate. The growth strategy is
-not specified, but at the time of writing it uses a quasi-doubling strategy
-resulting in the following capacities: 0, 4, 8, 16, 32, 64, and so on. (It
-skips directly from 0 to 4, instead of going via 1 and 2, because this <a href="https://github.com/rust-lang/rust/pull/72227">avoids
-many allocations</a> in practice.) As a vector grows, the frequency of
-reallocations will decrease exponentially, but the amount of possibly-wasted
-excess capacity will increase exponentially.</p>
-<p>This growth strategy is typical for growable data structures and reasonable in
-the general case, but if you know in advance the likely length of a vector you
-can often do better. If you have a hot vector allocation site (e.g. a hot
-<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push"><code>Vec::push</code></a> call), it is worth using <a href="https://doc.rust-lang.org/std/macro.eprintln.html"><code>eprintln!</code></a> to print the vector length
-at that site and then doing some post-processing (e.g. with <a href="https://github.com/nnethercote/counts/"><code>counts</code></a>) to
-determine the length distribution. For example, you might have many short
-vectors, or you might have a smaller number of very long vectors, and the best
-way to optimize the allocation site will vary accordingly.</p>
-<h3 id="short-vecs"><a class="header" href="#short-vecs">Short <code>Vec</code>s</a></h3>
-<p>If you have many short vectors, you can use the <code>SmallVec</code> type from the
-<a href="https://crates.io/crates/smallvec"><code>smallvec</code></a> crate. <code>SmallVec&lt;[T; N]&gt;</code> is a drop-in replacement for <code>Vec</code> that
-can store <code>N</code> elements within the <code>SmallVec</code> itself, and then switches to a
-heap allocation if the number of elements exceeds that. (Note also that
-<code>vec![]</code> literals must be replaced with <code>smallvec![]</code> literals.)
-<a href="https://github.com/rust-lang/rust/pull/50565/commits/78262e700dc6a7b57e376742f344e80115d2d3f2"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/55383/commits/526dc1421b48e3ee8357d58d997e7a0f4bb26915"><strong>Example 2</strong></a>.</p>
-<p><code>SmallVec</code> reliably reduces the allocation rate when used appropriately, but
-its use does not guarantee improved performance. It is slightly slower than
-<code>Vec</code> for normal operations because it must always check if the elements are
-heap-allocated or not. Also, If <code>N</code> is high or <code>T</code> is large, then the
-<code>SmallVec&lt;[T; N]&gt;</code> itself can be larger than <code>Vec&lt;T&gt;</code>, and copying of
-<code>SmallVec</code> values will be slower. As always, benchmarking is required to
-confirm that an optimization is effective.</p>
-<p>If you have many short vectors <em>and</em> you precisely know their maximum length,
-<code>ArrayVec</code> from the <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate is a better choice than <code>SmallVec</code>. It
-does not require the fallback to heap allocation, which makes it a little
-faster.
-<a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>Example</strong></a>.</p>
-<h3 id="longer-vecs"><a class="header" href="#longer-vecs">Longer <code>Vec</code>s</a></h3>
-<p>If you know the minimum or exact size of a vector, you can reserve a specific
-capacity with <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a>, or
-<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a>. For example, if you know a vector will grow to have at
-least 20 elements, these functions can immediately provide a vector with a
-capacity of at least 20 using a single allocation, whereas pushing the items
-one at a time would result in four allocations (for capacities of 4, 8, 16, and
-32).
-<a href="https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681"><strong>Example</strong></a>.</p>
-<p>If you know the maximum length of a vector, the above functions also let you
-not allocate excess space unnecessarily. Similarly, <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> can be
-used to minimize wasted space, but note that it may cause a reallocation.</p>
+<p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html"><code>Vec</code></a> 是一个堆分配的类型，在优化分配数量和/或最小化浪费的空间方面有很大的空间。
+要做到这一点，需要理解其元素是如何存储的。</p>
+<p>一个 <code>Vec</code> 包含三个字段：长度、容量和指针。如果容量非零且元素大小非零，指针将指向
+堆分配的内存；否则，它将不指向已分配的内存。</p>
+<p>即使 <code>Vec</code> 本身不是堆分配的，其元素（如果存在且大小非零）始终是堆分配的。如果存在
+大小非零的元素，存储这些元素的内存可能大于实际需要，为未来的额外元素提供空间。
+存在的元素数量是长度，而无需重新分配即可容纳的元素数量是容量。</p>
+<p>当向量需要增长超过当前容量时，元素将被复制到一个更大的堆分配中，旧的堆分配将被释放。</p>
+<h3 id="vec-增长"><a class="header" href="#vec-增长"><code>Vec</code> 增长</a></h3>
+<p>通过常见方式（<a href="https://doc.rust-lang.org/std/macro.vec.html"><code>vec![]</code></a>
+或 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new"><code>Vec::new</code></a> 或 <a href="https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default"><code>Vec::default</code></a>）创建的新空 <code>Vec</code> 的长度和容量均为零，
+不需要堆分配。如果你反复将单个元素推入 <code>Vec</code> 的末尾，它将定期重新分配。增长策略
+未指定，但在撰写本文时，它使用一种准倍增策略，导致以下容量：0、4、8、16、32、64
+等等。（它直接从 0 跳到 4，而不是经过 1 和 2，因为这在实践中<a href="https://github.com/rust-lang/rust/pull/72227">避免了许多分配</a>。）
+随着向量的增长，重新分配的频率将呈指数级下降，但可能浪费的额外容量将呈指数级增加。</p>
+<p>这种增长策略对于可增长的数据结构是典型的，在一般情况下是合理的，但如果你预先知道
+向量的大致长度，通常可以做得更好。如果你有一个热门的向量分配点（例如热门的
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push"><code>Vec::push</code></a> 调用），值得使用 <a href="https://doc.rust-lang.org/std/macro.eprintln.html"><code>eprintln!</code></a> 打印该点的向量长度，然后进行一些
+后处理（例如使用 <a href="https://github.com/nnethercote/counts/"><code>counts</code></a>）来确定长度分布。例如，你可能有许多短向量，或者数量
+较少但非常长的向量，优化分配点的最佳方式会相应变化。</p>
+<h3 id="短-vec"><a class="header" href="#短-vec">短 <code>Vec</code></a></h3>
+<p>如果你有许多短向量，可以使用 <a href="https://crates.io/crates/smallvec"><code>smallvec</code></a> crate 中的 <code>SmallVec</code> 类型。
+<code>SmallVec&lt;[T; N]&gt;</code> 是 <code>Vec</code> 的直接替代品，它可以在 <code>SmallVec</code> 自身内部存储 <code>N</code> 个
+元素，然后在元素数量超过该值时切换到堆分配。（另请注意，<code>vec![]</code> 字面量必须替换为
+<code>smallvec![]</code> 字面量。）
+<a href="https://github.com/rust-lang/rust/pull/50565/commits/78262e700dc6a7b57e376742f344e80115d2d3f2"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/55383/commits/526dc1421b48e3ee8357d58d997e7a0f4bb26915"><strong>示例 2</strong></a>.</p>
+<p><code>SmallVec</code> 在适当使用时能可靠地降低分配率，但使用它并不能保证性能提升。对于正常操作，
+它比 <code>Vec</code> 稍慢，因为它必须始终检查元素是否在堆上分配。此外，如果 <code>N</code> 较大或 <code>T</code> 较大，
+则 <code>SmallVec&lt;[T; N]&gt;</code> 本身可能比 <code>Vec&lt;T&gt;</code> 更大，并且复制 <code>SmallVec</code> 值会更慢。
+与往常一样，需要进行基准测试来确认优化是否有效。</p>
+<p>如果你有许多短向量<em>并且</em>精确知道它们的最大长度，那么来自 <a href="https://crates.io/crates/arrayvec"><code>arrayvec</code></a> crate 的
+<code>ArrayVec</code> 是比 <code>SmallVec</code> 更好的选择。它不需要回退到堆分配，这使其稍微快一些。
+<a href="https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e"><strong>示例</strong></a>.</p>
+<h3 id="更长的-vec"><a class="header" href="#更长的-vec">更长的 <code>Vec</code></a></h3>
+<p>如果你知道向量的最小或确切大小，可以使用 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity"><code>Vec::with_capacity</code></a>、<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a> 或
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact"><code>Vec::reserve_exact</code></a> 预留特定容量。例如，如果你知道向量将增长到至少 20 个元素，
+这些函数可以通过一次分配立即提供一个容量至少为 20 的向量，而逐个推送元素将导致四次
+分配（容量分别为 4、8、16 和 32）。
+<a href="https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681"><strong>示例</strong></a>.</p>
+<p>如果你知道向量的最大长度，上述函数还可以让你避免不必要地分配多余空间。类似地，
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit"><code>Vec::shrink_to_fit</code></a> 可用于最小化浪费的空间，但请注意它可能导致重新分配。</p>
 <h2 id="string"><a class="header" href="#string"><code>String</code></a></h2>
-<p>A <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> contains heap-allocated bytes. The representation and operation of
-<code>String</code> are very similar to that of <code>Vec&lt;u8&gt;</code>. Many <code>Vec</code> methods relating to
-growth and capacity have equivalents for <code>String</code>, such as
-<a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>.</p>
-<p>The <code>SmallString</code> type from the <a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate is similar to the <code>SmallVec</code>
-type.</p>
-<p>The <code>String</code> type from the <a href="https://crates.io/crates/smartstring"><code>smartstring</code></a> crate is a drop-in replacement for
-<code>String</code> that avoids heap allocations for strings with less than three words’
-worth of characters. On 64-bit platforms, this is any string that is less than
-24 bytes, which includes all strings containing 23 or fewer ASCII characters.
-<a href="https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c"><strong>Example</strong></a>.</p>
-<p>Note that the <code>format!</code> macro produces a <code>String</code>, which means it performs an
-allocation. If you can avoid a <code>format!</code> call by using a string literal, that
-will avoid this allocation.
-<a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>Example</strong></a>.
-<a href="https://doc.rust-lang.org/std/macro.format_args.html"><code>std::format_args</code></a> and/or the <a href="https://crates.io/crates/lazy_format"><code>lazy_format</code></a> crate may help with this.</p>
-<h2 id="hash-tables"><a class="header" href="#hash-tables">Hash tables</a></h2>
-<p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> and <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> are hash tables. Their representation and
-operations are similar to those of <code>Vec</code>, in terms of allocations: they have
-a single contiguous heap allocation, holding keys and values, which is
-reallocated as necessary as the table grows. Many <code>Vec</code> methods relating to
-growth and capacity have equivalents for <code>HashSet</code>/<code>HashMap</code>, such as
-<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>.</p>
-<h2 id="cow"><a class="header" href="#cow"><code>Cow</code></a></h2>
-<p>Sometimes you have some borrowed data, such as a <code>&amp;str</code>, that is mostly
-read-only but occasionally needs to be modified. Cloning the data every time
-would be wasteful. Instead you can use “clone-on-write” semantics via the
-<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> type, which can represent both borrowed and owned data.</p>
-<p>Typically, when starting with a borrowed value <code>x</code> you wrap it in a <code>Cow</code> with
-<code>Cow::Borrowed(x)</code>. Because <code>Cow</code> implements <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>, you can call
-non-mutating methods directly on the data it encloses. If mutation is desired,
-<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut"><code>Cow::to_mut</code></a> will obtain a mutable reference to an owned value, cloning if
-necessary.</p>
-<p><code>Cow</code> can be fiddly to get working, but it is often worth the effort.
-<a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>Example 3</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>Example 4</strong></a>.</p>
+<p><a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> 包含堆分配的字节。<code>String</code> 的表示和操作与 <code>Vec&lt;u8&gt;</code> 非常相似。许多与增长
+和容量相关的 <code>Vec</code> 方法在 <code>String</code> 中都有对应方法，例如 <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity"><code>String::with_capacity</code></a>。</p>
+<p><a href="https://crates.io/crates/smallstr"><code>smallstr</code></a> crate 中的 <code>SmallString</code> 类型类似于 <code>SmallVec</code> 类型。</p>
+<p><a href="https://crates.io/crates/smartstring"><code>smartstring</code></a> crate 中的 <code>String</code> 类型是 <code>String</code> 的直接替代品，对于少于三个字段
+大小的字符的字符串，它避免堆分配。在 64 位平台上，这是任何小于 24 字节的字符串，
+包括包含 23 个或更少 ASCII 字符的所有字符串。
+<a href="https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c"><strong>示例</strong></a>.</p>
+<p>请注意，<code>format!</code> 宏会生成一个 <code>String</code>，这意味着它执行一次分配。如果你可以使用
+字符串字面量来避免 <code>format!</code> 调用，就可以避免这次分配。
+<a href="https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9"><strong>示例</strong></a>.
+<a href="https://doc.rust-lang.org/std/macro.format_args.html"><code>std::format_args</code></a> 和/或 <a href="https://crates.io/crates/lazy_format"><code>lazy_format</code></a> crate 可能对此有所帮助。</p>
+<h2 id="哈希表"><a class="header" href="#哈希表">哈希表</a></h2>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html"><code>HashSet</code></a> 和 <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> 是哈希表。它们在分配方面的表示和操作与 <code>Vec</code> 类似：
+它们有一个连续的堆分配，用于保存键和值，并在表增长时根据需要重新分配。许多与增长
+和容量相关的 <code>Vec</code> 方法在 <code>HashSet</code>/<code>HashMap</code> 中都有对应方法，例如
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.with_capacity"><code>HashSet::with_capacity</code></a>。</p>
 <h2 id="clone"><a class="header" href="#clone"><code>clone</code></a></h2>
-<p>Calling <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> on a value that contains heap-allocated memory typically
-involves additional allocations. For example, calling <code>clone</code> on a non-empty
-<code>Vec</code> requires a new allocation for the elements (but note that the capacity of
-the new <code>Vec</code> might not be the same as the capacity of the original <code>Vec</code>). The
-exception is <code>Rc</code>/<code>Arc</code>, where a <code>clone</code> call just increments the reference
-count.</p>
-<p><a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#method.clone_from"><code>clone_from</code></a> is an alternative to <code>clone</code>. <code>a.clone_from(&amp;b)</code> is equivalent
-to <code>a = b.clone()</code> but may avoid unnecessary allocations. For example, if you
-want to clone one <code>Vec</code> over the top of an existing <code>Vec</code>, the existing <code>Vec</code>’s
-heap allocation will be reused if possible, as the following example shows.</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+<p>对包含堆分配内存的值调用 <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone</code></a> 通常涉及额外的分配。例如，对非空 <code>Vec</code> 调用
+<code>clone</code> 需要为元素进行新的分配（但请注意，新 <code>Vec</code> 的容量可能与原始 <code>Vec</code> 的容量
+不同）。例外情况是 <code>Rc</code>/<code>Arc</code>，其中 <code>clone</code> 调用仅增加引用计数。</p>
+<p><a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#method.clone_from"><code>clone_from</code></a> 是 <code>clone</code> 的替代方案。<code>a.clone_from(&amp;b)</code> 等同于 <code>a = b.clone()</code>，
+但可能避免不必要的分配。例如，如果你想在现有 <code>Vec</code> 之上克隆另一个 <code>Vec</code>，现有 <code>Vec</code>
+的堆分配将尽可能被重用，如下例所示。</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let mut v1: Vec&lt;u32&gt; = Vec::with_capacity(99);
 let v2: Vec&lt;u32&gt; = vec![1, 2, 3];
-v1.clone_from(&amp;v2); // v1's allocation is reused
+v1.clone_from(&amp;v2); // v1 的分配被重用
 assert_eq!(v1.capacity(), 99);
-<span class="boring">}</span></code></pre></pre>
-<p>Although <code>clone</code> usually causes allocations, it is a reasonable thing to use in
-many circumstances and can often make code simpler. Use profiling data to see
-which <code>clone</code> calls are hot and worth taking the effort to avoid.</p>
-<p>Sometimes Rust code ends up containing unnecessary <code>clone</code> calls, due to (a)
-programmer error, or (b) changes in the code that render previously-necessary
-<code>clone</code> calls unnecessary. If you see a hot <code>clone</code> call that does not seem
-necessary, sometimes it can simply be removed.
-<a href="https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f"><strong>Example 2</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be"><strong>Example 3</strong></a>.</p>
+<span class="boring">}</span></code></pre>
+<p>尽管 <code>clone</code> 通常会引起分配，但在许多情况下使用它是合理的，并且通常可以使代码更简单。
+使用性能分析数据来确定哪些 <code>clone</code> 调用是热点，值得花精力避免。</p>
+<p>有时 Rust 代码最终包含不必要的 <code>clone</code> 调用，原因可能是 (a) 程序员错误，或 (b) 代码
+变更使得以前必要的 <code>clone</code> 调用变得不必要。如果你看到一个看似不必要的热点 <code>clone</code>
+调用，有时可以简单地将其移除。
+<a href="https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f"><strong>示例 2</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be"><strong>示例 3</strong></a>.</p>
 <h2 id="to_owned"><a class="header" href="#to_owned"><code>to_owned</code></a></h2>
-<p><a href="https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned"><code>ToOwned::to_owned</code></a> is implemented for many common types. It creates owned
-data from borrowed data, usually by cloning, and therefore often causes heap
-allocations. For example, it can be used to create a <code>String</code> from a <code>&amp;str</code>.</p>
-<p>Sometimes <code>to_owned</code> calls can be avoided by storing a reference to borrowed
-data in a struct rather than an owned copy. This requires lifetime annotations
-on the struct, complicating the code, and should only be done when profiling
-and benchmarking shows that it is worthwhile.
-<a href="https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34"><strong>Example</strong></a>.</p>
-<h2 id="reusing-collections"><a class="header" href="#reusing-collections">Reusing Collections</a></h2>
-<p>Sometimes you need to build up a collection such as a <code>Vec</code> in stages. It is
-usually better to do this by modifying a single <code>Vec</code> than by building multiple
-<code>Vec</code>s and then combining them.</p>
-<p>For example, if you have a function <code>do_stuff</code> that produces a <code>Vec</code> that might
-be called multiple times:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+<p><a href="https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned"><code>ToOwned::to_owned</code></a> 为许多常见类型实现。它从借用的数据创建拥有的数据，通常通过
+克隆，因此经常导致堆分配。例如，它可以用于从 <code>&amp;str</code> 创建 <code>String</code>。</p>
+<p>有时可以通过在 struct 中存储对借用数据的引用而不是拥有副本来避免 <code>to_owned</code> 调用
+（以及相关的调用如 <code>clone</code> 和 <code>to_string</code>）。这需要在 struct 上添加 lifetime 标注，
+使代码变得复杂，只有在性能分析和基准测试表明值得时才应进行。
+<a href="https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34"><strong>示例</strong></a>.</p>
+<h2 id="cow"><a class="header" href="#cow"><code>Cow</code></a></h2>
+<p>有时代码处理的是借用数据和拥有数据的混合。设想一个错误消息的向量，其中一些是静态
+字符串字面量，另一些是用 <code>format!</code> 构建的。显而易见的表示是 <code>Vec&lt;String&gt;</code>，如下例
+所示。</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut errors: Vec&lt;String&gt; = vec![];
+errors.push("something went wrong".to_string());
+errors.push(format!("something went wrong on line {}", 100));
+<span class="boring">}</span></code></pre>
+<p>这需要调用 <code>to_string</code> 将静态字符串字面量提升为 <code>String</code>，这会产生一次分配。</p>
+<p>相反，你可以使用 <a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> 类型，它可以保存借用或拥有的数据。借用值 <code>x</code> 用
+<code>Cow::Borrowed(x)</code> 包装，拥有值 <code>y</code> 用 <code>Cow::Owned(y)</code> 包装。<code>Cow</code> 还为各种字符串、
+切片和路径类型实现了 <code>From&lt;T&gt;</code> trait，因此你通常也可以使用 <code>into</code>。（或者 <code>Cow::from</code>，
+它更长但使代码更具可读性，因为类型更清晰。）以下示例综合了所有这些。</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::borrow::Cow;
+let mut errors: Vec&lt;Cow&lt;'static, str&gt;&gt; = vec![];
+errors.push(Cow::Borrowed("something went wrong"));
+errors.push(Cow::Owned(format!("something went wrong on line {}", 100)));
+errors.push(Cow::from("something else went wrong"));
+errors.push(format!("something else went wrong on line {}", 101).into());
+<span class="boring">}</span></code></pre>
+<p><code>errors</code> 现在保存了借用和拥有数据的混合，无需任何额外分配。此示例涉及 <code>&amp;str</code>/<code>String</code>，
+但其他配对如 <code>&amp;[T]</code>/<code>Vec&lt;T&gt;</code> 和 <code>&amp;Path</code>/<code>PathBuf</code> 也是可行的。</p>
+<p><a href="https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022"><strong>示例 2</strong></a>.</p>
+<p>上述所有内容适用于数据不可变的情况。但 <code>Cow</code> 也允许在需要修改时将借用数据提升为
+拥有数据。<a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut"><code>Cow::to_mut</code></a> 将获取拥有值的可变引用，必要时进行克隆。这称为“写时复制“
+（clone-on-write），也就是 <code>Cow</code> 名称的由来。</p>
+<p>这种写时复制行为在你有一些主要是只读但偶尔需要修改的借用数据（如 <code>&amp;str</code>）时很有用。</p>
+<p><a href="https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a"><strong>示例 2</strong></a>.</p>
+<p>最后，因为 <code>Cow</code> 实现了 <a href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>，你可以直接对其包含的数据调用方法。</p>
+<p><code>Cow</code> 使用起来可能有点棘手，但通常值得付出努力。</p>
+<h2 id="重用集合"><a class="header" href="#重用集合">重用集合</a></h2>
+<p>有时你需要分阶段构建如 <code>Vec</code> 这样的集合。通常修改单个 <code>Vec</code> 比构建多个 <code>Vec</code> 然后
+合并它们更好。</p>
+<p>例如，如果你有一个可能被多次调用的函数 <code>do_stuff</code>，它生成一个 <code>Vec</code>：</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32) -&gt; Vec&lt;u32&gt; {
     vec![x, y]
 }
-<span class="boring">}</span></code></pre></pre>
-<p>It might be better to instead modify a passed-in <code>Vec</code>:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>更好的做法是修改传入的 <code>Vec</code>：</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn do_stuff(x: u32, y: u32, vec: &amp;mut Vec&lt;u32&gt;) {
     vec.push(x);
     vec.push(y);
 }
-<span class="boring">}</span></code></pre></pre>
-<p>Sometimes it is worth keeping around a “workhorse” collection that can be
-reused. For example, if a <code>Vec</code> is needed for each iteration of a loop, you
-could declare the <code>Vec</code> outside the loop, use it within the loop body, and then
-call <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear"><code>clear</code></a> at the end of the loop body (to empty the <code>Vec</code> without affecting
-its capacity). This avoids allocations at the cost of obscuring the fact that
-each iteration’s usage of the <code>Vec</code> is unrelated to the others.
-<a href="https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323"><strong>Example 1</strong></a>,
-<a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>Example 2</strong></a>.</p>
-<p>Similarly, it is sometimes worth keeping a “workhorse” collection within a
-struct, to be reused in one or more methods that are called repeatedly.</p>
-<h2 id="using-an-alternative-allocator"><a class="header" href="#using-an-alternative-allocator">Using an Alternative Allocator</a></h2>
-<p>Another option for improving the performance of allocation-heavy Rust programs
-is to replace the default (system) allocator with an alternative allocator. The
-exact effect will depend on the individual program and the alternative
-allocator chosen, but large improvements in speed and very large reductions in
-memory usage have been seen in practice. The effect will also vary across
-platforms, because each platform’s system allocator has its own strengths and
-weaknesses. The use of an alternative allocator can also affect binary size.</p>
-<p>One popular alternative allocator for Linux and Mac is <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>, usable via
-the <a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> crate. To use it, add a dependency to your
-<code>Cargo.toml</code> file:</p>
-<pre><code class="language-toml">[dependencies]
-tikv-jemallocator = &quot;0.4.0&quot;
-</code></pre>
-<p>Then add the following somewhere in your Rust code:</p>
-<pre><code class="language-rust ignore">#[global_allocator]
-static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;</code></pre>
-<p><a href="https://crates.io/crates/tikv-jemallocator"><code>tikv-jemallocator</code></a> is a fork of the <code>jemallocator</code> crate. As of December
-2021, <code>tikv-jemallocator</code> uses a jemalloc version that is newer and has <a href="https://github.com/rust-lang/rust/pull/83152">better
-performance</a> than the jemalloc version used by <code>jemallocator</code>.</p>
-<p>Another alternative allocator that works on many platforms is <a href="https://github.com/microsoft/mimalloc">mimalloc</a>,
-usable via the <a href="https://docs.rs/mimalloc/0.1.22/mimalloc/"><code>mimalloc</code></a> crate.</p>
-<h2 id="avoiding-regressions"><a class="header" href="#avoiding-regressions">Avoiding Regressions</a></h2>
-<p>To ensure the number and/or size of allocations done by your code doesn’t
-increase unintentionally, you can use the <em>heap usage testing</em> feature of
-<a href="https://crates.io/crates/dhat">dhat-rs</a> to write tests that check particular code snippets allocate the
-expected amount of heap memory.</p>
+<span class="boring">}</span></code></pre>
+<p>有时值得保留一个可重用的“主力“集合。例如，如果每次循环迭代都需要一个 <code>Vec</code>，
+你可以在循环外声明 <code>Vec</code>，在循环体内使用它，然后在循环体末尾调用 <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear"><code>clear</code></a>（清空
+<code>Vec</code> 而不影响其容量）。这避免了分配，代价是掩盖了每次迭代对 <code>Vec</code> 的使用与其他
+迭代无关的事实。
+<a href="https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323"><strong>示例 1</strong></a>,
+<a href="https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7"><strong>示例 2</strong></a>.</p>
+<p>类似地，有时值得在 struct 中保留一个主力集合，以便在被重复调用的一个或多个方法中
+重用。</p>
+<h2 id="从文件读取行"><a class="header" href="#从文件读取行">从文件读取行</a></h2>
+<p><a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a> 使得逐行读取文件变得容易：</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
+</span><span class="boring">fn process(_: &amp;str) {}
+</span>use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+for line in lock.lines() {
+    process(&amp;line?);
+}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}</span></code></pre>
+<p>但它生成的迭代器返回 <code>io::Result&lt;String&gt;</code>，这意味着它会为文件中的每一行分配内存。</p>
+<p>另一种方法是使用一个主力 <code>String</code> 配合 <a href="https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a> 循环：</p>
+<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
+</span><span class="boring">fn process(_: &amp;str) {}
+</span>use std::io::{self, BufRead};
+let mut lock = io::stdin().lock();
+let mut line = String::new();
+while lock.read_line(&amp;mut line)? != 0 {
+    process(&amp;line);
+    line.clear();
+}
+<span class="boring">Ok(())
+</span><span class="boring">}
+</span><span class="boring">}</span></code></pre>
+<p>这将分配次数减少到最多几次，可能仅需一次。（确切次数取决于 <code>line</code> 需要重新分配
+的次数，这取决于文件中行长的分布。）</p>
+<p>这仅在循环体可以操作 <code>&amp;str</code> 而非 <code>String</code> 时才有效。</p>
+<p><a href="https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a"><strong>示例</strong></a>.</p>
+<h2 id="使用替代分配器"><a class="header" href="#使用替代分配器">使用替代分配器</a></h2>
+<p>也可以在不更改代码的情况下改善堆分配性能，只需使用不同的分配器即可。有关详细信息，
+请参阅<a href="build-configuration.html#alternative-allocators">替代分配器</a>一节。</p>
+<h2 id="避免回归"><a class="header" href="#避免回归">避免回归</a></h2>
+<p>为确保代码执行的分配数量和/或大小不会意外增加，你可以使用 <a href="https://crates.io/crates/dhat">dhat-rs</a> 的<em>堆使用测试</em>
+功能来编写测试，检查特定代码片段分配了预期的堆内存量。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="hashing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next" href="type-sizes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="next prefetch" href="type-sizes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -419,16 +437,21 @@ expected amount of heap memory.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="hashing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next" href="type-sizes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="next prefetch" href="type-sizes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -437,15 +460,16 @@ expected amount of heap memory.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->
+
 
 
     </div>

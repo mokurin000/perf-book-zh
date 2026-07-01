@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>I/O - The Rust Performance Book</title>
+        <title>边界检查 - The Rust Performance Book</title>
 
 
         <!-- Custom HTML head -->
@@ -146,7 +146,7 @@
                         <a href="https://github.com/mokurin000/perf-book-zh" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/mokurin000/perf-book-zh/edit/master/src/io.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/mokurin000/perf-book-zh/edit/master/src/bounds-checks.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -180,94 +180,30 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="io"><a class="header" href="#io">I/O</a></h1>
-<h2 id="锁定"><a class="header" href="#锁定">锁定</a></h2>
-<p>Rust 的 <a href="https://doc.rust-lang.org/std/macro.print.html"><code>print!</code></a> 和 <a href="https://doc.rust-lang.org/std/macro.println.html"><code>println!</code></a> 宏每次调用时都会锁定 stdout。如果你重复调用这些
-宏，手动锁定 stdout 可能会更好。</p>
-<p>例如，将这段代码：</p>
-<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">let lines = vec!["one", "two", "three"];
-</span>for line in lines {
-    println!("{}", line);
-}
-<span class="boring">}</span></code></pre>
-<p>改为：</p>
-<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec!["one", "two", "three"];
-</span>use std::io::Write;
-let mut stdout = std::io::stdout();
-let mut lock = stdout.lock();
-for line in lines {
-    writeln!(lock, "{}", line)?;
-}
-// 当 `lock` 被丢弃时，stdout 解锁
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre>
-<p>stdin 和 stderr 在重复操作时同样可以锁定。</p>
-<h2 id="缓冲"><a class="header" href="#缓冲">缓冲</a></h2>
-<p>Rust 文件 I/O 默认是无缓冲的。如果你对文件或网络套接字进行大量小而重复的读取或写入
-调用，请使用 <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> 或 <a href="https://doc.rust-lang.org/std/io/struct.BufWriter.html"><code>BufWriter</code></a>。它们在内存中维护输入和输出缓冲区，
-从而最大限度地减少所需的系统调用次数。</p>
-<p>例如，将这个无缓冲写入器代码：</p>
-<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec!["one", "two", "three"];
-</span>use std::io::Write;
-let mut out = std::fs::File::create("test.txt")?;
-for line in lines {
-    writeln!(out, "{}", line)?;
-}
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre>
-<p>改为：</p>
-<pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span><span class="boring">fn blah() -&gt; Result&lt;(), std::io::Error&gt; {
-</span><span class="boring">let lines = vec!["one", "two", "three"];
-</span>use std::io::{BufWriter, Write};
-let mut out = BufWriter::new(std::fs::File::create("test.txt")?);
-for line in lines {
-    writeln!(out, "{}", line)?;
-}
-out.flush()?;
-<span class="boring">Ok(())
-</span><span class="boring">}
-</span><span class="boring">}</span></code></pre>
-<p><a href="https://github.com/rust-lang/rust/pull/93954"><strong>示例 1</strong></a>,
-<a href="https://github.com/nnethercote/dhat-rs/pull/22/commits/8c3ae26f1219474ee55c30bc9981e6af2e869be2"><strong>示例 2</strong></a>.</p>
-<p>显式调用 <a href="https://doc.rust-lang.org/std/io/trait.Write.html#tymethod.flush"><code>flush</code></a> 并非严格必要，因为当 <code>out</code> 被丢弃时会自动刷新。但是，在这种情况下，
-刷新时发生的任何错误都会被忽略，而显式刷新将使该错误显现出来。</p>
-<p>忘记缓冲在写入时更为常见。无缓冲和有缓冲的写入器都实现了 <a href="https://doc.rust-lang.org/std/io/trait.Write.html"><code>Write</code></a> trait，这意味着
-向无缓冲写入器写入的代码与向有缓冲写入器写入的代码基本相同。相比之下，无缓冲读取器
-实现了 <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code></a> trait，而有缓冲读取器实现了 <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> trait，这意味着从无缓冲读取器
-读取的代码与从有缓冲读取器读取的代码是不同的。例如，使用无缓冲读取器逐行读取文件很困难，
-但使用有缓冲读取器通过 <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_line"><code>BufRead::read_line</code></a> 或 <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a> 就很简单。
-因此，很难像上面写入器的例子那样为读取器写出修改前后如此相似的示例。</p>
-<p>最后，请注意缓冲也适用于 stdout，因此在多次写入 stdout 时，你可能希望将手动锁定<em>和</em>
-缓冲结合起来。</p>
-<h2 id="从文件读取行"><a class="header" href="#从文件读取行">从文件读取行</a></h2>
-<p><a href="heap-allocations.html#reading-lines-from-a-file">本节</a>解释了在使用 <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> 逐行读取文件时如何避免过多的分配。</p>
-<h2 id="以原始字节形式读取输入"><a class="header" href="#以原始字节形式读取输入">以原始字节形式读取输入</a></h2>
-<p>内置的 <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> 类型在内部使用 UTF-8，当你将输入读入其中时，UTF-8 验证会增加一个
-虽小但非零的开销。如果你只想处理输入字节而不关心 UTF-8（例如处理 ASCII 文本时），
-可以使用 <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.read_until"><code>BufRead::read_until</code></a>。</p>
-<p>还有专门用于读取<a href="https://github.com/Freaky/rust-linereader">面向字节的数据行</a>和处理<a href="https://github.com/BurntSushi/bstr">字节字符串</a>的 crate。</p>
+                        <h1 id="边界检查"><a class="header" href="#边界检查">边界检查</a></h1>
+<p>默认情况下，在 Rust 中对切片和向量等容器类型的访问会涉及边界检查。这些检查可能会
+影响性能，例如在热循环中，尽管这种情况比你想象的更少见。</p>
+<p>有几种安全的方法可以修改代码，让编译器知道容器的长度，从而优化掉边界检查。</p>
+<ul>
+<li>使用迭代替换循环中的直接元素访问。</li>
+<li>不要在循环内对 <code>Vec</code> 进行索引，而是在循环前创建 <code>Vec</code> 的一个切片，然后在循环内
+对该切片进行索引。</li>
+<li>对索引变量的范围添加断言。
+<a href="https://github.com/rust-random/rand/pull/960/commits/de9dfdd86851032d942eb583d8d438e06085867b"><strong>示例 1</strong></a>,
+<a href="https://github.com/image-rs/jpeg-decoder/pull/167/files"><strong>示例 2</strong></a>.</li>
+</ul>
+<p>让这些方法生效可能有些棘手。<a href="https://github.com/Shnatsel/bounds-check-cookbook/">Bounds Check Cookbook</a> 对此主题有更详细的讨论。</p>
+<p>作为最后的手段，可以使用不安全的 <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked"><code>get_unchecked</code></a> 和 <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked_mut"><code>get_unchecked_mut</code></a> 方法。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="bounds-checks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="iterators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="logging-and-debugging.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="io.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -277,11 +213,11 @@ out.flush()?;
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="bounds-checks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="iterators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="logging-and-debugging.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="io.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
