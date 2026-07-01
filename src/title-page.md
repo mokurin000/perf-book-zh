@@ -1,7 +1,7 @@
-# <span style="font-size: 150%">The Rust Performance Book</span>
+# <span style="font-size: 150%">Rust 性能手册</span>
 
-**<span style="font-size: 130%">First published in November 2020</span>**
+**<span style="font-size: 130%">2020 年 11 月首次出版</span>**
 
-**<span style="font-size: 130%">Written by Nicholas Nethercote and others</span>**
+**<span style="font-size: 130%">作者：Nicholas Nethercote 及其他贡献者</span>**
 
-[Source code](https://github.com/nnethercote/perf-book)
+[源代码](https://github.com/nnethercote/perf-book)

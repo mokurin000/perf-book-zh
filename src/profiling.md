@@ -1,42 +1,31 @@
-# Profiling
+# 性能分析
 
-When optimizing a program, you also need a way to determine which parts of the
-program are "hot" (executed frequently enough to affect runtime) and worth
-modifying. This is best done via profiling.
+在优化程序时，你还需要一种方法来确定程序的哪些部分是"热点"（执行频率足以影响运行时）
+并值得修改。这最好通过性能分析来实现。
 
-## Profilers
+## 分析器
 
-There are many different profilers available, each with their strengths and
-weaknesses. The following is an incomplete list of profilers that have been
-used successfully on Rust programs.
-- [perf] is a general-purpose profiler that uses hardware performance counters.
-  [Hotspot] and [Firefox Profiler] are good for viewing data recorded by perf.
-  It works on Linux.
-- [Instruments] is a general-purpose profiler that comes with Xcode on macOS.
-- [Intel VTune Profiler] is a general-purpose profiler. It works on Windows,
-  Linux, and macOS.
-- [AMD μProf] is a general-purpose profiler. It works on Windows and Linux.
-- [samply] is a sampling profiler that produces profiles that can be viewed
-  in the Firefox Profiler. It works on Mac, Linux, and Windows.
-- [flamegraph] is a Cargo command that uses perf/DTrace to profile your
-  code and then displays the results in a flame graph. It works on Linux and
-  all platforms that support DTrace (macOS, FreeBSD, NetBSD, and possibly
-  Windows).
-- [Cachegrind] & [Callgrind] give global, per-function, and per-source-line
-  instruction counts and simulated cache and branch prediction data. They work
-  on Linux and some other Unixes.
-- [DHAT] is good for finding which parts of the code are causing a lot of
-  allocations, and for giving insight into peak memory usage. It can also be
-  used to identify hot calls to `memcpy`. It works on Linux and some other
-  Unixes. [dhat-rs] is an experimental alternative that is a little less
-  powerful and requires minor changes to your Rust program, but works on all
-  platforms.
-- [heaptrack] and [bytehound] are heap profiling tools. They work on Linux.
-- [`counts`] supports ad hoc profiling, which combines the use of `eprintln!`
-  statement with frequency-based post-processing, which is good for getting
-  domain-specific insights into parts of your code. It works on all platforms.
-- [Coz] performs *causal profiling* to measure optimization potential, and has
-  Rust support via [coz-rs]. It works on Linux. 
+有许多不同的分析器可用，各有其优缺点。以下是在 Rust 程序上成功使用过的分析器的不
+完整列表。
+- [perf] 是一个使用硬件性能计数器的通用分析器。[Hotspot] 和 [Firefox Profiler]
+  适合查看 perf 记录的数据。它适用于 Linux。
+- [Instruments] 是 macOS 上随 Xcode 提供的通用分析器。
+- [Intel VTune Profiler] 是一个通用分析器。它适用于 Windows、Linux 和 macOS。
+- [AMD μProf] 是一个通用分析器。它适用于 Windows 和 Linux。
+- [samply] 是一个采样分析器，生成可在 Firefox Profiler 中查看的分析结果。它适用于
+  Mac、Linux 和 Windows。
+- [flamegraph] 是一个 Cargo 命令，使用 perf/DTrace 分析你的代码，然后在火焰图中
+  显示结果。它适用于 Linux 和所有支持 DTrace 的平台（macOS、FreeBSD、NetBSD 和
+  可能 Windows）。
+- [Cachegrind] 和 [Callgrind] 提供全局、按函数和按源代码行的指令计数以及模拟缓存
+  和分支预测数据。它们适用于 Linux 和其他一些 Unix 系统。
+- [DHAT] 擅长查找代码中导致大量分配的部分，并提供对峰值内存使用的洞察。它还可以
+  用于识别对 `memcpy` 的热点调用。它适用于 Linux 和其他一些 Unix 系统。[dhat-rs]
+  是一个实验性的替代方案，功能略弱，需要对 Rust 程序进行少量修改，但适用于所有平台。
+- [heaptrack] 和 [bytehound] 是堆分析工具。它们适用于 Linux。
+- [`counts`] 支持临时分析，结合使用 `eprintln!` 语句与基于频率的后处理，非常适合
+  获得对代码部分的领域特定洞察。它适用于所有平台。
+- [Coz] 执行*因果分析*来测量优化潜力，通过 [coz-rs] 支持 Rust。它适用于 Linux。
 
 [perf]: https://perf.wiki.kernel.org/index.php/Main_Page
 [Hotspot]: https://github.com/KDAB/hotspot
@@ -57,85 +46,75 @@ used successfully on Rust programs.
 [Coz]: https://github.com/plasma-umass/coz
 [coz-rs]: https://github.com/plasma-umass/coz/tree/master/rust
 
-## Debug Info
+## 调试信息
 
-To profile a release build effectively you might need to enable source line
-debug info. To do this, add the following lines to your `Cargo.toml` file:
+要有效地分析 release 构建，你可能需要启用源代码行调试信息。为此，请将以下行添加到
+`Cargo.toml` 文件中：
 ```toml
 [profile.release]
 debug = "line-tables-only"
 ```
-See the [Cargo documentation] for more details about the `debug` setting.
+有关 `debug` 设置的更多详细信息，请参阅 [Cargo 文档]。
 
-[Cargo documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
+[Cargo 文档]: https://doc.rust-lang.org/cargo/reference/profiles.html#debug
 
-Unfortunately, even after doing the above step you won't get detailed profiling
-information for standard library code. This is because shipped versions of the
-Rust standard library are not built with debug info.
+遗憾的是，即使执行了上述步骤，你也不会获得标准库代码的详细性能分析信息。这是因为
+已发布版本的 Rust 标准库在构建时未包含调试信息。
 
-The most reliable way around this is to build your own version of the compiler
-and standard library, following [these instructions], and adding the following
-lines to a `bootstrap.toml` file in the repository root:
+最可靠的解决方法是按照[这些说明]构建你自己的编译器和标准库版本，并在仓库根目录的
+`bootstrap.toml` 文件中添加以下行：
  ```toml
 [rust]
 debuginfo-level = 1
 ```
-This is a hassle, but may be worth the effort in some cases.
+这很麻烦，但在某些情况下可能值得付出努力。
 
-[these instructions]: https://github.com/rust-lang/rust
+[这些说明]: https://github.com/rust-lang/rust
 
-Alternatively, the unstable [build-std] feature lets you compile the standard
-library as part of your program's normal compilation, with the same build
-configuration. However, filenames present in the debug info for the standard
-library will not point to source code files, because this feature does not also
-download standard library source code. So this approach will not help with
-profilers such as Cachegrind and samply that require source code to work fully.
+或者，不稳定的 [build-std] 功能允许你将标准库作为程序正常编译的一部分进行编译，
+使用相同的构建配置。但是，标准库调试信息中的文件名不会指向源代码文件，因为此功能
+不会同时下载标准库源代码。因此，这种方法对需要源代码才能完全工作的分析器（如
+Cachegrind 和 samply）没有帮助。
 
 [build-std]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 
-## Frame pointers
+## 帧指针
 
-The Rust compiler may optimize away frame pointers, which can hurt the quality
-of profiling information such as stack traces. To force the compiler to use
-frame pointers, use the `-C force-frame-pointers=yes` flag. For example:
+Rust 编译器可能会优化掉帧指针，这会损害堆栈跟踪等性能分析信息的质量。要强制编译器
+使用帧指针，请使用 `-C force-frame-pointers=yes` 标志。例如：
 ```bash
 RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release
 ```
 
-Alternatively, to force the use frame pointers from a [`config.toml`] file (for
-one or more projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）强制使用帧指针，添加以下行：
 ```toml
 [build]
 rustflags = ["-C", "force-frame-pointers=yes"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-## Symbol Demangling
+## 符号反修饰
 
-Rust uses a form of name mangling to encode function names in compiled code. If
-a profiler is unaware of this, its output may contain symbol names beginning
-with `_ZN` or `_R`, such as `_ZN3foo3barE` or
-`_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` or
+Rust 使用一种名称修饰形式来编码编译代码中的函数名。如果分析器不知道这一点，其输出
+可能包含以 `_ZN` 或 `_R` 开头的符号名称，例如 `_ZN3foo3barE` 或
+`_ZN28_$u7b$$u7b$closure$u7d$$u7d$E` 或
 `_RMCsno73SFvQKx_1cINtB0_3StrKRe616263_E`
 
-Names like these can be manually demangled using [`rustfilt`].
+此类名称可以使用 [`rustfilt`] 手动反修饰。
 
 [`rustfilt`]: https://crates.io/crates/rustfilt
 
-If you are having trouble with symbol demangling while profiling, it may be
-worth changing the [mangling format] from the default legacy format to the newer
-v0 format.
+如果你在性能分析时遇到符号反修饰问题，可能值得将[修饰格式]从默认的传统格式更改为
+较新的 v0 格式。
 
-[mangling format]: https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version
+[修饰格式]: https://doc.rust-lang.org/rustc/codegen-options/index.html#symbol-mangling-version
 
-To use the v0 format from the command line, use the `-C
-symbol-mangling-version=v0` flag. For example:
+要从命令行使用 v0 格式，请使用 `-C symbol-mangling-version=v0` 标志。例如：
 ```bash
 RUSTFLAGS="-C symbol-mangling-version=v0" cargo build --release
 ```
 
-Alternatively, to request these instructions from a [`config.toml`] file (for
-one or more projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）请求这些指令，添加以下行：
 ```toml
 [build]
 rustflags = ["-C", "symbol-mangling-version=v0"]

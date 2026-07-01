@@ -1,45 +1,34 @@
-# Inlining
+# 内联
 
-Entry to and exit from hot, uninlined functions often accounts for a
-non-trivial fraction of execution time. Inlining these functions removes these
-entries and exits and can enable additional low-level optimizations by the
-compiler. In the best case the overall effect is small but easy speed wins.
+进入和退出热门的、未被内联的函数通常占用了不可忽略的执行时间。内联这些函数可以消除
+这些进出开销，并允许编译器进行额外的底层优化。最好的情况下，整体效果虽小，但却是
+轻松获得的速度提升。
 
-There are four inline attributes that can be used on Rust functions.
-- **None**. The compiler will decide itself if the function should be inlined.
-  This will depend on factors such as the optimization level, the size of the
-  function, whether the function is generic, and if the inlining is across a
-  crate boundary.
-- **`#[inline]`**. This suggests that the function should be inlined.
-- **`#[inline(always)]`**. This strongly suggests that the function should be
-  inlined.
-- **`#[inline(never)]`**. This strongly suggests that the function should not
-  be inlined.
+有四种可用于 Rust 函数的内联属性。
+- **无**。编译器将自行决定函数是否应该被内联。这取决于优化级别、函数大小、函数是否是
+  泛型，以及内联是否跨越 crate 边界等因素。
+- **`#[inline]`**。这建议函数应该被内联。
+- **`#[inline(always)]`**。这强烈建议函数应该被内联。
+- **`#[inline(never)]`**。这强烈建议函数不应该被内联。
 
-Inline attributes do not guarantee that a function is inlined or not inlined,
-but in practice `#[inline(always)]` will cause inlining in all but the most
-exceptional cases.
+内联属性并不保证函数一定被内联或不被内联，但在实践中，`#[inline(always)]` 会在除最
+特殊情况外的所有情况下导致内联。
 
-Inlining is non-transitive. If a function `f` calls a function `g` and you want
-both functions to be inlined together at a callsite to `f`, both functions
-should be marked with an inline attribute.
+内联是不可传递的。如果一个函数 `f` 调用了一个函数 `g`，并且你希望这两个函数在 `f` 的
+调用点一起被内联，那么这两个函数都应该用内联属性标记。
 
-## Simple Cases
+## 简单情况
 
-The best candidates for inlining are (a) functions that are very small, or (b)
-functions that have a single call site. The compiler will often inline these
-functions itself even without an inline attribute. But the compiler cannot
-always make the best choices, so attributes are sometimes needed.
-[**Example 1**](https://github.com/rust-lang/rust/pull/37083/commits/6a4bb35b70862f33ac2491ffe6c55fb210c8490d),
-[**Example 2**](https://github.com/rust-lang/rust/pull/50407/commits/e740b97be699c9445b8a1a7af6348ca2d4c460ce),
-[**Example 3**](https://github.com/rust-lang/rust/pull/50564/commits/77c40f8c6f8cc472f6438f7724d60bf3b7718a0c),
-[**Example 4**](https://github.com/rust-lang/rust/pull/57719/commits/92fd6f9d30d0b6b4ecbcf01534809fb66393f139),
-[**Example 5**](https://github.com/rust-lang/rust/pull/69256/commits/e761f3af904b3c275bdebc73bb29ffc45384945d).
+最适合内联的是 (a) 非常小的函数，或 (b) 只有一个调用点的函数。即使没有内联属性，
+编译器通常也会自行内联这些函数。但编译器并不总能做出最佳选择，因此有时需要属性。
+[**示例 1**](https://github.com/rust-lang/rust/pull/37083/commits/6a4bb35b70862f33ac2491ffe6c55fb210c8490d),
+[**示例 2**](https://github.com/rust-lang/rust/pull/50407/commits/e740b97be699c9445b8a1a7af6348ca2d4c460ce),
+[**示例 3**](https://github.com/rust-lang/rust/pull/50564/commits/77c40f8c6f8cc472f6438f7724d60bf3b7718a0c),
+[**示例 4**](https://github.com/rust-lang/rust/pull/57719/commits/92fd6f9d30d0b6b4ecbcf01534809fb66393f139),
+[**示例 5**](https://github.com/rust-lang/rust/pull/69256/commits/e761f3af904b3c275bdebc73bb29ffc45384945d).
 
-Cachegrind is a good profiler for determining if a function is inlined. When
-looking at Cachegrind's output, you can tell that a function has been inlined
-if (and only if) its first and last lines are *not* marked with event counts.
-For example:
+Cachegrind 是判断函数是否被内联的好工具。查看 Cachegrind 的输出时，你可以通过函数
+的首行和末行*是否*标记了事件计数来判断函数是否已被内联。例如：
 ```text
       .  #[inline(always)]
       .  fn inlined(x: u32, y: u32) -> u32 {
@@ -53,21 +42,17 @@ For example:
 200,000      x + y
 200,000  }
 ```
-You should measure again after adding inline attributes, because the effects
-can be unpredictable. Sometimes it has no effect because a nearby function that
-was previously inlined no longer is. Sometimes it slows the code down. Inlining
-can also affect compile times, especially cross-crate inlining which involves
-duplicating internal representations of the functions.
+添加内联属性后应再次测量，因为效果可能不可预测。有时它没有效果，因为附近一个原本
+被内联的函数不再被内联了。有时它会拖慢代码。内联还会影响编译时间，特别是跨 crate
+内联，这涉及复制函数的内部表示。
 
-## Harder Cases
+## 困难情况
 
-Sometimes you have a function that is large and has multiple call sites, but
-only one call site is hot. You would like to inline the hot call site for
-speed, but not inline the cold call sites to avoid unnecessary code bloat. The
-way to handle this is to split the function always-inlined and never-inlined
-variants, with the latter calling the former.
+有时你有一个较大的函数，并且有多个调用点，但只有一个调用点是热点。你希望内联热点
+调用点以提升速度，但不要内联冷调用点以避免不必要的代码膨胀。处理此问题的方法是将
+函数拆分为始终内联和永不内联的变体，后者调用前者。
 
-For example, this function:
+例如，这个函数：
 ```rust
 # fn one() {};
 # fn two() {};
@@ -78,12 +63,12 @@ fn my_function() {
     three();
 }
 ```
-Would become these two functions:
+将变成这两个函数：
 ```rust
 # fn one() {};
 # fn two() {};
 # fn three() {};
-// Use this at the hot call site.
+// 在热点调用点使用此函数。
 #[inline(always)]
 fn inlined_my_function() {
     one();
@@ -91,20 +76,18 @@ fn inlined_my_function() {
     three();
 }
 
-// Use this at the cold call sites.
+// 在冷调用点使用此函数。
 #[inline(never)]
 fn uninlined_my_function() {
     inlined_my_function();
 }
 ```
-[**Example 1**](https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3),
-[**Example 2**](https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd).
+[**示例 1**](https://github.com/rust-lang/rust/pull/53513/commits/b73843f9422fb487b2d26ac2d65f79f73a4c9ae3),
+[**示例 2**](https://github.com/rust-lang/rust/pull/64420/commits/a2261ad66400c3145f96ebff0d9b75e910fa89dd).
 
-## Outlining
+## 外提
 
-The inverse of inlining is *outlining*: moving rarely executed code into a
-separate function. You can add a `#[cold]` attribute to such functions to tell
-the compiler that the function is rarely called. This can result in better code
-generation for the hot path.
-[**Example 1**](https://github.com/Lokathor/tinyvec/pull/127),
-[**Example 2**](https://crates.io/crates/fast_assert).
+内联的逆操作是*外提*：将很少执行的代码移到一个单独的函数中。你可以为这类函数添加
+`#[cold]` 属性，告诉编译器该函数很少被调用。这可以为热路径生成更好的代码。
+[**示例 1**](https://github.com/Lokathor/tinyvec/pull/127),
+[**示例 2**](https://crates.io/crates/fast_assert).

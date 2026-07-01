@@ -1,33 +1,26 @@
-# Heap Allocations
+# 堆分配
 
-Heap allocations are moderately expensive. The exact details depend on which
-allocator is in use, but each allocation (and deallocation) typically involves
-acquiring a global lock, doing some non-trivial data structure manipulation,
-and possibly executing a system call. Small allocations are not necessarily
-cheaper than large allocations. It is worth understanding which Rust data
-structures and operations cause allocations, because avoiding them can greatly
-improve performance.
+堆分配的成本中等偏高。具体细节取决于所使用的分配器，但每次分配（和释放）通常涉及
+获取全局锁、执行一些非平凡的数据结构操作，以及可能执行系统调用。小分配不一定比大
+分配更便宜。值得了解哪些 Rust 数据结构和操作会引起分配，因为避免它们可以极大地
+提升性能。
 
-The [Rust Container Cheat Sheet] has visualizations of common Rust types, and
-is an excellent companion to the following sections.
+[Rust 容器速查表]提供了常见 Rust 类型的可视化展示，是以下各节的优秀伴侣。
 
-[Rust Container Cheat Sheet]: https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/
+[Rust 容器速查表]: https://docs.google.com/presentation/d/1q-c7UAyrUlM-eZyTo1pd8SZ0qwA_wYxmPZVOQkoDmH4/
 
-## Profiling
+## 性能分析
 
-If a general-purpose profiler shows `malloc`, `free`, and related functions as
-hot, then it is likely worth trying to reduce the allocation rate and/or using
-an alternative allocator.
+如果通用分析器显示 `malloc`、`free` 及相关函数是热点，那么尝试降低分配率和/或使用
+替代分配器可能是值得的。
 
-[DHAT] is an excellent profiler to use when reducing allocation rates. It works
-on Linux and some other Unixes. It precisely identifies hot allocation
-sites and their allocation rates. Exact results will vary, but experience with
-rustc has shown that reducing allocation rates by 10 allocations per million
-instructions executed can have measurable performance improvements (e.g. ~1%).
+[DHAT] 是在降低分配率时使用的优秀分析器。它适用于 Linux 和其他一些 Unix 系统。
+它精确定位热点分配位置及其分配率。确切结果会有所不同，但 rustc 的经验表明，每百万
+条指令减少 10 次分配可以带来可测量的性能改进（例如约 1%）。
 
 [DHAT]: https://www.valgrind.org/docs/manual/dh-manual.html
 
-Here is some example output from DHAT.
+以下是 DHAT 的一些示例输出。
 ```text
 AP 1.1/25 (2 children) {
   Total:     54,533,440 bytes (4.02%, 2,714.28/Minstr) in 458,839 blocks (7.72%, 22.84/Minstr), avg size 118.85 bytes, avg lifetime 1,127,259,403.64 instrs (5.61% of program duration)
@@ -47,183 +40,146 @@ AP 1.1/25 (2 children) {
   }
 }
 ```
-It is beyond the scope of this book to describe everything in this example, but
-it should be clear that DHAT gives a wealth of information about allocations,
-such as where and how often they happen, how big they are, how long they live
-for, and how often they are accessed.
+描述此示例中的所有内容超出了本书的范围，但应该清楚的是，DHAT 提供了关于分配的丰富
+信息，例如分配发生的位置和频率、分配的大小、存活时间以及访问频率。
 
 ## `Box`
 
-[`Box`] is the simplest heap-allocated type. A `Box<T>` value is a `T` value
-that is allocated on the heap.
+[`Box`] 是最简单的堆分配类型。`Box<T>` 值是一个分配在堆上的 `T` 值。
 
 [`Box`]: https://doc.rust-lang.org/std/boxed/struct.Box.html
 
-It is sometimes worth boxing one or more fields in a struct or enum fields to
-make a type smaller. (See the [Type Sizes](type-sizes.md) chapter for more
-about this.)
+有时值得将一个 struct 或 enum 中的一个或多个字段装箱，以使类型更小。（有关更多信息，
+请参阅[类型大小](type-sizes.md)章节。）
 
-Other than that, `Box` is straightforward and does not offer much scope for
-optimizations.
+除此之外，`Box` 很直接，没有太多优化空间。
 
 ## `Rc`/`Arc`
 
-[`Rc`]/[`Arc`] are similar to `Box`, but the value on the heap is accompanied by
-two reference counts. They allow value sharing, which can be an effective way
-to reduce memory usage.
+[`Rc`]/[`Arc`] 类似于 `Box`，但堆上的值附带两个引用计数。它们允许值共享，
+这可以成为减少内存使用的有效方式。
 
 [`Rc`]: https://doc.rust-lang.org/std/rc/struct.Rc.html
 [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
 
-However, if used for values that are rarely shared, they can increase allocation
-rates by heap allocating values that might otherwise not be heap-allocated.
-[**Example**](https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe).
+然而，如果用于很少共享的值，它们可能会通过堆分配那些原本不会堆分配的值来增加
+分配率。
+[**示例**](https://github.com/rust-lang/rust/pull/37373/commits/c440a7ae654fb641e68a9ee53b03bf3f7133c2fe).
 
-Unlike `Box`, calling `clone` on an `Rc`/`Arc` value does not involve an
-allocation. Instead, it merely increments a reference count.
+与 `Box` 不同，对 `Rc`/`Arc` 值调用 `clone` 不涉及分配。相反，它只是增加
+引用计数。
 
 ## `Vec`
 
-[`Vec`] is a heap-allocated type with a great deal of scope for optimizing the
-number of allocations, and/or minimizing the amount of wasted space. To do this
-requires understanding how its elements are stored.
+[`Vec`] 是一个堆分配的类型，在优化分配数量和/或最小化浪费的空间方面有很大的空间。
+要做到这一点，需要理解其元素是如何存储的。
 
 [`Vec`]: https://doc.rust-lang.org/std/vec/struct.Vec.html
 
-A `Vec` contains three words: a length, a capacity, and a pointer. The pointer
-will point to heap-allocated memory if the capacity is nonzero and the element
-size is nonzero; otherwise, it will not point to allocated memory.
+一个 `Vec` 包含三个字段：长度、容量和指针。如果容量非零且元素大小非零，指针将指向
+堆分配的内存；否则，它将不指向已分配的内存。
 
-Even if the `Vec` itself is not heap-allocated, the elements (if present and
-nonzero-sized) always will be. If nonzero-sized elements are present, the
-memory holding those elements may be larger than necessary, providing space for
-additional future elements. The number of elements present is the length, and
-the number of elements that could be held without reallocating is the capacity.
+即使 `Vec` 本身不是堆分配的，其元素（如果存在且大小非零）始终是堆分配的。如果存在
+大小非零的元素，存储这些元素的内存可能大于实际需要，为未来的额外元素提供空间。
+存在的元素数量是长度，而无需重新分配即可容纳的元素数量是容量。
 
-When the vector needs to grow beyond its current capacity, the elements will be
-copied into a larger heap allocation, and the old heap allocation will be
-freed.
+当向量需要增长超过当前容量时，元素将被复制到一个更大的堆分配中，旧的堆分配将被释放。
 
-### `Vec` Growth
+### `Vec` 增长
 
-A new, empty `Vec` created by the common means
-([`vec![]`](https://doc.rust-lang.org/std/macro.vec.html)
-or [`Vec::new`] or [`Vec::default`]) has a length and capacity of zero, and no
-heap allocation is required. If you repeatedly push individual elements onto
-the end of the `Vec`, it will periodically reallocate. The growth strategy is
-not specified, but at the time of writing it uses a quasi-doubling strategy
-resulting in the following capacities: 0, 4, 8, 16, 32, 64, and so on. (It
-skips directly from 0 to 4, instead of going via 1 and 2, because this [avoids
-many allocations] in practice.) As a vector grows, the frequency of
-reallocations will decrease exponentially, but the amount of possibly-wasted
-excess capacity will increase exponentially.
+通过常见方式（[`vec![]`](https://doc.rust-lang.org/std/macro.vec.html)
+或 [`Vec::new`] 或 [`Vec::default`]）创建的新空 `Vec` 的长度和容量均为零，
+不需要堆分配。如果你反复将单个元素推入 `Vec` 的末尾，它将定期重新分配。增长策略
+未指定，但在撰写本文时，它使用一种准倍增策略，导致以下容量：0、4、8、16、32、64
+等等。（它直接从 0 跳到 4，而不是经过 1 和 2，因为这在实践中[避免了许多分配]。）
+随着向量的增长，重新分配的频率将呈指数级下降，但可能浪费的额外容量将呈指数级增加。
 
 [`Vec::new`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.new
 [`Vec::default`]: https://doc.rust-lang.org/std/default/trait.Default.html#tymethod.default
-[avoids many allocations]: https://github.com/rust-lang/rust/pull/72227
+[避免了许多分配]: https://github.com/rust-lang/rust/pull/72227
 
-This growth strategy is typical for growable data structures and reasonable in
-the general case, but if you know in advance the likely length of a vector you
-can often do better. If you have a hot vector allocation site (e.g. a hot
-[`Vec::push`] call), it is worth using [`eprintln!`] to print the vector length
-at that site and then doing some post-processing (e.g. with [`counts`]) to
-determine the length distribution. For example, you might have many short
-vectors, or you might have a smaller number of very long vectors, and the best
-way to optimize the allocation site will vary accordingly.
+这种增长策略对于可增长的数据结构是典型的，在一般情况下是合理的，但如果你预先知道
+向量的大致长度，通常可以做得更好。如果你有一个热门的向量分配点（例如热门的
+[`Vec::push`] 调用），值得使用 [`eprintln!`] 打印该点的向量长度，然后进行一些
+后处理（例如使用 [`counts`]）来确定长度分布。例如，你可能有许多短向量，或者数量
+较少但非常长的向量，优化分配点的最佳方式会相应变化。
 
 [`Vec::push`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push
 [`eprintln!`]: https://doc.rust-lang.org/std/macro.eprintln.html
 [`counts`]: https://github.com/nnethercote/counts/
 
-### Short `Vec`s
+### 短 `Vec`
 
-If you have many short vectors, you can use the `SmallVec` type from the
-[`smallvec`] crate. `SmallVec<[T; N]>` is a drop-in replacement for `Vec` that
-can store `N` elements within the `SmallVec` itself, and then switches to a
-heap allocation if the number of elements exceeds that. (Note also that
-`vec![]` literals must be replaced with `smallvec![]` literals.)
-[**Example 1**](https://github.com/rust-lang/rust/pull/50565/commits/78262e700dc6a7b57e376742f344e80115d2d3f2),
-[**Example 2**](https://github.com/rust-lang/rust/pull/55383/commits/526dc1421b48e3ee8357d58d997e7a0f4bb26915).
+如果你有许多短向量，可以使用 [`smallvec`] crate 中的 `SmallVec` 类型。
+`SmallVec<[T; N]>` 是 `Vec` 的直接替代品，它可以在 `SmallVec` 自身内部存储 `N` 个
+元素，然后在元素数量超过该值时切换到堆分配。（另请注意，`vec![]` 字面量必须替换为
+`smallvec![]` 字面量。）
+[**示例 1**](https://github.com/rust-lang/rust/pull/50565/commits/78262e700dc6a7b57e376742f344e80115d2d3f2),
+[**示例 2**](https://github.com/rust-lang/rust/pull/55383/commits/526dc1421b48e3ee8357d58d997e7a0f4bb26915).
 
 [`smallvec`]: https://crates.io/crates/smallvec
 
-`SmallVec` reliably reduces the allocation rate when used appropriately, but
-its use does not guarantee improved performance. It is slightly slower than
-`Vec` for normal operations because it must always check if the elements are
-heap-allocated or not. Also, If `N` is high or `T` is large, then the
-`SmallVec<[T; N]>` itself can be larger than `Vec<T>`, and copying of
-`SmallVec` values will be slower. As always, benchmarking is required to
-confirm that an optimization is effective.
+`SmallVec` 在适当使用时能可靠地降低分配率，但使用它并不能保证性能提升。对于正常操作，
+它比 `Vec` 稍慢，因为它必须始终检查元素是否在堆上分配。此外，如果 `N` 较大或 `T` 较大，
+则 `SmallVec<[T; N]>` 本身可能比 `Vec<T>` 更大，并且复制 `SmallVec` 值会更慢。
+与往常一样，需要进行基准测试来确认优化是否有效。
 
-If you have many short vectors *and* you precisely know their maximum length,
-`ArrayVec` from the [`arrayvec`] crate is a better choice than `SmallVec`. It
-does not require the fallback to heap allocation, which makes it a little
-faster.
-[**Example**](https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e).
+如果你有许多短向量*并且*精确知道它们的最大长度，那么来自 [`arrayvec`] crate 的
+`ArrayVec` 是比 `SmallVec` 更好的选择。它不需要回退到堆分配，这使其稍微快一些。
+[**示例**](https://github.com/rust-lang/rust/pull/74310/commits/c492ca40a288d8a85353ba112c4d38fe87ef453e).
 
 [`arrayvec`]: https://crates.io/crates/arrayvec
 
-### Longer `Vec`s
+### 更长的 `Vec`
 
-If you know the minimum or exact size of a vector, you can reserve a specific
-capacity with [`Vec::with_capacity`], [`Vec::reserve`], or
-[`Vec::reserve_exact`]. For example, if you know a vector will grow to have at
-least 20 elements, these functions can immediately provide a vector with a
-capacity of at least 20 using a single allocation, whereas pushing the items
-one at a time would result in four allocations (for capacities of 4, 8, 16, and
-32).
-[**Example**](https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681).
+如果你知道向量的最小或确切大小，可以使用 [`Vec::with_capacity`]、[`Vec::reserve`] 或
+[`Vec::reserve_exact`] 预留特定容量。例如，如果你知道向量将增长到至少 20 个元素，
+这些函数可以通过一次分配立即提供一个容量至少为 20 的向量，而逐个推送元素将导致四次
+分配（容量分别为 4、8、16 和 32）。
+[**示例**](https://github.com/rust-lang/rust/pull/77990/commits/a7f2bb634308a5f05f2af716482b67ba43701681).
 
 [`Vec::with_capacity`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.with_capacity
 [`Vec::reserve`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve
 [`Vec::reserve_exact`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve_exact
 
-If you know the maximum length of a vector, the above functions also let you
-not allocate excess space unnecessarily. Similarly, [`Vec::shrink_to_fit`] can be
-used to minimize wasted space, but note that it may cause a reallocation.
+如果你知道向量的最大长度，上述函数还可以让你避免不必要地分配多余空间。类似地，
+[`Vec::shrink_to_fit`] 可用于最小化浪费的空间，但请注意它可能导致重新分配。
 
 [`Vec::shrink_to_fit`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.shrink_to_fit
 
 ## `String`
 
-A [`String`] contains heap-allocated bytes. The representation and operation of
-`String` are very similar to that of `Vec<u8>`. Many `Vec` methods relating to
-growth and capacity have equivalents for `String`, such as
-[`String::with_capacity`].
+[`String`] 包含堆分配的字节。`String` 的表示和操作与 `Vec<u8>` 非常相似。许多与增长
+和容量相关的 `Vec` 方法在 `String` 中都有对应方法，例如 [`String::with_capacity`]。
 
 [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
 [`String::with_capacity`]: https://doc.rust-lang.org/std/string/struct.String.html#method.with_capacity
 
-The `SmallString` type from the [`smallstr`] crate is similar to the `SmallVec`
-type.
+[`smallstr`] crate 中的 `SmallString` 类型类似于 `SmallVec` 类型。
 
 [`smallstr`]: https://crates.io/crates/smallstr
 
-The `String` type from the [`smartstring`] crate is a drop-in replacement for
-`String` that avoids heap allocations for strings with less than three words'
-worth of characters. On 64-bit platforms, this is any string that is less than
-24 bytes, which includes all strings containing 23 or fewer ASCII characters.
-[**Example**](https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c).
+[`smartstring`] crate 中的 `String` 类型是 `String` 的直接替代品，对于少于三个字段
+大小的字符的字符串，它避免堆分配。在 64 位平台上，这是任何小于 24 字节的字符串，
+包括包含 23 个或更少 ASCII 字符的所有字符串。
+[**示例**](https://github.com/djc/topfew-rs/commit/803fd566e9b889b7ba452a2a294a3e4df76e6c4c).
 
 [`smartstring`]: https://crates.io/crates/smartstring
 
-Note that the `format!` macro produces a `String`, which means it performs an
-allocation. If you can avoid a `format!` call by using a string literal, that
-will avoid this allocation.
-[**Example**](https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9).
-[`std::format_args`] and/or the [`lazy_format`] crate may help with this.
+请注意，`format!` 宏会生成一个 `String`，这意味着它执行一次分配。如果你可以使用
+字符串字面量来避免 `format!` 调用，就可以避免这次分配。
+[**示例**](https://github.com/rust-lang/rust/pull/55905/commits/c6862992d947331cd6556f765f6efbde0a709cf9).
+[`std::format_args`] 和/或 [`lazy_format`] crate 可能对此有所帮助。
 
 [`std::format_args`]: https://doc.rust-lang.org/std/macro.format_args.html
 [`lazy_format`]: https://crates.io/crates/lazy_format
 
-## Hash Tables
+## 哈希表
 
-[`HashSet`] and [`HashMap`] are hash tables. Their representation and
-operations are similar to those of `Vec`, in terms of allocations: they have
-a single contiguous heap allocation, holding keys and values, which is
-reallocated as necessary as the table grows. Many `Vec` methods relating to
-growth and capacity have equivalents for `HashSet`/`HashMap`, such as
-[`HashSet::with_capacity`].
+[`HashSet`] 和 [`HashMap`] 是哈希表。它们在分配方面的表示和操作与 `Vec` 类似：
+它们有一个连续的堆分配，用于保存键和值，并在表增长时根据需要重新分配。许多与增长
+和容量相关的 `Vec` 方法在 `HashSet`/`HashMap` 中都有对应方法，例如
+[`HashSet::with_capacity`]。
 
 [`HashSet`]: https://doc.rust-lang.org/std/collections/struct.HashSet.html
 [`HashMap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
@@ -231,74 +187,61 @@ growth and capacity have equivalents for `HashSet`/`HashMap`, such as
 
 ## `clone`
 
-Calling [`clone`] on a value that contains heap-allocated memory typically
-involves additional allocations. For example, calling `clone` on a non-empty
-`Vec` requires a new allocation for the elements (but note that the capacity of
-the new `Vec` might not be the same as the capacity of the original `Vec`). The
-exception is `Rc`/`Arc`, where a `clone` call just increments the reference
-count.
+对包含堆分配内存的值调用 [`clone`] 通常涉及额外的分配。例如，对非空 `Vec` 调用
+`clone` 需要为元素进行新的分配（但请注意，新 `Vec` 的容量可能与原始 `Vec` 的容量
+不同）。例外情况是 `Rc`/`Arc`，其中 `clone` 调用仅增加引用计数。
 
 [`clone`]: https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone
 
-[`clone_from`] is an alternative to `clone`. `a.clone_from(&b)` is equivalent
-to `a = b.clone()` but may avoid unnecessary allocations. For example, if you
-want to clone one `Vec` over the top of an existing `Vec`, the existing `Vec`'s
-heap allocation will be reused if possible, as the following example shows.
+[`clone_from`] 是 `clone` 的替代方案。`a.clone_from(&b)` 等同于 `a = b.clone()`，
+但可能避免不必要的分配。例如，如果你想在现有 `Vec` 之上克隆另一个 `Vec`，现有 `Vec`
+的堆分配将尽可能被重用，如下例所示。
 ```rust
 let mut v1: Vec<u32> = Vec::with_capacity(99);
 let v2: Vec<u32> = vec![1, 2, 3];
-v1.clone_from(&v2); // v1's allocation is reused
+v1.clone_from(&v2); // v1 的分配被重用
 assert_eq!(v1.capacity(), 99);
 ```
-Although `clone` usually causes allocations, it is a reasonable thing to use in
-many circumstances and can often make code simpler. Use profiling data to see
-which `clone` calls are hot and worth taking the effort to avoid.
+尽管 `clone` 通常会引起分配，但在许多情况下使用它是合理的，并且通常可以使代码更简单。
+使用性能分析数据来确定哪些 `clone` 调用是热点，值得花精力避免。
 
 [`clone_from`]: https://doc.rust-lang.org/std/clone/trait.Clone.html#method.clone_from
 
-Sometimes Rust code ends up containing unnecessary `clone` calls, due to (a)
-programmer error, or (b) changes in the code that render previously-necessary
-`clone` calls unnecessary. If you see a hot `clone` call that does not seem
-necessary, sometimes it can simply be removed.
-[**Example 1**](https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61),
-[**Example 2**](https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f),
-[**Example 3**](https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be).
+有时 Rust 代码最终包含不必要的 `clone` 调用，原因可能是 (a) 程序员错误，或 (b) 代码
+变更使得以前必要的 `clone` 调用变得不必要。如果你看到一个看似不必要的热点 `clone`
+调用，有时可以简单地将其移除。
+[**示例 1**](https://github.com/rust-lang/rust/pull/37318/commits/e382267cfb9133ef12d59b66a2935ee45b546a61),
+[**示例 2**](https://github.com/rust-lang/rust/pull/37705/commits/11c1126688bab32f76dbe1a973906c7586da143f),
+[**示例 3**](https://github.com/rust-lang/rust/pull/64302/commits/36b37e22de92b584b9cf4464ed1d4ad317b798be).
 
 ## `to_owned`
 
-[`ToOwned::to_owned`] is implemented for many common types. It creates owned
-data from borrowed data, usually by cloning, and therefore often causes heap
-allocations. For example, it can be used to create a `String` from a `&str`.
+[`ToOwned::to_owned`] 为许多常见类型实现。它从借用的数据创建拥有的数据，通常通过
+克隆，因此经常导致堆分配。例如，它可以用于从 `&str` 创建 `String`。
 
 [`ToOwned::to_owned`]: https://doc.rust-lang.org/std/borrow/trait.ToOwned.html#tymethod.to_owned
 
-Sometimes `to_owned` calls (and related calls such as `clone` and `to_string`)
-can be avoided by storing a reference to borrowed data in a struct rather than
-an owned copy. This requires lifetime annotations on the struct, complicating
-the code, and should only be done when profiling and benchmarking shows that it
-is worthwhile.
-[**Example**](https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34).
+有时可以通过在 struct 中存储对借用数据的引用而不是拥有副本来避免 `to_owned` 调用
+（以及相关的调用如 `clone` 和 `to_string`）。这需要在 struct 上添加 lifetime 标注，
+使代码变得复杂，只有在性能分析和基准测试表明值得时才应进行。
+[**示例**](https://github.com/rust-lang/rust/pull/50855/commits/6872377357dbbf373cfd2aae352cb74cfcc66f34).
 
 ## `Cow`
 
-Sometimes code deals with a mixture of borrowed and owned data. Imagine a
-vector of error messages, some of which are static string literals and some of
-which are constructed with `format!`. The obvious representation is
-`Vec<String>`, as the following example shows.
+有时代码处理的是借用数据和拥有数据的混合。设想一个错误消息的向量，其中一些是静态
+字符串字面量，另一些是用 `format!` 构建的。显而易见的表示是 `Vec<String>`，如下例
+所示。
 ```rust
 let mut errors: Vec<String> = vec![];
 errors.push("something went wrong".to_string());
 errors.push(format!("something went wrong on line {}", 100));
 ```
-That requires a `to_string` call to promote the static string literal to a
-`String`, which incurs an allocation.
+这需要调用 `to_string` 将静态字符串字面量提升为 `String`，这会产生一次分配。
 
-Instead you can use the [`Cow`] type, which can hold either borrowed or owned
-data. A borrowed value `x` is wrapped with `Cow::Borrowed(x)`, and an owned
-value `y` is wrapped with `Cow::Owned(y)`. `Cow` also implements the `From<T>`
-trait for various string, slice, and path types, so you can usually use `into`
-as well. (Or `Cow::from`, which is longer but results in more readable code,
-because it makes the type clearer.) The following example puts all this together.
+相反，你可以使用 [`Cow`] 类型，它可以保存借用或拥有的数据。借用值 `x` 用
+`Cow::Borrowed(x)` 包装，拥有值 `y` 用 `Cow::Owned(y)` 包装。`Cow` 还为各种字符串、
+切片和路径类型实现了 `From<T>` trait，因此你通常也可以使用 `into`。（或者 `Cow::from`，
+它更长但使代码更具可读性，因为类型更清晰。）以下示例综合了所有这些。
 
 [`Cow`]: https://doc.rust-lang.org/std/borrow/enum.Cow.html
 
@@ -310,70 +253,61 @@ errors.push(Cow::Owned(format!("something went wrong on line {}", 100)));
 errors.push(Cow::from("something else went wrong"));
 errors.push(format!("something else went wrong on line {}", 101).into());
 ```
-`errors` now holds a mixture of borrowed and owned data without requiring any
-extra allocations. This example involves `&str`/`String`, but other pairings
-such as `&[T]`/`Vec<T>` and `&Path`/`PathBuf` are also possible. 
+`errors` 现在保存了借用和拥有数据的混合，无需任何额外分配。此示例涉及 `&str`/`String`，
+但其他配对如 `&[T]`/`Vec<T>` 和 `&Path`/`PathBuf` 也是可行的。
 
-[**Example 1**](https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20),
-[**Example 2**](https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022).
+[**示例 1**](https://github.com/rust-lang/rust/pull/37064/commits/b043e11de2eb2c60f7bfec5e15960f537b229e20),
+[**示例 2**](https://github.com/rust-lang/rust/pull/56336/commits/787959c20d062d396b97a5566e0a766d963af022).
 
-All of the above applies if the data is immutable. But `Cow` also allows
-borrowed data to be promoted to owned data if it needs to be mutated.
-[`Cow::to_mut`] will obtain a mutable reference to an owned value, cloning if
-necessary. This is called "clone-on-write", which is where the name `Cow` comes
-from.
+上述所有内容适用于数据不可变的情况。但 `Cow` 也允许在需要修改时将借用数据提升为
+拥有数据。[`Cow::to_mut`] 将获取拥有值的可变引用，必要时进行克隆。这称为"写时复制"
+（clone-on-write），也就是 `Cow` 名称的由来。
 
 [`Deref`]: https://doc.rust-lang.org/std/ops/trait.Deref.html
 [`Cow::to_mut`]: https://doc.rust-lang.org/std/borrow/enum.Cow.html#method.to_mut
 
-This clone-on-write behaviour is useful when you have some borrowed data, such
-as a `&str`, that is mostly read-only but occasionally needs to be modified.
+这种写时复制行为在你有一些主要是只读但偶尔需要修改的借用数据（如 `&str`）时很有用。
 
-[**Example 1**](https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811),
-[**Example 2**](https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a).
+[**示例 1**](https://github.com/rust-lang/rust/pull/50855/commits/ad471452ba6fbbf91ad566dc4bdf1033a7281811),
+[**示例 2**](https://github.com/rust-lang/rust/pull/68848/commits/67da45f5084f98eeb20cc6022d68788510dc832a).
 
-Finally, because `Cow` implements [`Deref`], you can call methods directly on
-the data it encloses. 
+最后，因为 `Cow` 实现了 [`Deref`]，你可以直接对其包含的数据调用方法。
 
-`Cow` can be fiddly to get working, but it is often worth the effort.
+`Cow` 使用起来可能有点棘手，但通常值得付出努力。
 
-## Reusing Collections
+## 重用集合
 
-Sometimes you need to build up a collection such as a `Vec` in stages. It is
-usually better to do this by modifying a single `Vec` than by building multiple
-`Vec`s and then combining them.
+有时你需要分阶段构建如 `Vec` 这样的集合。通常修改单个 `Vec` 比构建多个 `Vec` 然后
+合并它们更好。
 
-For example, if you have a function `do_stuff` that produces a `Vec` that might
-be called multiple times:
+例如，如果你有一个可能被多次调用的函数 `do_stuff`，它生成一个 `Vec`：
 ```rust
 fn do_stuff(x: u32, y: u32) -> Vec<u32> {
     vec![x, y]
 }
 ```
-It might be better to instead modify a passed-in `Vec`:
+更好的做法是修改传入的 `Vec`：
 ```rust
 fn do_stuff(x: u32, y: u32, vec: &mut Vec<u32>) {
     vec.push(x);
     vec.push(y);
 }
 ```
-Sometimes it is worth keeping around a "workhorse" collection that can be
-reused. For example, if a `Vec` is needed for each iteration of a loop, you
-could declare the `Vec` outside the loop, use it within the loop body, and then
-call [`clear`] at the end of the loop body (to empty the `Vec` without affecting
-its capacity). This avoids allocations at the cost of obscuring the fact that
-each iteration's usage of the `Vec` is unrelated to the others.
-[**Example 1**](https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323),
-[**Example 2**](https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7).
+有时值得保留一个可重用的"主力"集合。例如，如果每次循环迭代都需要一个 `Vec`，
+你可以在循环外声明 `Vec`，在循环体内使用它，然后在循环体末尾调用 [`clear`]（清空
+`Vec` 而不影响其容量）。这避免了分配，代价是掩盖了每次迭代对 `Vec` 的使用与其他
+迭代无关的事实。
+[**示例 1**](https://github.com/rust-lang/rust/pull/77990/commits/45faeb43aecdc98c9e3f2b24edf2ecc71f39d323),
+[**示例 2**](https://github.com/rust-lang/rust/pull/51870/commits/b0c78120e3ecae5f4043781f7a3f79e2277293e7).
 
 [`clear`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.clear
 
-Similarly, it is sometimes worth keeping a workhorse collection within a
-struct, to be reused in one or more methods that are called repeatedly.
+类似地，有时值得在 struct 中保留一个主力集合，以便在被重复调用的一个或多个方法中
+重用。
 
-## Reading Lines from a File
+## 从文件读取行
 
-[`BufRead::lines`] makes it easy to read a file one line at a time:
+[`BufRead::lines`] 使得逐行读取文件变得容易：
 ```rust
 # fn blah() -> Result<(), std::io::Error> {
 # fn process(_: &str) {}
@@ -385,13 +319,11 @@ for line in lock.lines() {
 # Ok(())
 # }
 ```
-But the iterator it produces returns `io::Result<String>`, which means it
-allocates for every line in the file.
+但它生成的迭代器返回 `io::Result<String>`，这意味着它会为文件中的每一行分配内存。
 
 [`BufRead::lines`]: https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
 
-An alternative is to use a workhorse `String` in a loop over
-[`BufRead::read_line`]:
+另一种方法是使用一个主力 `String` 配合 [`BufRead::read_line`] 循环：
 ```rust
 # fn blah() -> Result<(), std::io::Error> {
 # fn process(_: &str) {}
@@ -405,30 +337,25 @@ while lock.read_line(&mut line)? != 0 {
 # Ok(())
 # }
 ```
-This reduces the number of allocations to at most a handful, and possibly just
-one. (The exact number depends on how many times `line` needs to be
-reallocated, which depends on the distribution of line lengths in the file.)
+这将分配次数减少到最多几次，可能仅需一次。（确切次数取决于 `line` 需要重新分配
+的次数，这取决于文件中行长的分布。）
 
-This will only work if the loop body can operate on a `&str`, rather than a
-`String`.
+这仅在循环体可以操作 `&str` 而非 `String` 时才有效。
 
 [`BufRead::read_line`]: https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.read_line
 
-[**Example**](https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a).
+[**示例**](https://github.com/nnethercote/counts/commit/7d39bbb1867720ef3b9799fee739cd717ad1539a).
 
-## Using an Alternative Allocator
+## 使用替代分配器
 
-It is also possible to improve heap allocation performance without changing
-your code, simply by using a different allocator. See the [Alternative
-Allocators] section for details.
+也可以在不更改代码的情况下改善堆分配性能，只需使用不同的分配器即可。有关详细信息，
+请参阅[替代分配器]一节。
 
-[Alternative Allocators]: build-configuration.md#alternative-allocators
+[替代分配器]: build-configuration.md#alternative-allocators
 
-## Avoiding Regressions
+## 避免回归
 
-To ensure the number and/or size of allocations done by your code doesn't
-increase unintentionally, you can use the *heap usage testing* feature of
-[dhat-rs] to write tests that check particular code snippets allocate the
-expected amount of heap memory.
+为确保代码执行的分配数量和/或大小不会意外增加，你可以使用 [dhat-rs] 的*堆使用测试*
+功能来编写测试，检查特定代码片段分配了预期的堆内存量。
 
 [dhat-rs]: https://crates.io/crates/dhat

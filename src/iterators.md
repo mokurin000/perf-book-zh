@@ -1,66 +1,58 @@
-# Iterators
+# 迭代器
 
-## `collect` and `extend`
+## `collect` 和 `extend`
 
-[`Iterator::collect`] converts an iterator into a collection such as `Vec`,
-which typically requires an allocation. You should avoid calling `collect` if
-the collection is then only iterated over again.
+[`Iterator::collect`] 将迭代器转换为集合（如 `Vec`），这通常需要一次分配。如果之后
+只是再次迭代该集合，则应避免调用 `collect`。
 
 [`Iterator::collect`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect
 
-For this reason, it is often better to return an iterator type like `impl
-Iterator<Item=T>` from a function than a `Vec<T>`. Note that sometimes
-additional lifetimes are required on these return types, as [this blog post]
-explains.
-[**Example**](https://github.com/rust-lang/rust/pull/77990/commits/660d8a6550a126797aa66a417137e39a5639451b).
+因此，从函数返回 `impl Iterator<Item=T>` 这样的迭代器类型通常比返回 `Vec<T>` 更好。
+请注意，如[这篇博客文章]所述，这些返回类型有时需要额外的 lifetime 标注。
+[**示例**](https://github.com/rust-lang/rust/pull/77990/commits/660d8a6550a126797aa66a417137e39a5639451b).
 
-[this blog post]: https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/
+[这篇博客文章]: https://blog.katona.me/2019/12/29/Rust-Lifetimes-and-Iterators/
 
-Similarly, you can use [`extend`] to extend an existing collection (such as a
-`Vec`) with an iterator, rather than collecting the iterator into a `Vec` and
-then using [`append`].
+类似地，你可以使用 [`extend`] 用迭代器扩展现有集合（如 `Vec`），而不是将迭代器收集到
+`Vec` 中再使用 [`append`]。
 
 [`extend`]: https://doc.rust-lang.org/std/iter/trait.Extend.html#tymethod.extend
 [`append`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.append
 
-Finally, when you write an iterator it is often worth implementing the
-[`Iterator::size_hint`] or [`ExactSizeIterator::len`] method, if possible.
-`collect` and `extend` calls that use the iterator may then do fewer
-allocations, because they have advance information about the number of elements
-yielded by the iterator.
+最后，在编写迭代器时，如果可能的话，实现 [`Iterator::size_hint`] 或
+[`ExactSizeIterator::len`] 方法通常是有价值的。使用该迭代器的 `collect` 和 `extend`
+调用可能会进行更少的分配，因为它们预先知道了迭代器产生的元素数量。
 
 [`Iterator::size_hint`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.size_hint
 [`ExactSizeIterator::len`]: https://doc.rust-lang.org/std/iter/trait.ExactSizeIterator.html#method.len
 
-## Chaining
+## 链式操作
 
-[`chain`] can be very convenient, but it can also be slower than a single
-iterator. It may be worth avoiding for hot iterators, if possible.
-[**Example**](https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a).
+[`chain`] 非常方便，但也可能比单个迭代器慢。对于热门的迭代器，如果可能的话，
+最好避免使用。
+[**示例**](https://github.com/rust-lang/rust/pull/64801/commits/5ca99b750e455e9b5e13e83d0d7886486231e48a).
 
-Similarly, [`filter_map`] may be faster than using [`filter`] followed by
-[`map`].
+类似地，[`filter_map`] 可能比先使用 [`filter`] 再使用 [`map`] 更快。
 
 [`chain`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.chain
 [`filter_map`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map
 [`filter`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter
 [`map`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map
 
-## Chunks
+## 块迭代
 
-When a chunking iterator is required and the chunk size is known to exactly
-divide the slice length, use the faster [`slice::chunks_exact`] instead of [`slice::chunks`].
+当需要块迭代器且已知块大小正好能整除切片长度时，请使用更快的 [`slice::chunks_exact`]
+而不是 [`slice::chunks`]。
 
-When the chunk size is not known to exactly divide the slice length, it can
-still be faster to use `slice::chunks_exact` in combination with either
-[`ChunksExact::remainder`] or manual handling of excess elements.
-[**Example 1**](https://github.com/johannesvollmer/exrs/pull/173/files),
-[**Example 2**](https://github.com/johannesvollmer/exrs/pull/175/files).
+当不确定块大小是否能正好整除切片长度时，使用 `slice::chunks_exact` 并结合
+[`ChunksExact::remainder`] 或手动处理多余元素仍然可能更快。
+[**示例 1**](https://github.com/johannesvollmer/exrs/pull/173/files),
+[**示例 2**](https://github.com/johannesvollmer/exrs/pull/175/files).
 
-The same is true for related iterators:
-- [`slice::rchunks`], [`slice::rchunks_exact`], and [`RChunksExact::remainder`];
-- [`slice::chunks_mut`], [`slice::chunks_exact_mut`], and [`ChunksExactMut::into_remainder`];
-- [`slice::rchunks_mut`], [`slice::rchunks_exact_mut`], and [`RChunksExactMut::into_remainder`].
+同样的情况也适用于相关的迭代器：
+- [`slice::rchunks`]、[`slice::rchunks_exact`] 和 [`RChunksExact::remainder`]；
+- [`slice::chunks_mut`]、[`slice::chunks_exact_mut`] 和 [`ChunksExactMut::into_remainder`]；
+- [`slice::rchunks_mut`]、[`slice::rchunks_exact_mut`] 和 [`RChunksExactMut::into_remainder`].
 
 [`slice::chunks`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks
 [`slice::chunks_exact`]: https://doc.rust-lang.org/stable/std/primitive.slice.html#method.chunks_exact
@@ -80,13 +72,10 @@ The same is true for related iterators:
 
 ## `copied`
 
-When iterating over collections of small data types, such as integers, it may
-be better to use `iter().copied()` instead of `iter()`. Whatever consumes that
-iterator will receive the integers by value instead of by reference, and LLVM
-may generate better code in that case.
-[**Example 1**](https://github.com/rust-lang/rust/issues/106539),
-[**Example 2**](https://github.com/rust-lang/rust/issues/113789).
+当迭代整数等小型数据类型的集合时，使用 `iter().copied()` 可能比 `iter()` 更好。
+消费该迭代器的代码将按值而非按引用接收整数，LLVM 在这种情况下可能生成更好的代码。
+[**示例 1**](https://github.com/rust-lang/rust/issues/106539),
+[**示例 2**](https://github.com/rust-lang/rust/issues/113789).
 
-This is an advanced technique. You might need to check the generated machine
-code to be certain it is having an effect. See the [Machine
-Code](machine-code.md) chapter for details on how to do that.
+这是一项高级技术。你可能需要检查生成的机器码以确定它是否有效。有关如何执行此操作的
+详细信息，请参阅[机器码](machine-code.md)章节。

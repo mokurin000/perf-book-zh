@@ -1,34 +1,25 @@
-# Introduction
+# 引言
 
-Performance is important for many Rust programs. 
+性能对于许多 Rust 程序来说非常重要。
 
-This book contains techniques that can improve the performance-related
-characteristics of Rust programs, such as runtime speed, memory usage, and
-binary size. The [Compile Times] section also contains techniques that will
-improve the compile times of Rust programs. Some techniques only require
-changing build configurations, but many require changing code.
+本书收录了能够改善 Rust 程序性能相关特征的技术，如运行时速度、内存使用和
+二进制体积。[编译时间]章节还包含了能够缩短 Rust 程序编译时间的技术。有些技术仅需
+更改构建配置，但许多技术需要修改代码。
 
-[Compile Times]: compile-times.md
+[编译时间]: compile-times.md
 
-Some techniques are entirely Rust-specific, and some involve ideas that can be
-applied (often with modifications) to programs written in other languages. The
-[General Tips] section also includes some general principles that apply to any
-programming language. Nonetheless, this book is mostly about the performance of
-Rust programs and is no substitute for a general purpose guide to profiling and
-optimization.
+有些技术完全是 Rust 特有的，另一些则涉及可以（通常经过修改后）应用于其他语言编写的
+程序的思想。[通用技巧]章节还包含了一些适用于任何编程语言的通用原则。尽管如此，本书主要
+讨论 Rust 程序的性能，不能替代通用的性能分析和优化指南。
 
-[General Tips]: general-tips.md
+[通用技巧]: general-tips.md
 
-This book also focuses on techniques that are practical and proven: many are
-accompanied by links to pull requests or other resources that show how the
-technique was used on a real-world Rust program. It reflects the primary
-author's background, being somewhat biased towards compiler development and
-away from other areas such as scientific computing.
+本书还侧重于实用且经过验证的技术：许多技术附带了 pull request 或其他资源的链接，
+展示了如何在真实世界的 Rust 程序中使用该技术。本书反映了主要作者的背景，在一定程度上
+偏向于编译器开发，而非科学计算等其他领域。
 
-This book is deliberately terse, favouring breadth over depth, so that it is
-quick to read. It links to external sources that provide more depth when
-appropriate.
+本书有意写得简洁明了，注重广度而非深度，以便快速阅读。在适当的情况下，它会链接到提供
+更深入内容的外部资源。
 
-This book is aimed at intermediate and advanced Rust users. Beginner Rust users
-have more than enough to learn and these techniques are likely to be an
-unhelpful distraction to them.
+本书面向中高级 Rust 用户。初学者需要学习的东西已经够多了，这些技术对他们而言可能
+是一种无益的干扰。

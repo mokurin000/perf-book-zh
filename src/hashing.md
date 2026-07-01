@@ -1,84 +1,67 @@
-# Hashing
+# 哈希
 
-`HashSet` and `HashMap` are two widely-used types and there are ways to make
-them faster.
+`HashSet` 和 `HashMap` 是两种广泛使用的类型，有一些方法可以让它们更快。
 
-## Alternative Hashers
+## 替代哈希器
 
-The default hashing algorithm is not specified, but at the time of writing the
-default is an algorithm called [SipHash 1-3]. This algorithm is high quality—it
-provides high protection against collisions—but is relatively slow,
-particularly for short keys such as integers.
+默认的哈希算法未指定，但在撰写本文时，默认算法是一种名为 [SipHash 1-3] 的算法。
+这种算法质量很高——提供了很高的碰撞防护能力——但相对较慢，特别是对于整数这样的短键。
 
 [SipHash 1-3]: https://en.wikipedia.org/wiki/SipHash
 
-If profiling shows that hashing is hot, and [HashDoS attacks] are not a concern
-for your application, the use of hash tables with faster hash algorithms can
-provide large speed wins.
-- [`rustc-hash`] provides `FxHashSet` and `FxHashMap` types that are drop-in
-  replacements for `HashSet` and `HashMap`. Its hashing algorithm is
-  low-quality but very fast, especially for integer keys, and has been found to
-  out-perform all other hash algorithms within rustc. ([`fxhash`] is an older,
-  less well maintained implementation of the same algorithm and types.)
-- [`fnv`] provides `FnvHashSet` and `FnvHashMap` types. Its hashing algorithm
-  is higher quality than `rustc-hash`'s but a little slower.
-- [`ahash`] provides `AHashSet` and `AHashMap`. Its hashing algorithm can take
-  advantage of AES instruction support that is available on some processors.
+如果性能分析表明哈希是热点，且 [HashDoS 攻击]对你的应用不是问题，那么使用具有更快
+哈希算法的哈希表可以带来巨大的速度提升。
+- [`rustc-hash`] 提供了 `FxHashSet` 和 `FxHashMap` 类型，可作为 `HashSet` 和
+  `HashMap` 的直接替代品。它的哈希算法质量较低但速度非常快，尤其适用于整数键，
+  并且已被发现在 rustc 中的性能优于所有其他哈希算法。（[`fxhash`] 是相同算法和类型的
+  较旧、维护较少的实现。）
+- [`fnv`] 提供了 `FnvHashSet` 和 `FnvHashMap` 类型。它的哈希算法质量比 `rustc-hash`
+  更高，但稍慢一些。
+- [`ahash`] 提供了 `AHashSet` 和 `AHashMap`。它的哈希算法可以利用某些处理器上可用的
+  AES 指令支持。
 
-[HashDoS attacks]: https://en.wikipedia.org/wiki/Collision_attack
+[HashDoS 攻击]: https://en.wikipedia.org/wiki/Collision_attack
 [`rustc-hash`]: https://crates.io/crates/rustc-hash
 [`fxhash`]: https://crates.io/crates/fxhash
 [`fnv`]: https://crates.io/crates/fnv
 [`ahash`]: https://crates.io/crates/ahash
 
-If hashing performance is important in your program, it is worth trying more
-than one of these alternatives. For example, the following results were seen in
-rustc.
-- The switch from `fnv` to `fxhash` gave [speedups of up to 6%][fnv2fx].
-- An attempt to switch from `fxhash` to `ahash` resulted in [slowdowns of
-  1-4%][fx2a].
-- An attempt to switch from `fxhash` back to the default hasher resulted in
-  [slowdowns ranging from 4-84%][fx2default]!
+如果哈希性能在程序中很重要，值得尝试多种替代方案。例如，在 rustc 中观察到了以下结果。
+- 从 `fnv` 切换到 `fxhash` 带来了[高达 6% 的速度提升][fnv2fx]。
+- 尝试从 `fxhash` 切换到 `ahash` 导致了[1-4% 的减速][fx2a]。
+- 尝试从 `fxhash` 切换回默认哈希器导致了[4-84% 的减速][fx2default]！
 
 [fnv2fx]: https://github.com/rust-lang/rust/pull/37229/commits/00e48affde2d349e3b3bfbd3d0f6afb5d76282a7
 [fx2a]: https://github.com/rust-lang/rust/issues/69153#issuecomment-589504301
 [fx2default]: https://github.com/rust-lang/rust/issues/69153#issuecomment-589338446
 
-If you decide to universally use one of the alternatives, such as
-`FxHashSet`/`FxHashMap`, it is easy to accidentally use `HashSet`/`HashMap` in
-some places. You can [use Clippy] to avoid this problem.
+如果你决定普遍使用某种替代方案，例如 `FxHashSet`/`FxHashMap`，很容易在某些地方
+意外地使用 `HashSet`/`HashMap`。你可以[使用 Clippy] 来避免这个问题。
 
-[use Clippy]: linting.md#disallowing-types
+[使用 Clippy]: linting.md#disallowing-types
 
-Some types don't need hashing. For example, you might have a newtype that wraps
-an integer and the integer values are random, or close to random. For such a
-type, the distribution of the hashed values won't be that different to the
-distribution of the values themselves. In this case the [`nohash_hasher`] crate
-can be useful.
+有些类型不需要哈希。例如，你可能有一个包装整数的 newtype，且整数值是随机的或接近随机。
+对于此类类型，哈希值的分布与值本身的分布不会有太大差异。在这种情况下，
+[`nohash_hasher`] crate 可能会很有用。
 
 [`nohash_hasher`]: https://crates.io/crates/nohash-hasher
 
-Hash function design is a complex topic and is beyond the scope of this book.
-The [`ahash` documentation] has a good discussion. 
+哈希函数设计是一个复杂的主题，已超出本书的范围。[`ahash` 文档]中有很好的讨论。
 
-[`ahash` documentation]: https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md
+[`ahash` 文档]: https://github.com/tkaitchuck/aHash/blob/master/compare/readme.md
 
-## Byte-wise Hashing
+## 逐字节哈希
 
-When you annotate a type with `#[derive(Hash)]` the generated `hash` method
-will hash each field separately. For some hash functions it may be faster to
-convert the type to raw bytes and hash the bytes as a stream. This is possible
-for types that satisfy certain properties such as having no padding bytes.
+当你用 `#[derive(Hash)]` 注解一个类型时，生成的 `hash` 方法将分别哈希每个字段。
+对于某些哈希函数，将类型转换为原始字节并将字节作为流进行哈希可能会更快。这对于满足
+某些属性（例如没有填充字节）的类型是可行的。
 
-The [`zerocopy`] and [`bytemuck`] crates both provide a `#[derive(ByteHash)]`
-macro that generates a `hash` method that does this kind of byte-wise hashing.
-The README for the [`derive_hash_fast`] crate provides more detail for this
-technique.
+[`zerocopy`] 和 [`bytemuck`] crate 都提供了 `#[derive(ByteHash)]` 宏，用于生成
+执行这种逐字节哈希的 `hash` 方法。[`derive_hash_fast`] crate 的 README 提供了
+关于此技术的更多细节。
 
 [`zerocopy`]: https://crates.io/crates/zerocopy
 [`bytemuck`]: https://crates.io/crates/bytemuck
 [`derive_hash_fast`]: https://crates.io/crates/derive_hash_fast
 
-This is an advanced technique, and the performance effects are highly dependent
-on the hash function and the exact structure of the types being hashed. Measure
-carefully.
+这是一项高级技术，性能效果高度依赖于哈希函数和被哈希类型的具体结构。请仔细测量。

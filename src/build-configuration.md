@@ -1,187 +1,153 @@
-# Build Configuration
+# 构建配置
 
-You can drastically change the performance of a Rust program without changing
-its code, just by changing its build configuration. There are many possible
-build configurations for each Rust program. The one chosen will affect several
-characteristics of the compiled code, such as compile times, runtime speed,
-memory use, binary size, debuggability, profilability, and which architectures
-your compiled program will run on.
+你可以大幅改变 Rust 程序的性能，而无需修改代码，只需更改其构建配置。每个 Rust 程序
+都有许多可能的构建配置。所选配置将影响编译后代码的多个特征，例如编译时间、运行时速度、
+内存使用、二进制体积、可调试性、可分析性以及编译后的程序将运行的架构。
 
-Most configuration choices will improve one or more characteristics while
-worsening one or more others. For example, a common trade-off is to accept
-worse compile times in exchange for higher runtime speeds. The right choice
-for your program depends on your needs and the specifics of your program, and
-performance-related choices (which is most of them) should be validated with
-benchmarking.
+大多数配置选择会在改善一个或多个特征的同时，使一个或多个其他特征变差。例如，一种常见
+的权衡是接受更长的编译时间以换取更高的运行时速度。适合你程序的正确选择取决于你的需求
+和程序的具体情况，而与性能相关的选择（大部分都是）应通过基准测试来验证。
 
-It is worth reading this chapter carefully to understand all the build
-configuration choices. However, for the impatient or forgetful,
-[`cargo-wizard`] encapsulates this information and can help you choose an
-appropriate build configuration.
+值得仔细阅读本章以了解所有构建配置选项。不过，对于没有耐心或容易忘记的人来说，
+[`cargo-wizard`] 封装了这些信息，可以帮助你选择合适的构建配置。
 
-Note that Cargo only looks at the profile settings in the `Cargo.toml` file at
-the root of the workspace. Profile settings defined in dependencies are
-ignored. Therefore, these options are mostly relevant for binary crates, not
-library crates.
+请注意，Cargo 仅查看工作区根目录下 `Cargo.toml` 文件中的 profile 设置。依赖项中定义的
+profile 设置将被忽略。因此，这些选项主要与二进制 crate 相关，而非库 crate。
 
 [`cargo-wizard`]: https://github.com/Kobzol/cargo-wizard
 
-## Release Builds
+## Release 构建
 
-The single most important build configuration choice is simple but [easy to
-overlook]: make sure you are using a [release build] rather than a [dev build]
-when you want high performance. This is usually done by specifying the
-`--release` flag to Cargo.
+单个最重要的构建配置选择很简单但[容易忽视]：当你需要高性能时，请确保使用的是
+[release 构建]而非 [dev 构建]。这通常通过向 Cargo 指定 `--release` 标志来完成。
 
-[easy to overlook]: https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5
-[release build]: https://doc.rust-lang.org/cargo/reference/profiles.html#release
-[dev build]: https://doc.rust-lang.org/cargo/reference/profiles.html#dev
+[容易忽视]: https://users.rust-lang.org/t/why-my-rust-program-is-so-slow/47764/5
+[release 构建]: https://doc.rust-lang.org/cargo/reference/profiles.html#release
+[dev 构建]: https://doc.rust-lang.org/cargo/reference/profiles.html#dev
 
-Dev builds are the default. They are good for debugging, but are not optimized.
-They are produced if you run `cargo build` or `cargo run`. (Alternatively,
-running `rustc` without additional options also produces an unoptimized build.)
+Dev 构建是默认的。它们适合调试，但未进行优化。如果你运行 `cargo build` 或 `cargo run`，
+就会生成 dev 构建。（或者，不带额外选项运行 `rustc` 也会生成未优化的构建。）
 
-Consider the following final line of output from a `cargo build` run.
+考虑以下 `cargo build` 运行的最终输出行。
 ```text
 Finished dev [unoptimized + debuginfo] target(s) in 29.80s
 ```
-This output indicates that a dev build has been produced. The compiled code
-will be placed in the `target/debug/` directory. `cargo run` will run the dev
-build.
+此输出表明已生成 dev 构建。编译后的代码将放置在 `target/debug/` 目录中。`cargo run`
+将运行 dev 构建。
 
-In comparison, release builds are much more optimized, omit debug assertions
-and integer overflow checks, and omit debug info. 10-100x speedups over dev
-builds are common! They are produced if you run `cargo build --release` or
-`cargo run --release`. (Alternatively, `rustc` has multiple options for
-optimized builds, such as `-O` and `-C opt-level`.) This will typically take
-longer than a dev build because of the additional optimizations.
+相比之下，release 构建经过了更多优化，省略了调试断言和整数溢出检查，并省略了调试信息。
+比 dev 构建快 10-100 倍是常见的！如果你运行 `cargo build --release` 或
+`cargo run --release`，就会生成 release 构建。（或者，`rustc` 有多个优化构建选项，
+如 `-O` 和 `-C opt-level`。）由于额外的优化，这通常比 dev 构建需要更长的时间。
 
-Consider the following final line of output from a `cargo build --release` run.
+考虑以下 `cargo build --release` 运行的最终输出行。
 ```text
 Finished release [optimized] target(s) in 1m 01s
 ```
-This output indicates that a release build has been produced. The compiled code
-will be placed in the `target/release/` directory. `cargo run --release` will
-run the release build.
+此输出表明已生成 release 构建。编译后的代码将放置在 `target/release/` 目录中。
+`cargo run --release` 将运行 release 构建。
 
-See the [Cargo profile documentation] for more details about the differences
-between dev builds (which use the `dev` profile) and release builds (which use
-the `release` profile).
+有关 dev 构建（使用 `dev` profile）和 release 构建（使用 `release` profile）之间差异的
+更多详细信息，请参阅 [Cargo profile 文档]。
 
-[Cargo profile documentation]: https://doc.rust-lang.org/cargo/reference/profiles.html
+[Cargo profile 文档]: https://doc.rust-lang.org/cargo/reference/profiles.html
 
-The default build configuration choices used in release builds provide a good
-balance between the abovementioned characteristics such as compile times, runtime
-speed, and binary size. But there are many possible adjustments, as the
-following sections explain.
+Release 构建中使用的默认构建配置选项在编译时间、运行时速度和二进制体积等上述特征之间
+提供了良好的平衡。但有许多可能的调整，如下节所述。
 
-## Maximizing Runtime Speed
+## 最大化运行时速度
 
-The following build configuration options are designed primarily to maximize
-runtime speed. Some of them may also reduce binary size.
+以下构建配置选项主要旨在最大化运行时速度。其中一些还可能减小二进制体积。
 
 ### Codegen Units
 
-The Rust compiler splits crates into multiple [codegen units] to parallelize
-(and thus speed up) compilation. However, this might cause it to miss some
-potential optimizations. You may be able to improve runtime speed and reduce
-binary size, at the cost of increased compile times, by setting the number of
-units to one. Add these lines to the `Cargo.toml` file:
+Rust 编译器将 crate 拆分为多个 [codegen units] 以并行化（从而加快）编译。然而，这
+可能导致编译器错过一些潜在的优化。通过将单元数设置为 1，你可能能够提高运行时速度并
+减小二进制体积，但代价是增加编译时间。将以下行添加到 `Cargo.toml` 文件中：
 ```toml
 [profile.release]
 codegen-units = 1
 ```
 <!-- Using `https` for this link triggers "potential security risk" warnings due
 to a certificate problem. -->
-[**Example 1**](http://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm),
-[**Example 2**](https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440).
+[**示例 1**](http://likebike.com/posts/How_To_Write_Fast_Rust_Code.html#emit-asm),
+[**示例 2**](https://github.com/rust-lang/rust/pull/115554#issuecomment-1742192440).
 
 [codegen units]: https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units
 
-### Link-time Optimization
+### 链接时优化
 
-[Link-time optimization] (LTO) is a whole-program optimization technique that
-can improve runtime speed by 10-20% or more, and also reduce binary size, at
-the cost of worse compile times. It comes in several forms.
+[链接时优化]（LTO）是一种全程序优化技术，可以将运行时速度提高 10-20% 或更多，同时
+还能减小二进制体积，但代价是编译时间变长。它有几种形式。
 
-[Link-time optimization]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
+[链接时优化]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
 
-The first form of LTO is *thin local LTO*, a lightweight form of LTO. By
-default the compiler uses this for any build that involves a non-zero level of
-optimization. This includes release builds. To explicitly request this level of
-LTO, put these lines in the `Cargo.toml` file:
+第一种形式的 LTO 是 *thin local LTO*，一种轻量级的 LTO 形式。默认情况下，编译器对任何
+涉及非零优化级别的构建都使用此方式。这包括 release 构建。要显式请求此级别的 LTO，
+请在 `Cargo.toml` 文件中添加以下行：
 ```toml
 [profile.release]
 lto = false
 ```
 
-The second form of LTO is *thin LTO*, which is a little more aggressive, and
-likely to improve runtime speed and reduce binary size while also increasing
-compile times. Use `lto = "thin"` in `Cargo.toml` to enable it.
+第二种形式的 LTO 是 *thin LTO*，它更激进一些，很可能提高运行时速度并减小二进制体积，
+同时增加编译时间。在 `Cargo.toml` 中使用 `lto = "thin"` 来启用它。
 
-The third form of LTO is *fat LTO*, which is even more aggressive, and may
-improve performance and reduce binary size further (but [not always]) while
-increasing build times again. Use `lto = "fat"` in `Cargo.toml` to enable it.
+第三种形式的 LTO 是 *fat LTO*，它更加激进，可能进一步提高性能并进一步减小二进制体积
+（但[并非总是如此]），同时再次增加构建时间。在 `Cargo.toml` 中使用 `lto = "fat"` 来
+启用它。
 
-[not always]: https://github.com/rust-lang/rust/pull/103453
+[并非总是如此]: https://github.com/rust-lang/rust/pull/103453
 
-Finally, it is possible to fully disable LTO, which will likely worsen runtime
-speed and increase binary size but reduce compile times. Use `lto = "off"` in
-`Cargo.toml` for this. Note that this is different to the `lto = false` option,
-which, as mentioned above, leaves thin local LTO enabled.
+最后，可以完全禁用 LTO，这可能会降低运行时速度并增加二进制体积，但会减少编译时间。
+在 `Cargo.toml` 中使用 `lto = "off"`。请注意，这与 `lto = false` 选项不同，如上所述，
+后者保持 thin local LTO 启用。
 
-### Alternative Allocators
+### 替代分配器
 
-It is possible to replace the default (system) heap allocator used by a Rust
-program with an alternative allocator. The exact effect will depend on the
-individual program and the alternative allocator chosen, but large improvements
-in runtime speed and large reductions in memory usage have been seen in
-practice. The effect will also vary across platforms, because each platform's
-system allocator has its own strengths and weaknesses. The use of an
-alternative allocator is also likely to increase binary size and compile times.
+可以用替代分配器替换 Rust 程序使用的默认（系统）堆分配器。确切效果取决于具体程序和
+所选的替代分配器，但在实践中已经看到了运行时速度的大幅提升和内存使用量的大幅减少。
+效果也会因平台而异，因为每个平台的系统分配器都有自己的优点和缺点。使用替代分配器也
+可能增加二进制体积和编译时间。
 
 #### jemalloc
 
-One popular alternative allocator for Linux and Mac is [jemalloc], usable via
-the [`tikv-jemallocator`] crate. To use it, add a dependency to your
-`Cargo.toml` file:
+Linux 和 Mac 上一个流行的替代分配器是 [jemalloc]，可通过 [`tikv-jemallocator`] crate
+使用。要使用它，请在 `Cargo.toml` 文件中添加依赖：
 ```toml
 [dependencies]
 tikv-jemallocator = "0.5"
 ```
-Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
+然后在 Rust 代码中添加以下内容，例如在 `src/main.rs` 的顶部：
 ```rust,ignore
 #[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 ```
 
-Furthermore, on Linux, jemalloc can be configured to use [transparent huge
-pages][THP] (THP). This can further speed up programs, possibly at the cost of
-higher memory usage.
+此外，在 Linux 上，jemalloc 可以配置为使用[透明大页][THP]（THP）。这可以进一步加速
+程序，但可能会以更高的内存使用为代价。
 
 [THP]: https://www.kernel.org/doc/html/next/admin-guide/mm/transhuge.html
 
-Do this by setting the `MALLOC_CONF` environment variable (or perhaps
-[`_RJEM_MALLOC_CONF`]) appropriately before building your program, for example:
+通过在构建程序之前适当设置 `MALLOC_CONF` 环境变量（或可能 [`_RJEM_MALLOC_CONF`]）
+来实现，例如：
 ```bash
 MALLOC_CONF="thp:always,metadata_thp:always" cargo build --release
 ```
-The system running the compiled program also has to be configured to support
-THP. See [this blog post] for more details.
+运行编译后程序的系统也必须配置为支持 THP。有关更多详细信息，请参阅[这篇博客文章]。
 
 [`_RJEM_MALLOC_CONF`]: https://github.com/tikv/jemallocator/issues/65
-[this blog post]: https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html
+[这篇博客文章]: https://kobzol.github.io/rust/rustc/2023/10/21/make-rust-compiler-5percent-faster.html
 
 #### mimalloc
 
-Another alternative allocator that works on many platforms is [mimalloc],
-usable via the [`mimalloc`] crate. To use it, add a dependency to your
-`Cargo.toml` file:
+另一个适用于许多平台的替代分配器是 [mimalloc]，可通过 [`mimalloc`] crate 使用。
+要使用它，请在 `Cargo.toml` 文件中添加依赖：
 ```toml
 [dependencies]
 mimalloc = "0.1"
 ```
-Then add the following to your Rust code, e.g. at the top of `src/main.rs`:
+然后在 Rust 代码中添加以下内容，例如在 `src/main.rs` 的顶部：
 ```rust,ignore
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
@@ -193,252 +159,213 @@ static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 [mimalloc]: https://github.com/microsoft/mimalloc
 [`mimalloc`]: https://crates.io/crates/mimalloc
 
-### CPU Specific Instructions
+### CPU 特定指令
 
-If you do not care about the compatibility of your binary on older (or other
-types of) processors, you can tell the compiler to generate the newest (and
-potentially fastest) instructions specific to a [certain CPU architecture],
-such as AVX SIMD instructions for x86-64 CPUs.
+如果你不关心二进制文件在较旧（或其他类型）处理器上的兼容性，可以告诉编译器生成特定于
+[某个 CPU 架构]的最新（且可能最快的）指令，例如针对 x86-64 CPU 的 AVX SIMD 指令。
 
-[certain CPU architecture]: https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu
+[某个 CPU 架构]: https://doc.rust-lang.org/rustc/codegen-options/index.html#target-cpu
 
-To request these instructions from the command line, use the `-C
-target-cpu=native` flag. For example:
+要从命令行请求这些指令，请使用 `-C target-cpu=native` 标志。例如：
 ```bash
 RUSTFLAGS="-C target-cpu=native" cargo build --release
 ```
 
-Alternatively, to request these instructions from a [`config.toml`] file (for
-one or more projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）请求这些指令，添加以下行：
 ```toml
 [build]
 rustflags = ["-C", "target-cpu=native"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-This can improve runtime speed, especially if the compiler finds vectorization
-opportunities in your code.
+这可以提高运行时速度，特别是当编译器在你的代码中发现向量化机会时。
 
-If you are unsure whether `-C target-cpu=native` is working optimally, compare
-the output of `rustc --print cfg` and `rustc --print cfg -C target-cpu=native`
-to see if the CPU features are being detected correctly in the latter case. If
-not, you can use `-C target-feature` to target specific features.
+如果你不确定 `-C target-cpu=native` 是否在最佳地工作，请比较 `rustc --print cfg`
+和 `rustc --print cfg -C target-cpu=native` 的输出，以查看后者是否正确检测到了
+CPU 特性。如果没有，你可以使用 `-C target-feature` 来针对特定特性。
 
-### Profile-guided Optimization
+### 配置文件引导优化
 
-Profile-guided optimization (PGO) is a compilation model where you compile
-your program, run it on sample data while collecting profiling data, and then
-use that profiling data to guide a second compilation of the program. This can
-improve runtime speed by 10% or more.
-[**Example 1**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html),
-[**Example 2**](https://github.com/rust-lang/rust/pull/96978).
+配置文件引导优化（PGO）是一种编译模型，你先编译程序，在示例数据上运行它并收集分析
+数据，然后使用这些分析数据来指导程序的第二次编译。这可以将运行时速度提高 10% 或更多。
+[**示例 1**](https://blog.rust-lang.org/inside-rust/2020/11/11/exploring-pgo-for-the-rust-compiler.html),
+[**示例 2**](https://github.com/rust-lang/rust/pull/96978).
 
-It is an advanced technique that takes some effort to set up, but is worthwhile
-in some cases. See the [rustc PGO documentation] for details. Also, the
-[`cargo-pgo`] command makes it easier to use PGO (and [BOLT], which is similar)
-to optimize Rust binaries.
+这是一项高级技术，需要付出一些努力来设置，但在某些情况下是值得的。有关详细信息，
+请参阅 [rustc PGO 文档]。此外，[`cargo-pgo`] 命令使使用 PGO（以及类似的 [BOLT]）
+来优化 Rust 二进制文件变得更加容易。
 
-Unfortunately, PGO is not supported for binaries hosted on crates.io and
-distributed via `cargo install`, which limits its usability.
+遗憾的是，PGO 不支持托管在 crates.io 上并通过 `cargo install` 分发的二进制文件，
+这限制了它的可用性。
 
-[rustc PGO documentation]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html
+[rustc PGO 文档]: https://doc.rust-lang.org/rustc/profile-guided-optimization.html
 [`cargo-pgo`]: https://github.com/Kobzol/cargo-pgo
 [BOLT]: https://github.com/llvm/llvm-project/tree/main/bolt
 
-## Minimizing Binary Size
+## 最小化二进制体积
 
-The following build configuration options are designed primarily to minimize
-binary size. Their effects on runtime speed vary.
+以下构建配置选项主要旨在最小化二进制体积。它们对运行时速度的影响各不相同。
 
-### Optimization Level
+### 优化级别
 
-You can request an [optimization level] that aims to minimize binary size by
-adding these lines to the `Cargo.toml` file:
+你可以请求旨在最小化二进制体积的[优化级别]，方法是在 `Cargo.toml` 文件中添加以下行：
 ```toml
 [profile.release]
 opt-level = "z"
 ```
-[optimization level]: https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level
+[优化级别]: https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level
 
-This may also reduce runtime speed.
+这也可能降低运行时速度。
 
-An alternative is `opt-level = "s"`, which targets minimal binary size a little
-less aggressively. Compared to `opt-level = "z"`, it allows [slightly more
-inlining] and also the vectorization of loops.
+替代方案是 `opt-level = "s"`，它对最小化二进制体积的追求不那么激进。与 `opt-level = "z"`
+相比，它允许[稍多一些的内联]以及循环的向量化。
 
-[slightly more inlining]: https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold
+[稍多一些的内联]: https://doc.rust-lang.org/rustc/codegen-options/index.html#inline-threshold
 
-### Abort on `panic!`
+### panic 时中止
 
-If you do not need to unwind on panic, e.g. because your program doesn't use
-[`catch_unwind`], you can tell the compiler to simply [abort on panic]. On
-panic, your program will still produce a backtrace.
+如果你不需要在 panic 时展开堆栈，例如因为你的程序不使用 [`catch_unwind`]，你可以
+告诉编译器在 panic 时简单地[中止]。panic 时，你的程序仍会产生回溯信息。
 
 [`catch_unwind`]: https://doc.rust-lang.org/std/panic/fn.catch_unwind.html
-[abort on panic]: https://doc.rust-lang.org/cargo/reference/profiles.html#panic
+[中止]: https://doc.rust-lang.org/cargo/reference/profiles.html#panic
 
-This might reduce binary size and increase runtime speed slightly, and may even
-reduce compile times slightly. Add these lines to the `Cargo.toml` file:
+这可能会略微减小二进制体积、略微提高运行时速度，甚至可能略微减少编译时间。在
+`Cargo.toml` 文件中添加以下行：
 ```toml
 [profile.release]
 panic = "abort"
 ```
 
-### Strip Symbols
+### 剥离符号
 
-You can tell the compiler to [strip] symbols from a release build by adding
-these lines to `Cargo.toml`:
+你可以通过向 `Cargo.toml` 添加以下行来告诉编译器[剥离] release 构建中的符号：
 ```toml
 [profile.release]
 strip = "symbols"
 ```
-[strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
+[剥离]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
 
-[**Example**](https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142).
+[**示例**](https://github.com/nnethercote/counts/commit/53cab44cd09ff1aa80de70a6dbe1893ff8a41142).
 
-However, stripping symbols may make your compiled program more difficult to
-debug and profile. For example, if a stripped program panics, the backtrace
-produced may contain less useful information than normal. The exact effects
-depend on the platform.
+然而，剥离符号可能会使编译后的程序更难调试和分析。例如，如果剥离后的程序 panic，
+生成的回溯信息可能比正常情况下包含更少的有用信息。确切效果取决于平台。
 
-Debug info does not need to be stripped from release builds. By default, debug
-info is not generated for local release builds, and debug info for the standard
-library has been stripped automatically in release builds [since Rust 1.77].
+Release 构建不需要剥离调试信息。默认情况下，本地 release 构建不会生成调试信息，
+并且标准库的调试信息在 release 构建中已自动剥离[自 Rust 1.77 起]。
 
-[since Rust 1.77]: https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default
+[自 Rust 1.77 起]: https://blog.rust-lang.org/2024/03/21/Rust-1.77.0.html#enable-strip-in-release-profiles-by-default
 
-### Other Ideas
+### 其他想法
 
-For more advanced binary size minimization techniques, consult the
-comprehensive documentation in the excellent [`min-sized-rust`] repository.
+有关更高级的二进制体积最小化技术，请查阅优秀的 [`min-sized-rust`] 仓库中的全面文档。
 
 [`min-sized-rust`]: https://github.com/johnthagen/min-sized-rust
 
-## Minimizing Compile Times
+## 最小化编译时间
 
-The following build configuration options are designed primarily to minimize
-compile times.
+以下构建配置选项主要旨在最小化编译时间。
 
-### Linking
+### 链接
 
-A big part of compile time is actually linking time, particularly when
-rebuilding a program after a small change. On some platforms it is possible to
-select a faster linker than the default one.
+编译时间的很大一部分实际上是链接时间，特别是在小改动后重新构建程序时。在某些平台上，
+可以选择比默认链接器更快的链接器。
 
-One option is [lld], which is available on Linux and Windows. lld has been the
-default linker on Linux [since Rust 1.90]. It is not yet the default on
-Windows, but it should work for most use cases.
+一个选项是 [lld]，可在 Linux 和 Windows 上使用。lld 在 Linux 上已经是默认链接器
+[自 Rust 1.90 起]。在 Windows 上还不是默认的，但它应该适用于大多数用例。
 
-[since Rust 1.90]: https://blog.rust-lang.org/2025/09/01/rust-lld-on-1.90.0-stable/
+[自 Rust 1.90 起]: https://blog.rust-lang.org/2025/09/01/rust-lld-on-1.90.0-stable/
 
-To specify lld
-from the command line, use the `-C link-arg=-fuse-ld=lld` flag. For example:
+要从命令行指定 lld，请使用 `-C link-arg=-fuse-ld=lld` 标志。例如：
 ```bash
 RUSTFLAGS="-C link-arg=-fuse-ld=lld" cargo build --release
 ```
 
 [lld]: https://lld.llvm.org/
 
-Alternatively, to specify lld from a [`config.toml`] file (for one or more
-projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）指定 lld，添加以下行：
 ```toml
 [build]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-There is a [GitHub Issue] tracking full
-support for lld.
+有一个 [GitHub Issue] 在跟踪对 lld 的全面支持。
 
 [GitHub Issue]: https://github.com/rust-lang/rust/issues/39915#issuecomment-618726211
 
-Another option is [mold], which is currently available on Linux.
-Simply substitute `mold` for `lld` in the instructions above. mold is often
-faster than lld.
-[**Example**](https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html).
-It is also much newer and may not work in all cases.
+另一个选项是 [mold]，目前在 Linux 上可用。只需将上述指令中的 `lld` 替换为 `mold`。
+mold 通常比 lld 更快。
+[**示例**](https://davidlattimore.github.io/posts/2024/02/04/speeding-up-the-rust-edit-build-run-cycle.html).
+它也更新，可能并非在所有情况下都有效。
 
 [mold]: https://github.com/rui314/mold
 
-A final option is [wild], which is currently only available on Linux. It may be
-even faster than mold, but it is less mature.
+最后一个选项是 [wild]，目前仅适用于 Linux。它可能比 mold 还快，但不够成熟。
 
 [wild]: https://github.com/davidlattimore/wild
 
-On Mac, an alternative linker isn't necessary because the system linker is
-fast.
+在 Mac 上，不需要替代链接器，因为系统链接器已经很快。
 
-Unlike the other options in this chapter, there are no trade-offs to choosing
-another linker. As long as the linker works correctly for your program, which
-is likely to be true unless you are doing unusual things, an alternative
-linker can be dramatically faster without any downsides.
+与本章中的其他选项不同，选择另一个链接器没有任何权衡。只要链接器能正确地用于你的程序
+（除非你在做不寻常的事情，否则很可能是这样），替代链接器可以显著加快速度，没有任何
+缺点。
 
-### Disable Debug Info Generation
+### 禁用调试信息生成
 
-Although release builds give the best performance, many people use dev builds
-while developing because they build more quickly. If you use dev builds but
-don't often use a debugger, consider disabling debuginfo. This can improve dev
-build times significantly, by as much as 20-40%.
-[**Example.**](https://kobzol.github.io/rust/rustc/2025/05/20/disable-debuginfo-to-improve-rust-compile-times.html)
+虽然 release 构建提供了最佳性能，但许多人在开发时使用 dev 构建，因为它们构建更快。
+如果你使用 dev 构建但不经常使用调试器，请考虑禁用调试信息。这可以显著改善 dev 构建
+时间，最多可提高 20-40%。
+[**示例**](https://kobzol.github.io/rust/rustc/2025/05/20/disable-debuginfo-to-improve-rust-compile-times.html)
 
-To disable debug info generation, add these lines to the `Cargo.toml` file:
+要禁用调试信息生成，请将以下行添加到 `Cargo.toml` 文件中：
 ```toml
 [profile.dev]
 debug = false
 ```
-Note that this means that stack traces will not contain line information. If
-you want to keep that line information, but do not require full information for
-the debugger, you can use `debug = "line-tables-only"` instead, which still
-gives most of the compile time benefits.
+请注意，这意味着堆栈跟踪将不包含行信息。如果你希望保留行信息，但不需要完整的调试器
+信息，可以使用 `debug = "line-tables-only"` 代替，这仍然能带来大部分编译时间收益。
 
-### Experimental Parallel Front-end
+### 实验性并行前端
 
-If you use nightly Rust, you can enable the experimental [parallel front-end].
-It may reduce compile times at the cost of higher compile-time memory usage. It
-won't affect the quality of the generated code.
+如果你使用 nightly Rust，可以启用实验性的[并行前端]。它可能会以减少编译时内存使用为
+代价来缩短编译时间。它不会影响生成代码的质量。
 
-[parallel front-end]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
+[并行前端]: https://blog.rust-lang.org/2023/11/09/parallel-rustc.html
 
-You can do that by adding `-Zthreads=N` to RUSTFLAGS, for example:
+你可以通过将 `-Zthreads=N` 添加到 RUSTFLAGS 来实现，例如：
 ```bash
 RUSTFLAGS="-Zthreads=8" cargo build --release
 ```
 
-Alternatively, to enable the parallel front-end from a [`config.toml`] file (for
-one or more projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）启用并行前端，添加以下行：
 ```toml
 [build]
 rustflags = ["-Z", "threads=8"]
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-Values other than `8` are possible, but that is the number that tends to give
-the best results.
+除了 `8` 之外的其他值也是可能的，但 `8` 往往是能给出最佳结果的值。
 
-In the best cases, the experimental parallel front-end reduces compile times by
-up to 50%. But the effects vary widely and depend on the characteristics of the
-code and its build configuration, and for some programs there is no compile
-time improvement.
+在最好的情况下，实验性并行前端可以将编译时间减少多达 50%。但效果差异很大，取决于
+代码的特征及其构建配置，对于某些程序，编译时间没有改善。
 
-### Cranelift Codegen Back-end
+### Cranelift Codegen 后端
 
-If you use nightly Rust you can enable the Cranelift codegen back-end on [some
-platforms]. It may reduce compile times at the cost of lower quality generated
-code, and therefore is recommended for dev builds rather than release builds.
+如果你使用 nightly Rust，可以在[某些平台]上启用 Cranelift codegen 后端。它可能会以
+降低生成代码质量为代价来减少编译时间，因此建议用于 dev 构建而非 release 构建。
 
-First, install the back-end with this `rustup` command:
+首先，使用以下 `rustup` 命令安装后端：
 ```bash
 rustup component add rustc-codegen-cranelift-preview --toolchain nightly
 ```
 
-To select Cranelift from the command line, use the
-`-Zcodegen-backend=cranelift` flag. For example:
+要从命令行选择 Cranelift，请使用 `-Zcodegen-backend=cranelift` 标志。例如：
 ```bash
 RUSTFLAGS="-Zcodegen-backend=cranelift" cargo +nightly build
 ```
 
-Alternatively, to specify Cranelift from a [`config.toml`] file (for one or
-more projects), add these lines:
+或者，从 [`config.toml`] 文件（适用于一个或多个项目）指定 Cranelift，添加以下行：
 ```toml
 [unstable]
 codegen-backend = true
@@ -448,43 +375,35 @@ codegen-backend = "cranelift"
 ```
 [`config.toml`]: https://doc.rust-lang.org/cargo/reference/config.html
 
-For more information, see the [Cranelift documentation].
+有关更多信息，请参阅 [Cranelift 文档]。
 
-[some platforms]: https://github.com/rust-lang/rustc_codegen_cranelift#platform-support
-[Cranelift documentation]: https://github.com/rust-lang/rustc_codegen_cranelift
+[某些平台]: https://github.com/rust-lang/rustc_codegen_cranelift#platform-support
+[Cranelift 文档]: https://github.com/rust-lang/rustc_codegen_cranelift
 
-## Custom profiles
+## 自定义 Profile
 
-In addition to the `dev` and `release` profiles, Cargo supports [custom
-profiles]. It might be useful, for example, to create a custom profile halfway
-between `dev` and `release` if you find the runtime speed of dev builds
-insufficient and the compile times of release builds too slow for everyday
-development.
+除了 `dev` 和 `release` profile 之外，Cargo 还支持[自定义 profile]。例如，如果你发现
+dev 构建的运行时速度不够，而 release 构建的编译时间对于日常开发来说太慢，那么创建
+一个介于 `dev` 和 `release` 之间的自定义 profile 可能会很有用。
 
-[custom profiles]: https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles
+[自定义 profile]: https://doc.rust-lang.org/cargo/reference/profiles.html#custom-profiles
 
-## Summary
+## 总结
 
-There are many choices to be made when it comes to build configurations. The
-following points summarize the above information into some recommendations.
+构建配置涉及许多选择。以下要点将上述信息总结为一些建议。
 
-- If you want to maximize runtime speed, consider all of the following:
-  `codegen-units = 1`, `lto = "fat"`, an alternative allocator, and `panic =
-  "abort"`.
-- If you want to minimize binary size, consider `opt-level = "z"`,
-  `codegen-units = 1`, `lto = "fat"`, `panic = "abort"`, and `strip =
-  "symbols"`.
-- In either case, consider `-C target-cpu=native` if broad architecture support
-  is not needed, and `cargo-pgo` if it works with your distribution mechanism.
-- Always use a faster linker if you are on a platform that supports it, because
-  there are no downsides to doing so.
-- Use `cargo-wizard` if you need additional help with these choices.
-- Benchmark all changes, one at a time, to ensure they have the expected
-  effects.
+- 如果你想最大化运行时速度，请考虑以下所有选项：
+  `codegen-units = 1`、`lto = "fat"`、替代分配器和 `panic = "abort"`。
+- 如果你想最小化二进制体积，请考虑 `opt-level = "z"`、
+  `codegen-units = 1`、`lto = "fat"`、`panic = "abort"` 和 `strip = "symbols"`。
+- 无论哪种情况，如果不需要广泛的架构支持，请考虑 `-C target-cpu=native`；如果
+  与你的分发机制兼容，请考虑 `cargo-pgo`。
+- 如果你所在的平台支持更快的链接器，请始终使用它，因为这样做没有任何缺点。
+- 如果你需要有关这些选择的额外帮助，请使用 `cargo-wizard`。
+- 对所有更改逐一进行基准测试，以确保它们具有预期的效果。
 
-Finally, [this issue] tracks the evolution of the Rust compiler's own build
-configuration. The Rust compiler's build system is stranger and more complex
-than that of most Rust programs. Nonetheless, this issue may be instructive in
-showing how build configuration choices can be applied to a large program.
+最后，[这个 issue] 跟踪了 Rust 编译器自身构建配置的演变。Rust 编译器的构建系统比
+大多数 Rust 程序更奇特、更复杂。尽管如此，这个 issue 可能有助于说明如何将构建配置
+选择应用于大型程序。
 
-[this issue]: https://github.com/rust-lang/rust/issues/103595
+[这个 issue]: https://github.com/rust-lang/rust/issues/103595

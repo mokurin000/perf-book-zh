@@ -1,55 +1,43 @@
-# Linting
+# 代码检查
 
-[Clippy] is a collection of lints to catch common mistakes in Rust code. It is
-an excellent tool to run on Rust code in general. It can also help with
-performance, because a number of the lints relate to code patterns that can
-cause sub-optimal performance.
+[Clippy] 是一个用于捕获 Rust 代码中常见错误的 lint 集合。它通常是在 Rust 代码上
+运行的优秀工具。它还能帮助提升性能，因为许多 lint 与可能导致次优性能的代码模式
+有关。
 
-Given that automated detection of problems is preferable to manual detection,
-the rest of this book will not mention performance problems that Clippy detects
-by default.
+鉴于自动检测问题优于手动检测，本书其余部分将不再提及 Clippy 默认检测到的性能问题。
 
-## Basics
+## 基础
 
 [Clippy]: https://github.com/rust-lang/rust-clippy
 
-Once installed, it is easy to run:
+安装后，运行非常简单：
 ```text
 cargo clippy
 ```
-The full list of performance lints can be seen by visiting the [lint list] and
-deselecting all the lint groups except for "Perf". 
+完整的性能 lint 列表可以通过访问 [lint 列表]并取消选中除"Perf"以外的所有 lint 组来查看。
 
-[lint list]: https://rust-lang.github.io/rust-clippy/master/
+[lint 列表]: https://rust-lang.github.io/rust-clippy/master/
 
-As well as making the code faster, the performance lint suggestions usually
-result in code that is simpler and more idiomatic, so they are worth following
-even for code that is not executed frequently.
+除了使代码更快之外，性能 lint 的建议通常还会使代码更简单、更符合语言习惯，因此即使
+对于不频繁执行的代码，也值得遵循。
 
-Conversely, some non-performance lint suggestions can improve performance. For
-example, the [`ptr_arg`] style lint suggests changing various container
-arguments to slices, such as changing `&mut Vec<T>` arguments to `&mut [T]`.
-The primary motivation here is that a slice gives a more flexible API, but it
-may also result in faster code due to less indirection and better optimization
-opportunities for the compiler.
-[**Example**](https://github.com/fschutt/fastblur/pull/3/files).
+相反，一些非性能的 lint 建议也能提升性能。例如，[`ptr_arg`] 风格 lint 建议将各种容器参数
+改为切片，例如将 `&mut Vec<T>` 参数改为 `&mut [T]`。这样做的主要动机是切片提供了更灵活的
+API，但也可能因为减少间接访问并为编译器提供更好的优化机会而产生更快的代码。
+[**示例**](https://github.com/fschutt/fastblur/pull/3/files)。
 
 [`ptr_arg`]: https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
 
-## Disallowing Types
+## 禁止使用某些类型
 
-In the following chapters we will see that it is sometimes worth avoiding
-certain standard library types in favour of alternatives that are faster. If
-you decide to use these alternatives, it is easy to accidentally use the
-standard library types in some places by mistake.
+在接下来的章节中，我们将看到，有时值得避免使用某些标准库类型，而采用更快的替代方案。
+如果你决定使用这些替代方案，很容易在某些地方意外地错误使用标准库类型。
 
-You can use Clippy's [`disallowed_types`] lint to avoid this problem. For
-example, to disallow the use of the standard hash tables (for reasons explained
-in the [Hashing] section) add a `clippy.toml` file to your code with the
-following line.
+你可以使用 Clippy 的 [`disallowed_types`] lint 来避免这个问题。例如，要禁止使用标准哈希表
+（原因在[哈希]章节中解释），请在代码中添加一个 `clippy.toml` 文件，包含以下内容。
 ```toml
 disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
 ```
 
-[Hashing]: hashing.md
+[哈希]: hashing.md
 [`disallowed_types`]: https://rust-lang.github.io/rust-clippy/master/index.html#disallowed_types
